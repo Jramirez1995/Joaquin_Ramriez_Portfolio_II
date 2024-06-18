@@ -13,9 +13,9 @@ title: "R Coding Exercise"
 # 'repos = NULL' tells R that the package is being installed from a local file rather than a repository.
 # 'type = "win.binary"' specifies that the package is a Windows binary file.
 
-install.packages("C:/Users/Joaquin/School/DA - 6833 (Summer 2024)/Joaquin_Ramriez_Portfolio_II/coding-exercise/dslabs_0.8.0.zip", 
-                 repos = NULL, 
-                 type = "win.binary")
+# install.packages("C:/Users/Joaquin/School/DA - 6833 (Summer 2024)/Joaquin_Ramriez_Portfolio_II/coding-exercise/dslabs_0.8.0.zip", 
+#                 repos = NULL, 
+#                 type = "win.binary")
 ```
 
 ```{r}
