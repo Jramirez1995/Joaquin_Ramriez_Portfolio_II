@@ -184,11 +184,11 @@ summary(model_pop_life)
  - There is no statistically significant relation between population and life_expectancy in African countries for the year 2000 pvalue (0.6159). The r-squared (0.005176), is significantly low and does not provide us meaningful information.
  
 
-In conclusio, infant mortality showed a significant negative correlation with life expectancy, population size does not appear to have a significant relationship with life expectancy in African countries based on the data from the year 2000.
+In conclusion, infant mortality showed a significant negative correlation with life expectancy, population size does not appear to have a significant relationship with life expectancy in African countries based on the data from the year 2000.
 
-This Section contributed by SRI LAKSHMI SUDHA GANNI
+## [This Section contributed by SRI LAKSHMI SUDHA GANNI]{style="color:blue;"}
 
-We are going to examine data from an experiment to see if a high fat diet increases weight.
+For this section, I will be using the mice_weights database from dslabs.
 
 ***1.Loading Required Libraries:***
 ```{r setup, include=FALSE}
