@@ -186,6 +186,7 @@ summary(model_pop_life)
 
 In conclusion, infant mortality showed a significant negative correlation with life expectancy, population size does not appear to have a significant relationship with life expectancy in African countries based on the data from the year 2000.
 
+
 ## [This Section contributed by SRI LAKSHMI SUDHA GANNI]{style="color:blue;"}
 
 For this section, I will be using the mice_weights database from dslabs.
