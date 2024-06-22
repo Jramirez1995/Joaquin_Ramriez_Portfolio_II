@@ -260,6 +260,7 @@ fit <- lm(body_weight ~ diet*sex, data = cleaned_data)
 summary(fit)
 ```
 
+
 we can observe that
 
 1.Intercept (27.8286) is the estimated average body weight for the baseline group (presumably the control diet and female sex, depending on how the factors are coded) when all other predictors are held at zero.
