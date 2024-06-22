@@ -171,7 +171,7 @@ In conclusion, infant mortality showed a significant negative correlation with l
 
 
 
-## <span style="color: blue;">This Section contributed by SRI LAKSHMI SUDHA GANNI</span>
+## This Section contributed by SRI LAKSHMI SUDHA GANNI
 
 
 For this section, I will be using the mice_weights database from dslabs.
@@ -272,7 +272,7 @@ we can observe that
 
 4.males on dietF have an additional 2.7263 units of body weight change compared to what would be predicted by dietF and sexM alone.
 
-<<<<<<< HEAD
+
 5.All predictors have very small p-values (Pr(\>\|t\|)), well below 0.05, suggesting that their effects are statistically significant. Approximately 40.85% of the variance in body weight is explained by the model.
 
 5.All predictors have very small p-values (Pr(>|t|)), well below 0.05, suggesting that their effects are statistically significant. Approximately 40.85% of the variance in body weight is explained by the model. 
