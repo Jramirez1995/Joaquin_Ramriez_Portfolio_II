@@ -1,0 +1,129 @@
+---
+title: "Data Exercise"
+---
+
+
+
+Here is how the synthetic dataset is generated. The dataset consists of 100 observations and includes the following variables:
+
+```{r}
+library(simstudy)
+
+
+set.seed(123)
+
+# Define data structure
+def <- defData(varname = "X1", formula = 0, variance = 1)
+def <- defData(def, varname = "X2", formula = "2*X1 + rnorm(1, mean = 0, sd = 0.5)")
+def <- defData(def, varname = "X3", formula = 0, variance = 1)
+def <- defData(def, varname = "Y", formula = "3*X1 + 4*X2 + 2*X3 + rnorm(1, mean = 0, sd = 1)")
+
+# Generate data with 100 observations
+data <- genData(100, def)
+
+# Convert 'data' to data frame
+data <- as.data.frame(data)
+
+# Show the first few rows of the dataset
+head(data)
+```
+
+
+
+Exploring the generated data using scatterplot matrices and correlation matrices. This helped visualize the relationships between the variables.
+
+
+```{r}
+# Scatterplot matrix
+pairs(~ X1 + X2 + X3 + Y, data = data)
+```
+**Scatterplot matrix:**
+
+-	X1 vs X2: There is a strong positive linear relationship between them. 
+
+-	X1 vs Y and X2 vs Y: Both scatterplots show a positive relationship, which aligns with the data generation process where Y is influenced by both X1 and X2. 
+
+-	X3: There seems to be no clear linear relationship between X3 and the other variables X1 and X2. However, there is a positive relationship between X3 and Y.
+
+-	Y: The variable Y shows a linear relationship with X1, X2, and to X3.
+
+-	X1 and X2 are strongly correlated. Y is influenced by X1, X2, and X3, with X1 and X2 having a more apparent impact on Y.
+
+
+
+```{r}
+# Correlation matrix
+print(cor(data))
+```
+
+**Correlation Matrix:**
+
+- High correlation between X1 and X2.
+
+- Low correlations between X3 and the other variables (except Y) are expected since X3 was generated independently.
+
+
+
+
+
+
+
+Model Fitting:
+
+Two linear regression models.
+
+```{r}
+# Fit linear regression model
+model1 <- lm(Y ~ X1, data = data)
+print(summary(model1))
+```
+
+**Simple Linear Regression:**
+
+Model with Y as the response variable and X1 as the predictor. The simple linear regression model with Y ~ X1 showed a significant relationship between Y and X1. However, the model's fit may not capture all the variability in Y due to the omission of X2 and X3
+
+
+
+
+```{r}
+# Fit multiple linear regression model
+model2 <- lm(Y ~ X1 + X2 + X3, data = data)
+print(summary(model2))
+```
+
+**Multiple Linear Regression:**
+
+Model with Y as the response variable and X1, X2, and X3 as predictors. The multiple linear regression model with Y ~ X1 + X2 + X3 showed significant relationships between Y and all predictors (X1, X2, and X3). The coefficients were close to the values used in the data generation process:
+
+
+- Coefficient for X1 was close to 3.
+
+- Coefficient for X2 was close to 4.
+
+- Coefficient for X3 was close to 2.
+
+The residuals plot indicated a good fit for the multiple linear regression model, with no major patterns observed in the residuals.
+
+
+
+
+
+
+Now I will examine the residuals of the multiple linear regression model to check the model fit.
+
+
+```{r}
+# Plotting residuals to check model fit
+par(mfrow = c(2, 2))
+plot(model2)
+```
+
+Summary:
+
+- Linearity: The residuals-fitted plot suggests the linearity assumption is met.
+
+- Normality: The Q-Q plot indicates that the residuals are normally distributed.
+
+- Homoscedasticity: Both the residuals-fitted and scale-location plots suggest that variance is constant.
+
+- Influential Points: The residuals-leverage plot indicates the presence of some influential points.

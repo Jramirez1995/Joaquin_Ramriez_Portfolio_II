@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: "R Coding Exercise"
 ---
@@ -157,8 +156,6 @@ summary(model_pop_life)
 
 ```
 
-
-
 -   We observe a negative correlation between life expectancy and infant mortality, higher infant mortality rates are associated with lower life expectancies.
 
 -   The life expectancy and population size, show no clear correlation.
@@ -169,23 +166,18 @@ summary(model_pop_life)
 
 In conclusion, infant mortality showed a significant negative correlation with life expectancy, population size does not appear to have a significant relationship with life expectancy in African countries based on the data from the year 2000.
 
-
-
-
 ## [This Section contributed by SRI LAKSHMI SUDHA GANNI]{style="color:blue;"}
 
-For this section, I will be using the mice_weights database from dslabs.
+For this section, I will be using he mice_weight database from dslabs.
+
+We are going to examine data from an experiment to see if a high fat diet increases weight.
 
 ***1.Loading Required Libraries:***
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-```
-
 ```{r}
 library('dslabs')
-library('dplyr')
-library(ggplot2)
+#library('dplyr')
+library('ggplot2')
 help(mice_weights)
 ```
 
@@ -261,7 +253,6 @@ fit <- lm(body_weight ~ diet*sex, data = cleaned_data)
 summary(fit)
 ```
 
-
 we can observe that
 
 1.Intercept (27.8286) is the estimated average body weight for the baseline group (presumably the control diet and female sex, depending on how the factors are coded) when all other predictors are held at zero.
@@ -273,276 +264,3 @@ we can observe that
 4.males on dietF have an additional 2.7263 units of body weight change compared to what would be predicted by dietF and sexM alone.
 
 5.All predictors have very small p-values (Pr(\>\|t\|)), well below 0.05, suggesting that their effects are statistically significant. Approximately 40.85% of the variance in body weight is explained by the model.
-=======
----
-title: "R Coding Exercise"
----
-
-```{r}
-## Installing the dslabs Package from a Local File
-
-# Download the appropriate Zip file for the 'dslabs' package.
-# The exact file you need depends on your version of R.
-# In this example, the file 'dslabs_0.8.0.zip' is used, suitable for the 'r-release' version of R.
-# 'repos = NULL' tells R that the package is being installed from a local file rather than a repository.
-# 'type = "win.binary"' specifies that the package is a Windows binary file.
-
-# install.packages("C:/Users/Joaquin/School/DA - 6833 (Summer 2024)/Joaquin_Ramriez_Portfolio_II/coding-exercise/dslabs_0.8.0.zip", 
-#                 repos = NULL, 
-#                 type = "win.binary")
-```
-
-```{r}
-library(tidyverse)  # Loads tidyverse packages, including dplyr.
-library(dslabs)     # Loads the dslabs.
-
-```
-
-```{r}
-# This function helps access the documentation for the gapminder dataset and provides detailed information about the dataset structure, variables, and source.
-help(gapminder)
-
-# The summary() function provides statistical summary of the dataset.Which includes minimum, first quartile, median, mean, third quartile, and maximum values for each variable.
-summary(gapminder)
-
-# The class() function is used to determine the type of object that gapminder is.
-class(gapminder)
-
-```
-
-## Processing Data
-
-```{r}
-data("gapminder")  # Load the gapminder dataset from the dslabs package.
-
-africadata <- gapminder %>%  # Filter the dataset to include only African countries.
-  filter(continent == "Africa")  # The filter() function is used to specifically focus on the African Country.
-
-
-str(africadata)  # Check the structure of the 'africadata'.
-
-
-summary(africadata)  # Get summary statistics for the 'africadata'.
-```
-
-```{r}
-
-africa_infant_life <- africadata %>%  # Created a new object with only infant_mortality and life_expectancy variables.
-  select(infant_mortality, life_expectancy)  # Select only the 'infant_mortality' and 'life_expectancy' columns.
-
-str(africa_infant_life)  # Check the structure of the new 'africa_infant_life'.
-
-summary(africa_infant_life)  # Get summary statistics for the 'africa_infant_life'.
-```
-
-```{r}
-
-africa_population_life <- africadata %>%  # Created another new object with only population and life_expectancy variables.
-  select(population, life_expectancy)  # Select only the 'population' and 'life_expectancy' columns.
-
-str(africa_population_life)  # Check the structure of the 'africa_population_life'.
-
-summary(africa_population_life)  # Get summary statistics for the 'africa_population_life'.
-```
-
-## Analyzing Relationships in African Countries' Data (Plotting)
-
-```{r}
-
-# Plotting life expectancy against infant mortality.
-plot(africa_infant_life$infant_mortality, africa_infant_life$life_expectancy,
-     xlab = "Infant Mortality", ylab = "Life Expectancy",
-     main = "Life Expectancy vs Infant Mortality in African Countries",
-     pch = 16, col = "blue")
-
-
-# Plotting life expectancy against population size (log scale x-axis).
-plot(africa_population_life$population, africa_population_life$life_expectancy,
-     xlab = "Population Size", ylab = "Life Expectancy",
-     main = "Life Expectancy vs Population Size in African Countries",
-     pch = 16, col ="red",
-     log = "x")  # Setting x-axis to log scale.
-
-
-
-```
-
-The streaks observed in the population vs life expectancy. - The dataset 'africadata' includes observations from different regions represented by multiple data points. - Countries with larger populations tend to have better resources.
-
-The negative correlation between infant mortality and life expectancy is higher. - Infant mortality rates tend to be associated with lower life expectancy. - Countries with higher infant mortality rates often face challenges in healthcare, sanitation, and nutrition.
-
-Both visualizations highlight important demographic and health trends in Africans. Presenting both challenges and potential areas for improvement.
-
-### Year 2000 from African Countries Data (More Data Processing)
-
-```{r}
-# Check for missing values (NA) in the 'infant_mortality' variable in africadata.
-missing_infant_mortality <- table(is.na(africadata$infant_mortality))
-missing_infant_mortality
-```
-
-**Filtering Data for the Year 2000**
-
-```{r}
-# Identify years with missing data for infant mortality.
-years_with_missing <- unique(africadata$year[is.na(africadata$infant_mortality)])
-years_with_missing
-
-# Selecting year 2000
-year_selected <- 2000
-
-# Filter dataset to include only data for the year 2000.
-africadata_2000 <- africadata %>% 
-  filter(year == year_selected)
-
-# Display the structure of the new object to verify it contains 51 observations and 9 variables.
-str(africadata_2000)
-
-# Get a statistical summary of the new object.
-summary(africadata_2000)
-```
-
-## Plotting Life Expectancy against Infant Mortality - Year 2000 (More Plotting)
-
-```{r}
-
-# Plotting life expectancy against infant mortality for year 2000.
-plot(africadata_2000$infant_mortality, africadata_2000$life_expectancy,
-     xlab = "Infant Mortality", ylab = "Life Expectancy",
-     main = "Life Expectancy vs Infant Mortality in African Countries (Year 2000)",
-     pch = 16, col = "blue")
-
-
-
-# Plotting life expectancy against population size (log scale x-axis) for year 2000.
-plot(africadata_2000$population, africadata_2000$life_expectancy,
-     xlab = "Population Size", ylab = "Life Expectancy",
-     main = "Life Expectancy vs Population Size in African Countries (Year 2000)",
-     pch = 16, col = "red",
-     log = "x")  # Setting x-axis to log scale.
-
-# Applying linear regression model to explore relationships.
-model_infant_life <- lm(life_expectancy ~ infant_mortality, data = africadata_2000)
-model_pop_life <- lm(life_expectancy ~ population, data = africadata_2000)
-
-# Summarize the linear regression models.
-summary(model_infant_life)
-summary(model_pop_life)
-
-
-```
-
--    We observe a negative correlation between life expectancy and infant mortality, higher infant mortality rates are associated with lower life expectancy.
-
-```{=html}
-<!-- -->
-```
--   The life expectancy and population size, show no clear correlation.
-
--   There is a statistically significant negative relation between infant_mortality and life_expectancy in African countries for the year 2000 pvalue (2.826-08). The r-squared 0.4701, tells us that infant mortality is a strong predictor of life expectancy.
-
--   There is no statistically significant relation between population and life_expectancy in African countries for the year 2000 pvalue (0.6159). The r-squared (0.005176), is significantly low and does not provide us meaningful information.
-
-In conclusion, infant mortality showed a significant negative correlation with life expectancy, population size does not appear to have a significant relationship with life expectancy in African countries based on the data from the year 2000.
-
-## [This Section contributed by SRI LAKSHMI SUDHA GANNI]{style="color: blue;"}
-
-For this section, I will be using the mice_weights database from dslabs.
-
-***1.Loading Required Libraries:***
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-```
-
-```{r}
-library('dslabs')
-library('dplyr')
-library(ggplot2)
-help(mice_weights)
-```
-
-***2.Get an overview of the dataset:***
-
-```{r}
-str(mice_weights) # List of varaibles in the dataset
-```
-
-***3.get summary of the dataset:***
-
-```{r}
-summary(mice_weights) # Summary of the mice weights dataset
-```
-
-***4.determine the type of object that mice_weights is:***
-
-```{r}
-class(mice_weights) # Datatype of mice weights dataframe
-```
-
-**Data Processing**: 1.Check for missing values:
-
-```{r}
-sum(is.na(mice_weights)) # Number of NA values in the dataset
-dim(mice_weights) # Number of rows and columns in the dataset
-```
-
-2.removing the null values:
-
-```{r}
-cleaned_data <- na.omit(mice_weights) # Remove rows with NA values
-dim(cleaned_data) # Number of rows and columns in the cleaned dataset
-```
-
-[**Modeling of body weight by type of diet**]{style="font-size:24px;"}
-
-Boxplot of weight by diet:
-
-```{r}
-boxplot(cleaned_data$body_weight ~ cleaned_data$diet, xlab = "Diet", ylab = "Weight", main = "Weight by Diet") # Boxplot of weight by diet
-```
-
-The boxplot shows that the high fat diet mice are, on average, heavier than the mice on the control diet.
-
-Comparing group means:
-
-```{r}
-t.test(cleaned_data$body_weight ~ cleaned_data$diet) # t-test comparing weight by diet
-```
-
-The t-test results show that the difference in weight between the high fat diet and control diet groups is statistically significant (p-value \< 0.05).
-
-Hypothesis Testing:
-
-```{r}
-model <- lm(body_weight ~ diet, data = cleaned_data)
-summary(model)
-```
-
-The linear regression model shows that the high fat diet group has a statistically significant higher weight compared to the control diet group (p-value \< 0.05). An intecept of 31.57 and slope of 5.1075 are observed indicating a positive correlation between high fat diet and weight.
-
-[**Modeling of body weight by type of diet and sex**]{style="font-size:24px;"}
-
-```{r}
-cleaned_data |> ggplot(aes(diet, (body_weight), fill = sex)) + geom_boxplot() # Boxplot of weight by diet and sex
-```
-
-The boxplot shows the distribution of weight by diet. The high fat diet group has a higher average weight compared to the control diet group, and the difference is more pronounced in males.
-
-```{r}
-fit <- lm(body_weight ~ diet*sex, data = cleaned_data)
-summary(fit)
-```
-
-we can observe that
-
-1.Intercept (27.8286) is the estimated average body weight for the baseline group (presumably the control diet and female sex, depending on how the factors are coded) when all other predictors are held at zero.
-
-2.The coefficient for dietHF (3.0000) represents the estimated difference in average body weight between the high-fat diet group and the control diet
-
-3.sexM (7.5315): This is the additional weight estimated for males over females, assuming all else is constant.
-
-4.males on dietF have an additional 2.7263 units of body weight change compared to what would be predicted by dietF and sexM alone.
-
-5.All predictors have very small p-values (Pr(\>\|t\|)), well below 0.05, suggesting that their effects are statistically significant. Approximately 40.85% of the variance in body weight is explained by the model.
->>>>>>> cbb8c19c92d07c9a56f39b41c355d4fb39f654b7

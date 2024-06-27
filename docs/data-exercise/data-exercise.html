@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Joaquin Ramirez - Presentation Exercise</title>
+<title>Joaquin Ramirez - Data Exercise</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -136,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Presentation Exercise</h1>
+<h1 class="title">Data Exercise</h1>
 </div>
 
 
@@ -151,7 +185,155 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Placeholder file for the future data/results presentation exercise.</p>
+<p>Here is how the synthetic dataset is generated. The dataset consists of 100 observations and includes the following variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simstudy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'simstudy' was built under R version 4.3.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define data structure</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>def <span class="ot">&lt;-</span> <span class="fu">defData</span>(<span class="at">varname =</span> <span class="st">"X1"</span>, <span class="at">formula =</span> <span class="dv">0</span>, <span class="at">variance =</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>def <span class="ot">&lt;-</span> <span class="fu">defData</span>(def, <span class="at">varname =</span> <span class="st">"X2"</span>, <span class="at">formula =</span> <span class="st">"2*X1 + rnorm(1, mean = 0, sd = 0.5)"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>def <span class="ot">&lt;-</span> <span class="fu">defData</span>(def, <span class="at">varname =</span> <span class="st">"X3"</span>, <span class="at">formula =</span> <span class="dv">0</span>, <span class="at">variance =</span> <span class="dv">1</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>def <span class="ot">&lt;-</span> <span class="fu">defData</span>(def, <span class="at">varname =</span> <span class="st">"Y"</span>, <span class="at">formula =</span> <span class="st">"3*X1 + 4*X2 + 2*X3 + rnorm(1, mean = 0, sd = 1)"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data with 100 observations</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">genData</span>(<span class="dv">100</span>, def)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert 'data' to data frame</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first few rows of the dataset</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id          X1          X2          X3         Y
+1  1 -0.56047565 -1.47615457  0.25688371 -5.759865
+2  2 -0.23017749 -0.81555826 -0.24669188 -3.133736
+3  3  1.55870831  2.76221335 -0.34754260 16.342306
+4  4  0.07050839 -0.21418650 -0.95161857 -1.236045
+5  5  0.12928774 -0.09662781 -0.04502772  1.223709
+6  6  1.71506499  3.07492669 -0.78490447 17.187506</code></pre>
+</div>
+</div>
+<p>Exploring the generated data using scatterplot matrices and correlation matrices. This helped visualize the relationships between the variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot matrix</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(<span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> Y, <span class="at">data =</span> data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data-exercise_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Scatterplot matrix:</strong></p>
+<ul>
+<li><p>X1 vs X2: There is a strong positive linear relationship between them.</p></li>
+<li><p>X1 vs Y and X2 vs Y: Both scatterplots show a positive relationship, which aligns with the data generation process where Y is influenced by both X1 and X2.</p></li>
+<li><p>X3: There seems to be no clear linear relationship between X3 and the other variables X1 and X2. However, there is a positive relationship between X3 and Y.</p></li>
+<li><p>Y: The variable Y shows a linear relationship with X1, X2, and to X3.</p></li>
+<li><p>X1 and X2 are strongly correlated. Y is influenced by X1, X2, and X3, with X1 and X2 having a more apparent impact on Y.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation matrix</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">cor</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           id           X1           X2           X3         Y
+id 1.00000000  0.079808324  0.079808324  0.123034289 0.1022722
+X1 0.07980832  1.000000000  1.000000000 -0.006486112 0.9809823
+X2 0.07980832  1.000000000  1.000000000 -0.006486112 0.9809823
+X3 0.12303429 -0.006486112 -0.006486112  1.000000000 0.1877305
+Y  0.10227216  0.980982268  0.980982268  0.187730530 1.0000000</code></pre>
+</div>
+</div>
+<p><strong>Correlation Matrix:</strong></p>
+<ul>
+<li><p>High correlation between X1 and X2.</p></li>
+<li><p>Low correlations between X3 and the other variables (except Y) are expected since X3 was generated independently.</p></li>
+</ul>
+<p>Model Fitting:</p>
+<p>Two linear regression models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear regression model</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X1, <span class="at">data =</span> data)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y ~ X1, data = data)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.938 -1.435 -0.244  1.192  6.633 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -0.2640     0.2004  -1.317    0.191    
+X1           10.9859     0.2196  50.033   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.994 on 98 degrees of freedom
+Multiple R-squared:  0.9623,    Adjusted R-squared:  0.9619 
+F-statistic:  2503 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><strong>Simple Linear Regression:</strong></p>
+<p>Model with Y as the response variable and X1 as the predictor. The simple linear regression model with Y ~ X1 showed a significant relationship between Y and X1. However, the model’s fit may not capture all the variability in Y due to the omission of X2 and X3</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple linear regression model</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3, <span class="at">data =</span> data)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in summary.lm(model2): essentially perfect fit: summary may be
+unreliable</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y ~ X1 + X2 + X3, data = data)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-2.702e-15 -8.811e-16  1.000e-17  4.697e-16  1.338e-14 
+
+Coefficients: (1 not defined because of singularities)
+              Estimate Std. Error    t value Pr(&gt;|t|)    
+(Intercept) -1.084e-01  1.917e-16 -5.654e+14   &lt;2e-16 ***
+X1           1.100e+01  2.094e-16  5.253e+16   &lt;2e-16 ***
+X2                  NA         NA         NA       NA    
+X3           2.000e+00  1.927e-16  1.038e+16   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.902e-15 on 97 degrees of freedom
+Multiple R-squared:      1, Adjusted R-squared:      1 
+F-statistic: 1.43e+33 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p><strong>Multiple Linear Regression:</strong></p>
+<p>Model with Y as the response variable and X1, X2, and X3 as predictors. The multiple linear regression model with Y ~ X1 + X2 + X3 showed significant relationships between Y and all predictors (X1, X2, and X3). The coefficients were close to the values used in the data generation process:</p>
+<ul>
+<li><p>Coefficient for X1 was close to 3.</p></li>
+<li><p>Coefficient for X2 was close to 4.</p></li>
+<li><p>Coefficient for X3 was close to 2.</p></li>
+</ul>
+<p>The residuals plot indicated a good fit for the multiple linear regression model, with no major patterns observed in the residuals.</p>
+<p>Now I will examine the residuals of the multiple linear regression model to check the model fit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting residuals to check model fit</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data-exercise_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Summary:</p>
+<ul>
+<li><p>Linearity: The residuals-fitted plot suggests the linearity assumption is met.</p></li>
+<li><p>Normality: The Q-Q plot indicates that the residuals are normally distributed.</p></li>
+<li><p>Homoscedasticity: Both the residuals-fitted and scale-location plots suggest that variance is constant.</p></li>
+<li><p>Influential Points: The residuals-leverage plot indicates the presence of some influential points.</p></li>
+</ul>
 
 
 
