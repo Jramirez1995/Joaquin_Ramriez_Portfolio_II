@@ -1,0 +1,359 @@
+---
+title: "CDC Data Exercise"
+---
+
+## Dataset Overview
+
+The dataset **"Potentially Excess Deaths from the Five Leading Causes of Death"** offers a detailed look at how many deaths in different areas of the U.S. Essentially, it highlights how many deaths occurred and what expected. In addition we are also provided with this following information:
+
+Underlying cause of death is based on the International Classification of Diseases, and are as follows:
+
+-   Heart disease (I00-I09, I11, I13, and I20--I51)
+
+-   Cancer (C00--C97)
+
+-   Unintentional injury (V01--X59 and Y85--Y86)
+
+-   Chronic lower respiratory disease (J40--J47)
+
+-   Stroke (I60--I69)
+
+-   Locality (nonmetropolitan vs. metropolitan).
+
+-   [CDC's Potentially Excess Deaths webpage](https://data.cdc.gov/NCHS/NCHS-Potentially-Excess-Deaths-from-the-Five-Leadi/vdpk-qzpr/about_data)
+
+-   The dataset has 206k rows.
+
+-   13 columns:
+
+    -   Year: The year of the data record - 2005 through 2015.
+    -   Cause of Death: Primary cause of death based on ICD-10 codes.
+    -   State: U.S. state where deaths occurred.
+    -   Locality: Classification as nonmetropolitan or metropolitan.
+    -   Observed Deaths: Actual number of deaths.
+    -   Expected Deaths: Number of deaths expected based on benchmark rates.
+    -   Potentially Excess Deaths: Deaths exceeding expected numbers.
+    -   Percent Potentially Excess Deaths: Percentage of deaths exceeding expectations.
+
+## Loading and Cleaning the Data
+
+We first begin by loading and cleaning the dataset.
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+library(readr)
+library(RColorBrewer)
+library(dplyr)
+library(ggplot2)
+
+# Set the working directory to the project directory
+setwd('C:/Users/Joaquin/School/DA - 6833 (Summer 2024)/Joaquin_Ramriez_Portfolio_II/cdcdata-exercise')
+
+# Define the file path and load the data
+data <- read_csv("NCHS_-_Five_Leading_Causes_of_Death.csv")
+
+# Tell us the name of the columns 
+colnames(data)
+
+#output two newline characters
+cat("\n\n")
+
+# Display the structure of the dataset
+str(data)
+
+cat("\n\n")
+
+# Check for missing values
+colSums(is.na(data))
+
+cat("\n\n")
+
+
+# Remove rows with NA values
+data_cleaned <- data %>%
+  drop_na()
+
+# Display the structure of the cleaned dataset
+str(data_cleaned)
+```
+
+## Visualizations and Exploratory Data Analysis
+
+**1) Summary statistics for variables.**
+
+```{r}
+# Summary statistics for data 
+summary(data)
+
+cat("\n\n")
+
+# Summary statistics for cleaned data
+summary(data_cleaned)
+
+```
+
+**2) Visualization of trends over time for causes of death.**
+
+```{r}
+# Define a color palette
+colors <- c("Heart Disease" = "red", 
+            "Cancer" = "blue", 
+            "Chronic Lower Respiratory Disease" = "darkgreen", 
+            "Stroke" = "orange", 
+            "Unintentional Injury" = "grey")
+
+# Aggregate data by Year and Cause of Death, excluding "United States"
+annual_totals <- data_cleaned %>%
+  filter(State != "United States") %>%
+  group_by(Year, `Cause of Death`) %>%
+  summarize(Total_Observed_Deaths = sum(`Observed Deaths`, na.rm = TRUE), .groups = 'drop')
+
+# Create the time series line plot with thicker lines and formatted year labels
+ggplot(annual_totals, aes(x = Year, y = Total_Observed_Deaths, color = `Cause of Death`, group = `Cause of Death`)) +
+  geom_line(linewidth = 1.2) +  # Use 'linewidth' for line thickness
+  geom_point(size = 2) +  # Optionally, adjust point size
+  scale_x_continuous(breaks = seq(min(annual_totals$Year), max(annual_totals$Year), by = 1),  # Ensure years are whole numbers
+                     labels = scales::label_number(big.mark = "")) +  # Format year labels as whole numbers
+  scale_color_manual(values = colors) +  # Apply custom colors
+  labs(title = "Deaths Over Time by Cause of Death",
+       x = "Year",
+       y = "Total Observed Deaths") +  #  y-axis label
+  theme_minimal() +
+  theme(legend.position = "bottom",  # Adjust legend position if necessary
+        legend.title = element_blank(),  # Remove legend title
+        legend.key.width = unit(0.5, "cm"),  # Adjust legend key width
+        legend.key.height = unit(0.5, "cm"),  # Adjust legend key height
+        legend.text = element_text(size = 10))  # Adjust legend text size
+
+ 
+```
+
+**Causes of Death:**
+
+-   Cancer: This is the leading cause of death according to the graph, and the number of deaths has been slowly increasing over time. There appears to be a slight acceleration in the rate of increase in recent years.
+
+-   Heart Disease: Heart disease is the second leading cause of death. The number of deaths due to heart disease has fluctuated somewhat over the years, but there is a general downward trend from 2008 to 2013. Since then, there has been a slight uptick.
+
+-   Unintentional Injuries: Unintentional injuries are the third leading cause of death according to the graph. The number deaths due to unintentional injuries has been increasing steadily over time.
+
+-   Chronic Lower Respiratory Disease and Stroke: Chronic lower respiratory disease and stroke have the two lowest numbers of deaths depicted in the graph. The number of deaths due to these causes appears to be relatively stable.
+
+**3) Visualization: Causes of Death over time (Percentages).**
+
+```{r}
+# Aggregate total observed deaths by Year and Cause of Death, excluding "United States"
+annual_totals <- data_cleaned %>%
+  filter(State != "United States") %>%
+  group_by(Year, `Cause of Death`) %>%
+  summarize(Total_Observed_Deaths = sum(`Observed Deaths`, na.rm = TRUE), .groups = 'drop')
+
+# Calculate total deaths by Year
+total_deaths_by_year <- annual_totals %>%
+  group_by(Year) %>%
+  summarize(Total_Deaths = sum(Total_Observed_Deaths, na.rm = TRUE))
+
+# Merge the total deaths with the annual totals to calculate percentages
+annual_totals_with_percentages <- annual_totals %>%
+  left_join(total_deaths_by_year, by = "Year") %>%
+  mutate(Percentage_of_Deaths = (Total_Observed_Deaths / Total_Deaths) * 100)
+
+# Reorder the Cause of Death factor levels based on total percentage
+annual_totals_with_percentages <- annual_totals_with_percentages %>%
+  mutate(`Cause of Death` = reorder(`Cause of Death`, Percentage_of_Deaths, FUN = sum))
+
+# Create a bar plot with percentages and labels, with reordered bars
+ggplot(annual_totals_with_percentages, aes(x = Year, y = Percentage_of_Deaths, fill = `Cause of Death`)) +
+  geom_bar(stat = "identity", position = "stack") +  # Stacked bar plot
+  geom_text(aes(label = sprintf("%.1f%%", Percentage_of_Deaths), y = Percentage_of_Deaths), 
+            position = position_stack(vjust = 0.5), size = 3.5, color = "white") +  # Add percentage labels inside bars
+  labs(title = "Percentage of Observed Deaths by Cause of Death Over Time",  # Update title
+       x = "Year",
+       y = "Percentage of Total Deaths") +
+  scale_x_continuous(breaks = seq(min(annual_totals_with_percentages$Year), max(annual_totals_with_percentages$Year), by = 1), 
+                     labels = scales::label_number(big.mark = "")) +  # Format year labels
+  scale_fill_manual(values = colors) +  # Apply custom colors
+  theme_minimal() +
+  theme(legend.position = "bottom",  # Adjust legend position if necessary
+        legend.title = element_blank(),  # Remove legend title
+        legend.key.width = unit(0.5, "cm"),  # Adjust legend key width
+        legend.key.height = unit(0.5, "cm"),  # Adjust legend key height
+        legend.text = element_text(size = 10))  # Adjust legend text size
+
+```
+
+**Percentage of Deaths Over Time:**
+
+-   Cancer is the leading cause of death in the United States, representing around 40% of total deaths from the top 5 causes.
+
+-   Heart Disease is the second leading cause of death (after cancer). The graph shows a slight decrease in the percentage of deaths due to heart disease over time.
+
+-   Unintentional Injuries the graph shows a slight increase in the percentage of deaths due to unintentional injuries, meaning more deaths have occurred from unintentional causes over time.
+
+-   Chronic Lower Respiratory Disease the graph suggests a slight increase in deaths due to chronic lower respiratory disease.
+
+-   Stroke appears to have the lowest percentage of deaths among the top causes depicted in the graph. The percentage has remained relatively stable over time, with a possible slight decrease.
+
+Overall, the graph shows the percentage of deaths by cause over time. The leading causes of death are cancer and heart disease, but the percentage of deaths due to these causes is slowly decreasing. Deaths due to unintentional injuries show a slight upward trend, while chronic lower respiratory disease and stroke show a stable or slightly increasing percentage of deaths.
+
+**4) Visualization: Causes of death by state.**
+
+```{r}
+# Exclude rows where State is "United States" and Total_Observed_Deaths is below 650,000
+state_observed_deaths <- data_cleaned %>%
+  filter(State != "United States") %>%
+  group_by(State) %>%
+  summarize(Total_Observed_Deaths = sum(`Observed Deaths`, na.rm = TRUE)) %>%
+  filter(Total_Observed_Deaths >= 650000) %>%  # Filter out states with less than 650,000 observed deaths
+  arrange(desc(Total_Observed_Deaths))
+
+# Plotting the state-wise distribution of observed deaths excluding United States
+ggplot(state_observed_deaths, aes(x = reorder(State, -Total_Observed_Deaths), y = Total_Observed_Deaths)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.7) +  # Adjust bar width as needed
+  labs(title = "Total Observed Deaths by State (Excluding United States)",
+       x = "State",
+       y = "Total Observed Deaths") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 7))  # Adjust angle and size
+
+```
+
+**Here are the top ten states with the most deaths according to the graph:**
+
+1.  California
+2.  Texas
+3.  Florida 4.New York
+4.  Pennsylvania
+5.  Ohio
+6.  Illinois
+7.  Michigan
+8.  North Carolina
+9.  Georgia
+
+Intrigued by this, we will now dive deeper and explore the leading cause of death in these top 10 states. This will help provide and understanding mortality patterns across the country.
+
+```{r}
+# Specify the states of interest
+states_of_interest <- c("California", "Texas", "Florida", "New York", "Pennsylvania", 
+                        "Ohio", "Illinois", "Michigan", "North Carolina", "Georgia")
+
+# Filter data for specified states and calculate percentages by cause of death
+state_cause_percentages <- data_cleaned %>%
+  filter(State %in% states_of_interest) %>%
+  group_by(State, `Cause of Death`) %>%
+  summarize(Percentage = sum(`Observed Deaths`) / sum(data_cleaned$`Observed Deaths`) * 100, .groups = 'drop') %>%
+  arrange(State, desc(Percentage))  # Arrange by State and descending Percentage
+
+# Plotting separate bar plots for each state showing percentage distribution of causes of death
+plots_list <- lapply(states_of_interest, function(state) {
+  state_data <- state_cause_percentages %>%
+    filter(State == state) %>%
+    arrange(desc(Percentage))  # Sort within each state from highest to lowest percentage
+  
+  ggplot(state_data, aes(x = reorder(`Cause of Death`, -Percentage), y = Percentage, fill = `Cause of Death`)) +
+    geom_bar(stat = "identity", width = 0.7) +  # Bar plot
+    geom_text(aes(label = sprintf("%.1f%%", Percentage), y = Percentage), 
+              position = position_stack(vjust = 0.5), size = 3.5, color = "white") +  # Add percentage labels inside bars
+    labs(title = paste("Distribution of Causes of Death in", state),
+         x = "Cause of Death",
+         y = "Percentage") +
+    scale_fill_manual(values = colors) +  # Apply custom colors
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels if needed
+          plot.title = element_text(hjust = 0.5))  # Center title horizontally
+})
+
+# Print each plot separately
+for (i in seq_along(plots_list)) {
+  print(plots_list[[i]])
+}
+
+```
+
+1.  California
+
+-   Cancer: 2%
+-   Heart Disease: 1.4%
+-   Unintentional Injury: 0.7%
+-   Chronic Lower Respiratory Disease: 0.3%
+-   Stroke: 0.3%
+
+2.  Texas
+
+-   Cancer: 1.4%
+-   Heart Disease: 1.1%
+-   Unintentional Injury: 0.6%
+-   Chronic Lower Respiratory Disease: 0.2%
+-   Stroke:0.2%
+
+3.  Florida
+
+-   Cancer: 1.4%
+-   Heart Disease: 1.0%
+-   Unintentional Injury: 0.5%
+-   Chronic Lower Respiratory Disease:0.2%
+-   Stroke: 0.2%
+
+4.New York:
+
+-   Cancer: 1.3%
+-   Heart Disease: 0.9%
+-   Unintentional Injury: 0.3%
+-   Chronic Lower Respiratory Disease: 0.2%
+-   Stroke: 0.1%
+
+5.  Pennsylvania
+
+-   Cancer: 1.0%
+-   Heart Disease: 0.7%
+-   Unintentional Injury: 0.4%
+-   Chronic Lower Respiratory Disease: 0.1%
+-   Stroke: 0.1%
+
+6.  Ohio
+
+-   Cancer: 0.9%
+-   Heart Disease: 0.7%
+-   Unintentional Injury: 0.3%
+-   Chronic Lower Respiratory Disease: 0.2%
+-   Stroke: 0.1%
+
+7.  Illinois
+
+-   Cancer: 0.9%
+-   Heart Disease: 0.6%
+-   Unintentional Injury: 0.3%
+-   Chronic Lower Respiratory Disease: 0.1%
+-   Stroke: 0.1%
+
+8.  Michigan
+
+-   Cancer: 0.7%
+-   Heart Disease: 0.6%
+-   Unintentional Injury: 0.2%
+-   Chronic Lower Respiratory Disease: 0.1%
+-   Stroke: 0.1%
+
+9.  North Carolina
+
+-   Cancer: 0.7%
+-   Heart Disease: 0.5%
+-   Unintentional Injury: 0.3%
+-   Chronic Lower Respiratory Disease: 0.1%
+-   Stroke: 0.1%
+
+10. Georgia
+
+-   Cancer: 0.6%
+-   Heart Disease: 0.5%
+-   Unintentional Injury: 0.3%
+-   Chronic Lower Respiratory Disease: 0.1%
+-   Stroke: 0.1%
+
+## Conclusion:
+
+The analysis of data from 2005 to 2015 reveals that Cancer is the leading cause of death, steadily rising over the years. Heart Disease follows, showing a slight decrease until 2013, and then a slight increase. Unintentional Injuries are continuously rising, presenting a growing public health concern. State-wise, California, Texas, and Florida report the highest number of deaths, with Cancer and Heart Disease consistently ranking at the top across all states analyzed.
+
+Although deaths from Chronic Lower Respiratory Disease and Stroke remained stable from 2005 to 2015, any small increases in these areas should be watched closely to prevent them from becoming bigger health problems. The steady rise in deaths from Unintentional Injuries shows a need for targeted public health efforts and preventive measures to reduce these incidents. The state-by-state analysis reveals that Cancer and Heart Disease are the leading causes of death in all states, but the differences between states might be influenced by other factors. The visualizations and summary statistics highlight important trends and patterns and are valuable tools for policymakers.
+
+Future research could look into underlying factors like demographics, policies, and access to affordable healthcare behind the trends seen in Cancer, Heart Disease, and Unintentional Injuries. A deeper understanding of these factors can lead to better health policies and interventions.

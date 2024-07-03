@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Joaquin Ramirez - CDC Data Exercise</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Joaquin Ramirez</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../aboutme.html" rel="" target="">
+ <span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../starter-analysis-exercise/products/report/starter-analysis-report.html" rel="" target="">
+ <span class="dropdown-text">Starter Analysis Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../coding-exercise/coding-exercise.html" rel="" target="">
+ <span class="dropdown-text">R Coding Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../presentation-exercise/presentation-exercise.html" rel="" target="">
+ <span class="dropdown-text">Presentation Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tidytuesday-exercise/tidytuesday-exercise.html" rel="" target="">
+ <span class="dropdown-text">Tidy Tuesday Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../data-exercise/data-exercise.html" rel="" target="">
+ <span class="dropdown-text">Data Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../cdcdata-exercise/cdcdata-exercise.html" rel="" target="">
+ <span class="dropdown-text">CDC Data Exercise</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/Jramirez1995/Joaquin_Ramriez_Portfolio_II.git" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CDC Data Exercise</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="dataset-overview" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-overview">Dataset Overview</h2>
+<p>The dataset <strong>“Potentially Excess Deaths from the Five Leading Causes of Death”</strong> offers a detailed look at how many deaths in different areas of the U.S. Essentially, it highlights how many deaths occurred and what expected. In addition we are also provided with this following information:</p>
+<p>Underlying cause of death is based on the International Classification of Diseases, and are as follows:</p>
+<ul>
+<li><p>Heart disease (I00-I09, I11, I13, and I20–I51)</p></li>
+<li><p>Cancer (C00–C97)</p></li>
+<li><p>Unintentional injury (V01–X59 and Y85–Y86)</p></li>
+<li><p>Chronic lower respiratory disease (J40–J47)</p></li>
+<li><p>Stroke (I60–I69)</p></li>
+<li><p>Locality (nonmetropolitan vs.&nbsp;metropolitan).</p></li>
+<li><p><a href="https://data.cdc.gov/NCHS/NCHS-Potentially-Excess-Deaths-from-the-Five-Leadi/vdpk-qzpr/about_data">CDC’s Potentially Excess Deaths webpage</a></p></li>
+<li><p>The dataset has 206k rows.</p></li>
+<li><p>13 columns:</p>
+<ul>
+<li>Year: The year of the data record - 2005 through 2015.</li>
+<li>Cause of Death: Primary cause of death based on ICD-10 codes.</li>
+<li>State: U.S. state where deaths occurred.</li>
+<li>Locality: Classification as nonmetropolitan or metropolitan.</li>
+<li>Observed Deaths: Actual number of deaths.</li>
+<li>Expected Deaths: Number of deaths expected based on benchmark rates.</li>
+<li>Potentially Excess Deaths: Deaths exceeding expected numbers.</li>
+<li>Percent Potentially Excess Deaths: Percentage of deaths exceeding expectations.</li>
+</ul></li>
+</ul>
+</section>
+<section id="loading-and-cleaning-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-and-cleaning-the-data">Loading and Cleaning the Data</h2>
+<p>We first begin by loading and cleaning the dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.3.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the working directory to the project directory</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">'C:/Users/Joaquin/School/DA - 6833 (Summer 2024)/Joaquin_Ramriez_Portfolio_II/cdcdata-exercise'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the file path and load the data</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"NCHS_-_Five_Leading_Causes_of_Death.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 205920 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): Cause of Death, State, State FIPS Code, Age Range, Benchmark, Locality
+dbl (7): Year, HHS Region, Observed Deaths, Population, Expected Deaths, Pot...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell us the name of the columns </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Year"                              "Cause of Death"                   
+ [3] "State"                             "State FIPS Code"                  
+ [5] "HHS Region"                        "Age Range"                        
+ [7] "Benchmark"                         "Locality"                         
+ [9] "Observed Deaths"                   "Population"                       
+[11] "Expected Deaths"                   "Potentially Excess Deaths"        
+[13] "Percent Potentially Excess Deaths"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#output two newline characters</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the structure of the dataset</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spc_tbl_ [205,920 × 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Year                             : num [1:205920] 2005 2005 2005 2005 2005 ...
+ $ Cause of Death                   : chr [1:205920] "Cancer" "Cancer" "Cancer" "Cancer" ...
+ $ State                            : chr [1:205920] "Alabama" "Alabama" "Alabama" "Alabama" ...
+ $ State FIPS Code                  : chr [1:205920] "AL" "AL" "AL" "AL" ...
+ $ HHS Region                       : num [1:205920] 4 4 4 4 4 4 4 4 4 4 ...
+ $ Age Range                        : chr [1:205920] "0-49" "0-49" "0-49" "0-49" ...
+ $ Benchmark                        : chr [1:205920] "2005 Fixed" "2005 Fixed" "2005 Fixed" "2010 Fixed" ...
+ $ Locality                         : chr [1:205920] "All" "Metropolitan" "Nonmetropolitan" "All" ...
+ $ Observed Deaths                  : num [1:205920] 756 556 200 756 556 ...
+ $ Population                       : num [1:205920] 3148377 2379871 768506 3148377 2379871 ...
+ $ Expected Deaths                  : num [1:205920] 451 341 111 421 318 103 451 341 111 784 ...
+ $ Potentially Excess Deaths        : num [1:205920] 305 217 89 335 238 97 305 217 89 562 ...
+ $ Percent Potentially Excess Deaths: num [1:205920] 40.3 39 44.5 44.3 42.8 48.5 40.3 39 44.5 41.8 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Year = col_double(),
+  ..   `Cause of Death` = col_character(),
+  ..   State = col_character(),
+  ..   `State FIPS Code` = col_character(),
+  ..   `HHS Region` = col_double(),
+  ..   `Age Range` = col_character(),
+  ..   Benchmark = col_character(),
+  ..   Locality = col_character(),
+  ..   `Observed Deaths` = col_double(),
+  ..   Population = col_double(),
+  ..   `Expected Deaths` = col_double(),
+  ..   `Potentially Excess Deaths` = col_double(),
+  ..   `Percent Potentially Excess Deaths` = col_double()
+  .. )
+ - attr(*, "problems")=&lt;externalptr&gt; </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for missing values</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             Year                    Cause of Death 
+                                0                                 0 
+                            State                   State FIPS Code 
+                                0                                 0 
+                       HHS Region                         Age Range 
+                                0                                 0 
+                        Benchmark                          Locality 
+                                0                                 0 
+                  Observed Deaths                        Population 
+                            10212                              5280 
+                  Expected Deaths         Potentially Excess Deaths 
+                            10212                             10212 
+Percent Potentially Excess Deaths 
+                            10212 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows with NA values</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_cleaned <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the structure of the cleaned dataset</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [195,708 × 13] (S3: tbl_df/tbl/data.frame)
+ $ Year                             : num [1:195708] 2005 2005 2005 2005 2005 ...
+ $ Cause of Death                   : chr [1:195708] "Cancer" "Cancer" "Cancer" "Cancer" ...
+ $ State                            : chr [1:195708] "Alabama" "Alabama" "Alabama" "Alabama" ...
+ $ State FIPS Code                  : chr [1:195708] "AL" "AL" "AL" "AL" ...
+ $ HHS Region                       : num [1:195708] 4 4 4 4 4 4 4 4 4 4 ...
+ $ Age Range                        : chr [1:195708] "0-49" "0-49" "0-49" "0-49" ...
+ $ Benchmark                        : chr [1:195708] "2005 Fixed" "2005 Fixed" "2005 Fixed" "2010 Fixed" ...
+ $ Locality                         : chr [1:195708] "All" "Metropolitan" "Nonmetropolitan" "All" ...
+ $ Observed Deaths                  : num [1:195708] 756 556 200 756 556 ...
+ $ Population                       : num [1:195708] 3148377 2379871 768506 3148377 2379871 ...
+ $ Expected Deaths                  : num [1:195708] 451 341 111 421 318 103 451 341 111 784 ...
+ $ Potentially Excess Deaths        : num [1:195708] 305 217 89 335 238 97 305 217 89 562 ...
+ $ Percent Potentially Excess Deaths: num [1:195708] 40.3 39 44.5 44.3 42.8 48.5 40.3 39 44.5 41.8 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizations-and-exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations-and-exploratory-data-analysis">Visualizations and Exploratory Data Analysis</h2>
+<p><strong>1) Summary statistics for variables.</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics for data </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Year      Cause of Death        State           State FIPS Code   
+ Min.   :2005   Length:205920      Length:205920      Length:205920     
+ 1st Qu.:2007   Class :character   Class :character   Class :character  
+ Median :2010   Mode  :character   Mode  :character   Mode  :character  
+ Mean   :2010                                                           
+ 3rd Qu.:2013                                                           
+ Max.   :2015                                                           
+                                                                        
+   HHS Region      Age Range          Benchmark           Locality        
+ Min.   : 0.000   Length:205920      Length:205920      Length:205920     
+ 1st Qu.: 3.000   Class :character   Class :character   Class :character  
+ Median : 5.000   Mode  :character   Mode  :character   Mode  :character  
+ Mean   : 5.231                                                           
+ 3rd Qu.: 8.000                                                           
+ Max.   :10.000                                                           
+                                                                          
+ Observed Deaths    Population        Expected Deaths 
+ Min.   :    10   Min.   :    55536   Min.   :     2  
+ 1st Qu.:   155   1st Qu.:   682826   1st Qu.:    92  
+ Median :   508   Median :  1610936   Median :   298  
+ Mean   :  2975   Mean   :  7008421   Mean   :  2113  
+ 3rd Qu.:  1586   3rd Qu.:  4681585   3rd Qu.:  1019  
+ Max.   :493526   Max.   :315131659   Max.   :465126  
+ NA's   :10212    NA's   :5280        NA's   :10212   
+ Potentially Excess Deaths Percent Potentially Excess Deaths
+ Min.   :     0.0          Min.   : 0.00                    
+ 1st Qu.:    41.0          1st Qu.:20.90                    
+ Median :   159.0          Median :35.80                    
+ Mean   :   875.1          Mean   :35.73                    
+ 3rd Qu.:   543.0          3rd Qu.:50.10                    
+ Max.   :175703.0          Max.   :85.30                    
+ NA's   :10212             NA's   :10212                    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics for cleaned data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Year      Cause of Death        State           State FIPS Code   
+ Min.   :2005   Length:195708      Length:195708      Length:195708     
+ 1st Qu.:2007   Class :character   Class :character   Class :character  
+ Median :2010   Mode  :character   Mode  :character   Mode  :character  
+ Mean   :2010                                                           
+ 3rd Qu.:2013                                                           
+ Max.   :2015                                                           
+   HHS Region    Age Range          Benchmark           Locality        
+ Min.   : 0.0   Length:195708      Length:195708      Length:195708     
+ 1st Qu.: 3.0   Class :character   Class :character   Class :character  
+ Median : 5.0   Mode  :character   Mode  :character   Mode  :character  
+ Mean   : 5.3                                                           
+ 3rd Qu.: 8.0                                                           
+ Max.   :10.0                                                           
+ Observed Deaths    Population        Expected Deaths 
+ Min.   :    10   Min.   :    55536   Min.   :     2  
+ 1st Qu.:   155   1st Qu.:   724049   1st Qu.:    92  
+ Median :   508   Median :  1704462   Median :   298  
+ Mean   :  2975   Mean   :  7177289   Mean   :  2113  
+ 3rd Qu.:  1586   3rd Qu.:  4783958   3rd Qu.:  1019  
+ Max.   :493526   Max.   :315131659   Max.   :465126  
+ Potentially Excess Deaths Percent Potentially Excess Deaths
+ Min.   :     0.0          Min.   : 0.00                    
+ 1st Qu.:    41.0          1st Qu.:20.90                    
+ Median :   159.0          Median :35.80                    
+ Mean   :   875.1          Mean   :35.73                    
+ 3rd Qu.:   543.0          3rd Qu.:50.10                    
+ Max.   :175703.0          Max.   :85.30                    </code></pre>
+</div>
+</div>
+<p><strong>2) Visualization of trends over time for causes of death.</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a color palette</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Heart Disease"</span> <span class="ot">=</span> <span class="st">"red"</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Cancer"</span> <span class="ot">=</span> <span class="st">"blue"</span>, </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Chronic Lower Respiratory Disease"</span> <span class="ot">=</span> <span class="st">"darkgreen"</span>, </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Stroke"</span> <span class="ot">=</span> <span class="st">"orange"</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Unintentional Injury"</span> <span class="ot">=</span> <span class="st">"grey"</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate data by Year and Cause of Death, excluding "United States"</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>annual_totals <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">!=</span> <span class="st">"United States"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year, <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Observed_Deaths =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Observed Deaths</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the time series line plot with thicker lines and formatted year labels</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_totals, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Total_Observed_Deaths, <span class="at">color =</span> <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>, <span class="at">group =</span> <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span>  <span class="co"># Use 'linewidth' for line thickness</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span>  <span class="co"># Optionally, adjust point size</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(annual_totals<span class="sc">$</span>Year), <span class="fu">max</span>(annual_totals<span class="sc">$</span>Year), <span class="at">by =</span> <span class="dv">1</span>),  <span class="co"># Ensure years are whole numbers</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">""</span>)) <span class="sc">+</span>  <span class="co"># Format year labels as whole numbers</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span>  <span class="co"># Apply custom colors</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Deaths Over Time by Cause of Death"</span>,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total Observed Deaths"</span>) <span class="sc">+</span>  <span class="co">#  y-axis label</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,  <span class="co"># Adjust legend position if necessary</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),  <span class="co"># Remove legend title</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),  <span class="co"># Adjust legend key width</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),  <span class="co"># Adjust legend key height</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))  <span class="co"># Adjust legend text size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Causes of Death:</strong></p>
+<ul>
+<li><p>Cancer: This is the leading cause of death according to the graph, and the number of deaths has been slowly increasing over time. There appears to be a slight acceleration in the rate of increase in recent years.</p></li>
+<li><p>Heart Disease: Heart disease is the second leading cause of death. The number of deaths due to heart disease has fluctuated somewhat over the years, but there is a general downward trend from 2008 to 2013. Since then, there has been a slight uptick.</p></li>
+<li><p>Unintentional Injuries: Unintentional injuries are the third leading cause of death according to the graph. The number deaths due to unintentional injuries has been increasing steadily over time.</p></li>
+<li><p>Chronic Lower Respiratory Disease and Stroke: Chronic lower respiratory disease and stroke have the two lowest numbers of deaths depicted in the graph. The number of deaths due to these causes appears to be relatively stable.</p></li>
+</ul>
+<p><strong>3) Visualization: Causes of Death over time (Percentages).</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate total observed deaths by Year and Cause of Death, excluding "United States"</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>annual_totals <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">!=</span> <span class="st">"United States"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year, <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Observed_Deaths =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Observed Deaths</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total deaths by Year</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>total_deaths_by_year <span class="ot">&lt;-</span> annual_totals <span class="sc">%&gt;%</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Deaths =</span> <span class="fu">sum</span>(Total_Observed_Deaths, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the total deaths with the annual totals to calculate percentages</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>annual_totals_with_percentages <span class="ot">&lt;-</span> annual_totals <span class="sc">%&gt;%</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(total_deaths_by_year, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage_of_Deaths =</span> (Total_Observed_Deaths <span class="sc">/</span> Total_Deaths) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder the Cause of Death factor levels based on total percentage</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>annual_totals_with_percentages <span class="ot">&lt;-</span> annual_totals_with_percentages <span class="sc">%&gt;%</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">reorder</span>(<span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>, Percentage_of_Deaths, <span class="at">FUN =</span> sum))</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a bar plot with percentages and labels, with reordered bars</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_totals_with_percentages, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Percentage_of_Deaths, <span class="at">fill =</span> <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span>  <span class="co"># Stacked bar plot</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, Percentage_of_Deaths), <span class="at">y =</span> Percentage_of_Deaths), </span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span>  <span class="co"># Add percentage labels inside bars</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Percentage of Observed Deaths by Cause of Death Over Time"</span>,  <span class="co"># Update title</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Total Deaths"</span>) <span class="sc">+</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(annual_totals_with_percentages<span class="sc">$</span>Year), <span class="fu">max</span>(annual_totals_with_percentages<span class="sc">$</span>Year), <span class="at">by =</span> <span class="dv">1</span>), </span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">""</span>)) <span class="sc">+</span>  <span class="co"># Format year labels</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span>  <span class="co"># Apply custom colors</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,  <span class="co"># Adjust legend position if necessary</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),  <span class="co"># Remove legend title</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),  <span class="co"># Adjust legend key width</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),  <span class="co"># Adjust legend key height</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))  <span class="co"># Adjust legend text size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Percentage of Deaths Over Time:</strong></p>
+<ul>
+<li><p>Cancer is the leading cause of death in the United States, representing around 40% of total deaths from the top 5 causes.</p></li>
+<li><p>Heart Disease is the second leading cause of death (after cancer). The graph shows a slight decrease in the percentage of deaths due to heart disease over time.</p></li>
+<li><p>Unintentional Injuries the graph shows a slight increase in the percentage of deaths due to unintentional injuries, meaning more deaths have occurred from unintentional causes over time.</p></li>
+<li><p>Chronic Lower Respiratory Disease the graph suggests a slight increase in deaths due to chronic lower respiratory disease.</p></li>
+<li><p>Stroke appears to have the lowest percentage of deaths among the top causes depicted in the graph. The percentage has remained relatively stable over time, with a possible slight decrease.</p></li>
+</ul>
+<p>Overall, the graph shows the percentage of deaths by cause over time. The leading causes of death are cancer and heart disease, but the percentage of deaths due to these causes is slowly decreasing. Deaths due to unintentional injuries show a slight upward trend, while chronic lower respiratory disease and stroke show a stable or slightly increasing percentage of deaths.</p>
+<p><strong>4) Visualization: Causes of death by state.</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude rows where State is "United States" and Total_Observed_Deaths is below 650,000</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>state_observed_deaths <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">!=</span> <span class="st">"United States"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Total_Observed_Deaths =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Observed Deaths</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Total_Observed_Deaths <span class="sc">&gt;=</span> <span class="dv">650000</span>) <span class="sc">%&gt;%</span>  <span class="co"># Filter out states with less than 650,000 observed deaths</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Observed_Deaths))</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the state-wise distribution of observed deaths excluding United States</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(state_observed_deaths, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(State, <span class="sc">-</span>Total_Observed_Deaths), <span class="at">y =</span> Total_Observed_Deaths)) <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span>  <span class="co"># Adjust bar width as needed</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total Observed Deaths by State (Excluding United States)"</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"State"</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total Observed Deaths"</span>) <span class="sc">+</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">7</span>))  <span class="co"># Adjust angle and size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Here are the top ten states with the most deaths according to the graph:</strong></p>
+<ol type="1">
+<li>California</li>
+<li>Texas</li>
+<li>Florida 4.New York</li>
+<li>Pennsylvania</li>
+<li>Ohio</li>
+<li>Illinois</li>
+<li>Michigan</li>
+<li>North Carolina</li>
+<li>Georgia</li>
+</ol>
+<p>Intrigued by this, we will now dive deeper and explore the leading cause of death in these top 10 states. This will help provide and understanding mortality patterns across the country.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the states of interest</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>states_of_interest <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"California"</span>, <span class="st">"Texas"</span>, <span class="st">"Florida"</span>, <span class="st">"New York"</span>, <span class="st">"Pennsylvania"</span>, </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Ohio"</span>, <span class="st">"Illinois"</span>, <span class="st">"Michigan"</span>, <span class="st">"North Carolina"</span>, <span class="st">"Georgia"</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for specified states and calculate percentages by cause of death</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>state_cause_percentages <span class="ot">&lt;-</span> data_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State <span class="sc">%in%</span> states_of_interest) <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Percentage =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Observed Deaths</span><span class="st">`</span>) <span class="sc">/</span> <span class="fu">sum</span>(data_cleaned<span class="sc">$</span><span class="st">`</span><span class="at">Observed Deaths</span><span class="st">`</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(State, <span class="fu">desc</span>(Percentage))  <span class="co"># Arrange by State and descending Percentage</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting separate bar plots for each state showing percentage distribution of causes of death</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>plots_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(states_of_interest, <span class="cf">function</span>(state) {</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  state_data <span class="ot">&lt;-</span> state_cause_percentages <span class="sc">%&gt;%</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(State <span class="sc">==</span> state) <span class="sc">%&gt;%</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(Percentage))  <span class="co"># Sort within each state from highest to lowest percentage</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(state_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(<span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>, <span class="sc">-</span>Percentage), <span class="at">y =</span> Percentage, <span class="at">fill =</span> <span class="st">`</span><span class="at">Cause of Death</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span>  <span class="co"># Bar plot</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, Percentage), <span class="at">y =</span> Percentage), </span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span>  <span class="co"># Add percentage labels inside bars</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Distribution of Causes of Death in"</span>, state),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Cause of Death"</span>,</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">"Percentage"</span>) <span class="sc">+</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span>  <span class="co"># Apply custom colors</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),  <span class="co"># Rotate x-axis labels if needed</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>          <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))  <span class="co"># Center title horizontally</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Print each plot separately</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(plots_list)) {</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(plots_list[[i]])</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-5.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-6.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-7.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-8.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-9.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-6-10.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ol type="1">
+<li>California</li>
+</ol>
+<ul>
+<li>Cancer: 2%</li>
+<li>Heart Disease: 1.4%</li>
+<li>Unintentional Injury: 0.7%</li>
+<li>Chronic Lower Respiratory Disease: 0.3%</li>
+<li>Stroke: 0.3%</li>
+</ul>
+<ol start="2" type="1">
+<li>Texas</li>
+</ol>
+<ul>
+<li>Cancer: 1.4%</li>
+<li>Heart Disease: 1.1%</li>
+<li>Unintentional Injury: 0.6%</li>
+<li>Chronic Lower Respiratory Disease: 0.2%</li>
+<li>Stroke:0.2%</li>
+</ul>
+<ol start="3" type="1">
+<li>Florida</li>
+</ol>
+<ul>
+<li>Cancer: 1.4%</li>
+<li>Heart Disease: 1.0%</li>
+<li>Unintentional Injury: 0.5%</li>
+<li>Chronic Lower Respiratory Disease:0.2%</li>
+<li>Stroke: 0.2%</li>
+</ul>
+<p>4.New York:</p>
+<ul>
+<li>Cancer: 1.3%</li>
+<li>Heart Disease: 0.9%</li>
+<li>Unintentional Injury: 0.3%</li>
+<li>Chronic Lower Respiratory Disease: 0.2%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="5" type="1">
+<li>Pennsylvania</li>
+</ol>
+<ul>
+<li>Cancer: 1.0%</li>
+<li>Heart Disease: 0.7%</li>
+<li>Unintentional Injury: 0.4%</li>
+<li>Chronic Lower Respiratory Disease: 0.1%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="6" type="1">
+<li>Ohio</li>
+</ol>
+<ul>
+<li>Cancer: 0.9%</li>
+<li>Heart Disease: 0.7%</li>
+<li>Unintentional Injury: 0.3%</li>
+<li>Chronic Lower Respiratory Disease: 0.2%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="7" type="1">
+<li>Illinois</li>
+</ol>
+<ul>
+<li>Cancer: 0.9%</li>
+<li>Heart Disease: 0.6%</li>
+<li>Unintentional Injury: 0.3%</li>
+<li>Chronic Lower Respiratory Disease: 0.1%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="8" type="1">
+<li>Michigan</li>
+</ol>
+<ul>
+<li>Cancer: 0.7%</li>
+<li>Heart Disease: 0.6%</li>
+<li>Unintentional Injury: 0.2%</li>
+<li>Chronic Lower Respiratory Disease: 0.1%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="9" type="1">
+<li>North Carolina</li>
+</ol>
+<ul>
+<li>Cancer: 0.7%</li>
+<li>Heart Disease: 0.5%</li>
+<li>Unintentional Injury: 0.3%</li>
+<li>Chronic Lower Respiratory Disease: 0.1%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+<ol start="10" type="1">
+<li>Georgia</li>
+</ol>
+<ul>
+<li>Cancer: 0.6%</li>
+<li>Heart Disease: 0.5%</li>
+<li>Unintentional Injury: 0.3%</li>
+<li>Chronic Lower Respiratory Disease: 0.1%</li>
+<li>Stroke: 0.1%</li>
+</ul>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion:</h2>
+<p>The analysis of data from 2005 to 2015 reveals that Cancer is the leading cause of death, steadily rising over the years. Heart Disease follows, showing a slight decrease until 2013, and then a slight increase. Unintentional Injuries are continuously rising, presenting a growing public health concern. State-wise, California, Texas, and Florida report the highest number of deaths, with Cancer and Heart Disease consistently ranking at the top across all states analyzed.</p>
+<p>Although deaths from Chronic Lower Respiratory Disease and Stroke remained stable from 2005 to 2015, any small increases in these areas should be watched closely to prevent them from becoming bigger health problems. The steady rise in deaths from Unintentional Injuries shows a need for targeted public health efforts and preventive measures to reduce these incidents. The state-by-state analysis reveals that Cancer and Heart Disease are the leading causes of death in all states, but the differences between states might be influenced by other factors. The visualizations and summary statistics highlight important trends and patterns and are valuable tools for policymakers.</p>
+<p>Future research could look into underlying factors like demographics, policies, and access to affordable healthcare behind the trends seen in Cancer, Heart Disease, and Unintentional Injuries. A deeper understanding of these factors can lead to better health policies and interventions.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
