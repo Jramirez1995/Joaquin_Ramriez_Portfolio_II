@@ -53,6 +53,7 @@ data <- here::here("cdcdata-exercise","NCHS_-_Five_Leading_Causes_of_Death.csv")
 # Define the file path and load the data
 data <- read_csv("NCHS_-_Five_Leading_Causes_of_Death.csv")
 
+
 # Tell us the name of the columns 
 colnames(data)
 
