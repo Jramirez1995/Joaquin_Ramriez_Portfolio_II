@@ -47,6 +47,7 @@ library(readr)
 library(RColorBrewer)
 library(dplyr)
 library(ggplot2)
+library(tibble)
 
 # Set the working directory to the project directory
 data <- here::here("cdcdata-exercise","NCHS_-_Five_Leading_Causes_of_Death.csv")
@@ -358,3 +359,47 @@ The analysis of data from 2005 to 2015 reveals that Cancer is the leading cause 
 Although deaths from Chronic Lower Respiratory Disease and Stroke remained stable from 2005 to 2015, any small increases in these areas should be watched closely to prevent them from becoming bigger health problems. The steady rise in deaths from Unintentional Injuries shows a need for targeted public health efforts and preventive measures to reduce these incidents. The state-by-state analysis reveals that Cancer and Heart Disease are the leading causes of death in all states, but the differences between states might be influenced by other factors. The visualizations and summary statistics highlight important trends and patterns and are valuable tools for policymakers.
 
 Future research could look into underlying factors like demographics, policies, and access to affordable healthcare behind the trends seen in Cancer, Heart Disease, and Unintentional Injuries. A deeper understanding of these factors can lead to better health policies and interventions.
+
+## This section was contributed by Collin Real
+## Create synthetic dataset
+,,,,,,,,
+```{r}
+# Create a synthetic dataset with the same structure as the original
+set.seed(123)
+
+# Define the number of observations
+n <- 195708
+
+# Can I not use dots to represent spaces in column names?
+state_list = as.list(unique(data_cleaned$State))
+state_fips_list = as.list(unique(data_cleaned$State.FIPS.Code))
+hhs_list = as.list(unique(data_cleaned$HHS.Region))
+age_range_list = as.list(unique(data_cleaned$Age.Range))
+benchmark_list = as.list(unique(data_cleaned$Benchmark))
+locality_list = as.list(unique(data_cleaned$Locality))
+# Generate synthetic data
+synth_df = tibble(
+  Year = sample(2005:2015, n, replace = TRUE),
+  Cause.of.Death = sample(c('Cancer', 'Chronic Lower', 'Heart Disease', 'Stroke', 'Unintentional Injury'), n, replace = TRUE),
+
+  ### The way I'm doing lists isn't working so I'm just going to manually type out everything I want to put in a list (I miss Python)
+  State = sample(c('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Delaware', 'California', 'Colorado', 'Connecticut', 'New Jersey', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Rhode Island', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'United States', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming')),
+  # State = sample(state_list, n, replace = TRUE),
+  # Same as above  
+  State.FIPS.Code = sample(state_fips_list, n, replace = TRUE),
+  HHS.Region = sample(hhs_list, n, replace = TRUE),
+  Age.Range = sample(age_range_list, n, replace = TRUE),
+  Benchmark = sample(benchmark_list, n, replace = TRUE),
+  Locality = sample(locality_list, n, replace = TRUE),
+  Observed.Deaths = round(rnorm(n, mean = 2975, sd = 5000)),
+  Population = round(rnorm(n, mean = 7177289, sd = 5000)),
+  Expected.Deaths = round(rnorm(n, mean = 2113, sd = 5000)),
+  Potentially.Excess.Deaths = round(rnorm(n, mean = 875.1, sd = 5000)),
+  Percent.Potentially.Excess.Deaths = round(rnorm(n, mean = 35.73, sd = 5000)),
+)
+
+# Summarize the synthetic data
+# str(synth_df)
+# summary(synth_df)
+synth_df
+```
