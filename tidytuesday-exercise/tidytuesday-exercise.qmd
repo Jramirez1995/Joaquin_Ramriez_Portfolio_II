@@ -1,5 +1,314 @@
 ---
 title: "Tidy Tuesday Exercise"
+author: "Joaquin Ramirez"
 ---
 
-Placeholder file for the future Tidy Tuesday exercise.
+## Introduction
+
+This report analyzes the American Idol dataset to explore gender representation among finalists and winners and to investigate any trends or patterns over different seasons. The dataset includes information on eliminations, finalists, seasons, and can be found - [**Tidy Tuesday Exercise**](https://github.com/kkakey/American_Idol)**.**
+
+**Questions:** **Who is more likely to win the next seasons, a male or a female?**
+
+## Load Libraries and Data
+
+```{r}
+# Load necessary libraries
+library(rlang)
+library(tidyverse)
+library(here)
+library(janitor)
+library(gt)
+library(tidymodels)
+library(rsample)  # For data splitting
+library(caret)    # For model training
+library(glmnet)   # For Ridge and Elastic Net
+library(nnet)     # For Neural Network
+library(earth)    # For MARS
+library(e1071)    # For SVM
+library(pROC)     # For evaluation metrics
+```
+
+```{r}
+# Define file paths and load data
+eliminations <- read_csv(here::here("tidytuesday-exercise", "eliminations.csv"))
+finalists <- read_csv(here::here("tidytuesday-exercise", "finalists.csv"))
+seasons <- read_csv(here::here("tidytuesday-exercise", "seasons.csv"))
+
+# Clean column names
+eliminations <- clean_names(eliminations)
+finalists <- clean_names(finalists)
+seasons <- clean_names(seasons)
+
+# Display the first few rows and summary of each dataset
+head(eliminations)
+head(finalists)
+head(seasons)
+
+# In case these files need to be read.
+#songs <- read_csv(here::here("data", "songs.csv"))
+#auditions <- read_csv(here::here("data", "auditions.csv"))
+#ratings <- read_csv(here::here("data", "ratings.csv"))
+```
+
+## Eliminations Analysis
+
+```{r}
+# Calculate gender ratios for eliminations by season
+eliminations_gender_ratio <- eliminations %>%
+  group_by(season) %>%
+  summarize(
+    male_eliminations = sum(gender == "Male", na.rm = TRUE),
+    female_eliminations = sum(gender == "Female", na.rm = TRUE)
+  ) %>%
+  mutate(gender_ratio = male_eliminations / (female_eliminations + 1))  # Adding 1 to avoid division by zero
+
+# Display the gender ratio
+print(eliminations_gender_ratio)
+
+# Plot the number of male and female eliminations over seasons
+ggplot(eliminations_gender_ratio, aes(x = season)) +
+  geom_line(aes(y = male_eliminations, color = "Male"), size = 1.2) +  # Make lines bolder
+  geom_line(aes(y = female_eliminations, color = "Female"), size = 1.2) +  # Make lines bolder
+  geom_point(aes(y = male_eliminations, color = "Male"), size = 3) +  # Adjust point size
+  geom_point(aes(y = female_eliminations, color = "Female"), size = 3) +  # Adjust point size
+  labs(
+    title = "Number of Male and Female Eliminations Over Seasons",
+    x = "Season",
+    y = "Number of Eliminations",
+    color = "Gender"  # Customize legend title
+  ) +
+  scale_color_manual(values = c("Male" = "blue", "Female" = "pink")) +
+  scale_x_continuous(limits = c(0, 20)) +  # Set x-axis limits
+  scale_y_continuous(limits = c(0, 25)) +  # Set y-axis limits
+  theme_minimal(base_size = 14) +  # Use minimal theme with larger base size
+  theme(
+    legend.position = "top",  # Position the legend at the top
+    legend.title = element_text(face = "bold"),  # Bold the legend title
+    legend.text = element_text(size = 12),  # Adjust legend text size
+    axis.title.x = element_text(face = "bold"),  # Bold x-axis title
+    axis.title.y = element_text(face = "bold"),  # Bold y-axis title
+    axis.text = element_text(size = 12),  # Adjust axis text size
+    panel.grid.major = element_line(size = 0.5, linetype = "solid"),  # Adjust grid line size
+    panel.grid.minor = element_line(size = 0.25, linetype = "dashed")  # Adjust grid line size
+  )
+```
+
+**Conclusion:**
+
+The elimination data indicates a generally balanced gender ratio across most seasons, with some variability. This suggests that, in terms of eliminations, there is no strong evidence that one gender is systematically favored or disadvantaged.
+
+## Winners
+
+```{r}
+# Aggregate the count of male and female winners
+winner_counts <- seasons %>%
+  group_by(winner_gender) %>%
+  summarize(count = n(), .groups = 'drop')
+
+# Print the winner counts to verify
+print(winner_counts)
+
+# Create a bar graph of the number of winners by gender
+ggplot(winner_counts, aes(x = winner_gender, y = count, fill = winner_gender)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "American Idol: Male & Female Winners",
+    x = "Gender",
+    y = "# of winner",
+    fill = "Gender"  # Change legend title to "Gender"
+  ) +
+  scale_fill_manual(values = c("Male" = "blue", "Female" = "pink")) +
+  theme_minimal(base_size = 14) +  # Use minimal theme with larger base size
+  theme(
+    legend.position = "top",  # Position the legend at the top
+    legend.title = element_text(face = "bold"),  # Bold the legend title
+    legend.text = element_text(size = 12),  # Adjust legend text size
+    axis.title.x = element_text(face = "bold"),  # Bold x-axis title
+    axis.title.y = element_text(face = "bold"),  # Bold y-axis title
+    axis.text = element_text(size = 12)  # Adjust axis text size
+  )
+```
+
+**Conclusion:**
+
+The American Idol data reveals that out of the 18 seasons analyzed, 7 winners were female and 11 winners were male. This suggests that males have historically been more likely to win the competition compared to females.
+
+## Contestants
+
+```{r}
+# Count the number of contestants by season and gender
+contestants_by_gender <- finalists %>%
+  group_by(season, contestant_gender) %>%
+  summarize(count = n(), .groups = 'drop')
+
+# Display the summarized data
+print(contestants_by_gender)
+
+# Create a scatter plot of the number of contestants by gender and season
+ggplot(contestants_by_gender, aes(x = season, y = count, color = contestant_gender, shape = contestant_gender)) +
+  geom_point(size = 3) +
+  labs(title = "American Idol Contestants: Gender",
+       x = "Season",
+       y = "Number of Contestants",
+       color = "Gender",
+       shape = "Gender") +
+  scale_color_manual(values = c("Male" = "blue", "Female" = "red")) +
+  theme_minimal()
+
+```
+
+**Observations:**
+
+-   Across the 17 seasons, there were several seasons with a balanced number of male and female contestants.
+
+-   Some seasons showed a slight imbalance, such as Season 3 with more females (8) than males (4) and Season 8 with more males (7) than females (3).
+
+## Model Fitting
+
+```{r}
+# Load necessary libraries
+library(tidymodels)
+library(dplyr)
+
+# Prepare data for modeling
+seasons_clean <- seasons %>%
+  mutate(
+    winner_gender = as.factor(winner_gender),
+    original_network = as.factor(original_network),
+    hosted_by = as.factor(hosted_by),
+    judges = as.factor(judges),
+    finals_venue = as.factor(finals_venue),
+    mentor = as.factor(mentor))
+```
+
+```{r}
+# Split data into training and testing sets
+set.seed(123)  # For reproducibility
+data_split <- initial_split(seasons_clean, prop = 0.8, strata = winner_gender)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+# Create a recipe for preprocessing
+recipe <- recipe(winner_gender ~ season + original_network + hosted_by + judges + no_of_episodes + finals_venue + mentor, data = train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>%  # Convert categorical variables to dummy variables
+  step_zv(all_predictors()) %>%  # Remove zero variance predictors
+  step_impute_median(all_predictors()) %>%  # Impute missing values
+  step_scale(all_predictors()) %>%  # Scale predictors
+  step_center(all_predictors())     # Center predictors
+```
+
+```{r}
+# Define model specifications
+log_reg_spec <- logistic_reg() %>%
+  set_engine("glm")
+
+rf_spec <- rand_forest() %>%
+  set_engine("ranger") %>%
+  set_mode("classification")
+
+svm_spec <- svm_rbf() %>%
+  set_engine("kernlab") %>%
+  set_mode("classification")
+```
+
+```{r}
+# Create workflows
+log_reg_workflow <- workflow() %>%
+  add_recipe(recipe) %>%
+  add_model(log_reg_spec)
+
+rf_workflow <- workflow() %>%
+  add_recipe(recipe) %>%
+  add_model(rf_spec)
+
+svm_workflow <- workflow() %>%
+  add_recipe(recipe) %>%
+  add_model(svm_spec)
+```
+
+```{r}
+# Fit models with cross-validation
+cv_folds <- vfold_cv(train_data, v = 5, strata = winner_gender)
+
+log_reg_fit <- log_reg_workflow %>%
+  fit_resamples(cv_folds)
+
+rf_fit <- rf_workflow %>%
+  fit_resamples(cv_folds)
+
+svm_fit <- svm_workflow %>%
+  fit_resamples(cv_folds)
+
+# Collect and print metrics
+log_reg_metrics <- log_reg_fit %>% collect_metrics()
+rf_metrics <- rf_fit %>% collect_metrics()
+svm_metrics <- svm_fit %>% collect_metrics()
+```
+
+```{r}
+print(log_reg_metrics)
+```
+
+```{r}
+print(rf_metrics)
+```
+
+```{r}
+print(svm_metrics)
+```
+
+```{r}
+# Select the best model (e.g., Random Forest)
+final_rf_model <- rf_workflow %>%
+  fit(train_data)
+
+# Predict on the test set
+predictions <- predict(final_rf_model, test_data) %>%
+  bind_cols(test_data)  # Merge predictions with test_data
+
+# Rename the prediction column to '.pred_class' for consistency
+predictions <- predictions %>%
+  rename(.pred_class = .pred_class)
+```
+
+```{r}
+# Evaluate predictions
+metrics_test <- metrics(predictions, truth = winner_gender, estimate = .pred_class)
+print(metrics_test)
+```
+
+**Conclusion:**
+
+**Random Forest (RF)**:
+
+-   Accuracy: 60% is the same as Logistic Regression, but RF has a lower Brier score (better) and a higher ROC AUC, indicating it has better performance in distinguishing between classes compared to Logistic Regression.
+
+-   Brier Class Score: The lower score means RF provides better probabilistic predictions than Logistic Regression.
+
+-   ROC AUC: RF's higher ROC AUC (0.70) shows better overall performance in class separation.
+
+**Logistic Regression (LogReg):**
+
+-   Accuracy: Matches Random Forest, but with a higher Brier score and lower ROC AUC.
+
+-   Brier Class Score: Higher than RF, indicating less reliable probability estimates.
+
+-   ROC AUC: Lower than RF, showing poorer performance in distinguishing between classes.
+
+**Support Vector Machine (SVM):**
+
+-   Accuracy: Lowest among the models at 53.33%.
+
+-   Brier Class Score: Higher than RF and LogReg, indicating less reliable probability estimates.
+
+-   ROC AUC: Very low at 0.10, suggesting that SVM performs poorly in distinguishing between classes.
+
+In other words the best model is the Random Forest which seems to be the most effective model overall, with the highest ROC, AUC and lower Brier score, showing strong performance on the test set with an accuracy of 80% and a moderate Kappa score.
+
+## Summary:
+
+This analysis has shown that males have historically been more likely to win American Idol, with Random Forest emerging as the most accurate model for predicting winners based on the available data. The gender ratio among eliminations and finalists does not strongly favor either gender, but the winning trend shows a slight male advantage.
+
+**Future Work**
+
+Future research could delve into other factors such as judging patterns, audience reactions, and additional contestant characteristics to further understand their impact on the likelihood of winning.

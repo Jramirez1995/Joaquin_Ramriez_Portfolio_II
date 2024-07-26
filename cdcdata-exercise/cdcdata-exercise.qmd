@@ -362,30 +362,41 @@ Future research could look into underlying factors like demographics, policies, 
 
 ## This section was contributed by Collin Real
 ## Create synthetic dataset
-,,,,,,,,
+
 ```{r}
-# Create a synthetic dataset with the same structure as the original
+library(tibble)
+library(dplyr)
+
+# Set seed for reproducibility
 set.seed(123)
 
 # Define the number of observations
 n <- 195708
 
-# Can I not use dots to represent spaces in column names?
-state_list = as.list(unique(data_cleaned$State))
-state_fips_list = as.list(unique(data_cleaned$State.FIPS.Code))
-hhs_list = as.list(unique(data_cleaned$HHS.Region))
-age_range_list = as.list(unique(data_cleaned$Age.Range))
-benchmark_list = as.list(unique(data_cleaned$Benchmark))
-locality_list = as.list(unique(data_cleaned$Locality))
+# Unique values lists (adjust as needed)
+state_list <- c('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Delaware', 'California', 'Colorado', 'Connecticut', 
+                 'New Jersey', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 
+                 'Indiana', 'Iowa', 'Rhode Island', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 
+                 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 
+                 'Nevada', 'New Hampshire', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 
+                 'Oklahoma', 'Oregon', 'Pennsylvania', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 
+                 'United States', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming')
+
+state_fips_list <- 1:length(state_list)  # Example FIPS codes
+
+hhs_list <- c('Region 1', 'Region 2', 'Region 3', 'Region 4', 'Region 5', 'Region 6', 'Region 7', 'Region 8', 
+              'Region 9', 'Region 10')  # Adjust based on actual values
+
+age_range_list <- c('0-4', '5-14', '15-24', '25-34', '35-44', '45-54', '55-64', '65-74', '75-84', '85+')  # Example ranges
+
+benchmark_list <- c('Benchmark 1', 'Benchmark 2', 'Benchmark 3')  # Adjust as necessary
+locality_list <- c('Urban', 'Rural')  # Adjust based on actual values
+
 # Generate synthetic data
-synth_df = tibble(
+synth_df <- tibble(
   Year = sample(2005:2015, n, replace = TRUE),
   Cause.of.Death = sample(c('Cancer', 'Chronic Lower', 'Heart Disease', 'Stroke', 'Unintentional Injury'), n, replace = TRUE),
-
-  ### The way I'm doing lists isn't working so I'm just going to manually type out everything I want to put in a list (I miss Python)
-  State = sample(c('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Delaware', 'California', 'Colorado', 'Connecticut', 'New Jersey', 'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Rhode Island', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'United States', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming')),
-  # State = sample(state_list, n, replace = TRUE),
-  # Same as above  
+  State = sample(state_list, n, replace = TRUE),
   State.FIPS.Code = sample(state_fips_list, n, replace = TRUE),
   HHS.Region = sample(hhs_list, n, replace = TRUE),
   Age.Range = sample(age_range_list, n, replace = TRUE),
@@ -395,11 +406,9 @@ synth_df = tibble(
   Population = round(rnorm(n, mean = 7177289, sd = 5000)),
   Expected.Deaths = round(rnorm(n, mean = 2113, sd = 5000)),
   Potentially.Excess.Deaths = round(rnorm(n, mean = 875.1, sd = 5000)),
-  Percent.Potentially.Excess.Deaths = round(rnorm(n, mean = 35.73, sd = 5000)),
+  Percent.Potentially.Excess.Deaths = round(rnorm(n, mean = 35.73, sd = 5000))
 )
 
-# Summarize the synthetic data
-# str(synth_df)
-# summary(synth_df)
-synth_df
+# Display the synthetic data
+print(synth_df)
 ```
