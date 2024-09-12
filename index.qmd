@@ -4,19 +4,21 @@ title: "Joaquin Ramirez"
 
 # Welcome!
 
-### Explore, Discover, and Dive into Data
+### Dive into the World of Data
 
-Welcome to my digital portfolio where I showcase my data analysis projects and insights. I'm passionate about uncovering meaningful patterns in data and turning them into actionable insights. Whether it's exploring trends, building predictive models, or visualizing data in innovative ways, I love the journey of discovery that comes with being a data analyst.
+Welcome to my digital portfolio, where I bring data to life through the projects I’ve completed as part of my Data Analytics Master's program through UTSA.This collection highlights not just my technical skills, but my passion for uncovering hidden patterns, extracting actionable insights, and applying cutting-edge analytical techniques to tackle real-world challenges. Dive in to explore my work, see how I've grown as a data analyst, and feel free to check out my resume along with additional projects that showcase my expertise.
+
+I'm driven by curiosity and the desire to uncover stories hidden within data. Whether it's exploring trends, building predictive models, or visualizing complex information, I’m always eager to learn and push my skills further. Every new challenge—whether in my professional work or personal projects—drives me to deepen my expertise and unlock new insights.
 
 -   **Explore Projects**: Use the navigation menu above to browse through my projects. Each project offers a glimpse into my analytical skills and problem-solving approach.
--   **Discover Insights**: Dive into the data with me and uncover fascinating insights. From exploratory data analysis to advanced statistical modeling, I strive to extract actionable insights from complex datasets.
--   **Connect with Me**: Have questions, feedback, or collaboration opportunities? Feel free to reach out through the contact information provided below. I'm always open to connecting with fellow data enthusiasts and professionals.
 
-Let's embark on a data-driven journey together!
+-   **Connect with Me**: If you have any questions, feedback, or collaboration opportunities, I'd love to hear from you! Feel free to reach out via the contact information below. I'm always eager to connect with fellow data enthusiasts and professionals.
+
+Let's embark on this data journey together!
 
 ## Contact Me
 
 | **Contact Information:**                                                        | **Social Media Links:**                                      |
-|----------------------------------------|-------------------------------|
+|----------------------------------------|--------------------------------|
 | **Email**: [joaquin.dj.ramirez\@gmail.com](mailto:joaquin.dj.ramirez@gmail.com) | [LinkedIn](www.linkedin.com/in/joaquin-ramirez-43b4a6179)    |
-| **Phone**: +1 (830) 220-0703                                                    | [GitHub](https://github.com/Jramirez1995/joaquinramirez.git) |
+| **Phone**: +1 (830) 220-0703                                                    | [GitHub](https://jramirez1995.github.io/Joaquin_Ramriez_Portfolio_II/) |

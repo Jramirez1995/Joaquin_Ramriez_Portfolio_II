@@ -1,0 +1,2821 @@
+---
+title: "Market Segmentation: Dr Pepper"
+author: "Joaquin Ramirez"
+---
+
+# Market Segmentation Analysis Report: Dr Pepper
+
+#### **Introduction**
+
+This report presents a comprehensive market segmentation analysis aimed at identifying consumer segments that align with Dr Pepper's marketing strategies. By leveraging variables related to consumer behavior, preferences, and attitudes, actionable insights have been extracted to inform targeted marketing efforts.
+
+The objective of this analysis is to uncover distinct consumer segments by analyzing key drivers and descriptors derived from the NCS data dictionary. These insights aim to guide targeted marketing strategies, enhance customer engagement, and increase market share for Dr Pepper.
+
+Data Sources: Data were obtained from a personal survey booklet, and the segmentation analysis was conducted using SAS software.
+
+#### **Methodology**
+
+In this section, I will outline the key analytical steps taken to perform the segmentation analysis.
+
+The **Target variable** for segmentation is Dr Pepper, representing consumer preferences for the brand.
+
+The **Driver Variables** were utilized to effectively segment the market, four key driver variables were selected, representing consumer behaviors that are likely to influence their choices regarding beverages:
+
+```         
+   drink_between_meals: Reflects whether the consumer often drinks between meals.
+
+   like_to_try_new_drinks: Captures curiosity and willingness to try new beverages.
+
+   when_on_tv_go_online_get_more: Measures how likely the consumer is to go online after seeing an ad on TV.
+
+   buy_online_or_in_store: Indicates whether the consumer prefers to shop online or in-store.
+```
+
+For the **Abstract Constructor Factor Variables:** I selected two key factors that were derived from multiple related variables using Principal Component Analysis (PCA):
+
+```         
+Indulgence Behavior and Attitude: How likely is the consumer indulging in various indulgent behaviors or habits?
+
+     DRINKING_GET_DRUNK: "The point of drinking is to get drunk."
+
+     OFTEN_DRINK_ALCOHOL: "Often drink alcoholic beverages at restaurants."
+
+     TRY_NEW_FOOD_PRDCT: "I'm usually first to try new food products."
+
+     FEEL_GUILTY_SWEETS: "I feel guilty when I eat sweets."
+
+Environmental Behavior and Attitude: How important does the consumer believe in taking responsibility for the environment?
+
+     PEOPLE_NEED_TO_RECYCLE: "People have a duty to recycle."
+
+     MAKE_EFFORT_TO_RECYCLE: "I make an effort to recycle."
+
+     PEOPLE_RESPONS_TO_RECYCLD_PRDCTS: "People have a responsibility to use recycled products."
+
+     PERSONAL_ENVRNMNT_RESPONSIBLE: "Personal obligation and environmental responsibility."
+```
+
+Next, the **Descriptor Variables:** provide additional insights into consumer characteristics:
+
+```         
+   Competitive Preferences:
+
+      dr_pepper: "I prefer Dr Pepper."
+
+      Coca_Cola: "I prefer Coca-Cola."
+
+      Sprite: "I prefer Sprite."
+
+   Demographic Factors:
+
+      Gender: Male, Female
+
+      Region: Northeast, Midwest, South, West
+
+      Age Groups**: 18-24, 25-49, 50+
+
+   Media Preferences**:
+
+      Spotify**: "Spotify was used during the last 7 days."
+
+      YouTube**: "YouTube was used during the last 7 days."
+ 
+      ESPN**: "ESPN was viewed during the last 7 days."
+```
+
+#### Factor Analysis
+
+To reduce dimensionality and identify underlying factors, PCA was conducted. Two key factors were derived, reflecting consumer behaviors and attitudes.
+
+**Principal Component Analysis (PCA)**
+
+![](PCA1.png){width="374"}
+
+The PCA was utilized to extract abstract constructs from multiple variables. The Kaiser Criterion was applied to retain factors with eigenvalues greater than or equal to 1. The analysis resulted in two factors accounting for 52.34% of the total variance (Factor 1: 35.79%, Factor 2: 16.55%).
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+To further refine our factor selection, we examined the **scree plot** and applied the **elbow criterion**. By focusing on the point where the curve begins to flatten, we confirmed the decision to retain two factors. This approach ensures that we capture the most meaningful patterns in the data without overcomplicating the model.
+
+![](Screeplot2.png)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+After identifying the two key factors through PCA, the **Rotated Factor Pattern** was applied to enhance interpretability. Interestingly, the rotation revealed that **Factor 1**, initially labeled as reflecting **Indulgent Behaviors**, actually exhibited stronger correlations with variables related to **Environmental Responsibility**. Conversely, **Factor 2**, originally linked to **Environmental Responsibility**, displayed significant associations with **Indulgent Behaviors**. This shift in factor interpretation underscores the nuanced interplay between consumer behaviors and attitudes, paving the way for a deeper exploration of these patterns.
+
+![](rotated1.png)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Building on the insights from factor analysis, **K-Means Clustering** was employed to further segment the consumer groups. The number of clusters was evaluated using the **CCC Plot** and **Pseudo F Plot**, which suggested viable cluster counts of 3, 5, and 9. Through detailed analysis of cluster means and interpretability, a three-cluster solution emerged as the most parsimonious and insightful segmentation.
+
+| Number of Clusters | R square | CCC    | Pseudo F |
+|--------------------|----------|--------|----------|
+| 3                  | 0.27176  | 39.855 | 5622.32  |
+| 4                  | 0.36802  | 9.71   | 5076.37  |
+| 5                  | 0.42914  | 21.246 | 5104.69  |
+| 6                  | 0.46407  | 11.616 | 4523.63  |
+| 7                  | 0.49418  | 2.269  | 4118.01  |
+| 8                  | 0.51624  | 34.21  | 4258.66  |
+| 9                  | 0.53490  | 53.675 | 4263.33  |
+
+**CCC Plot:** The CCC plot reveals the first local maximum at k=3, with subsequent notable peaks at k=5 and k=9. These observations suggest that 3, 5, and 9 could be viable cluster counts.
+
+![](CCC.png)
+
+The **Pseudo F plot** corroborates the findings from the CCC plot, showing the highest value at **k=3**, with a secondary peak at **k=5**. Beyond **k=5**, the values begin to decline, reinforcing the idea that both 3 and 5 clusters are reasonable solutions.
+
+![](pseudo.png)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+However, determining the best solution requires deeper analysis. To that end, we proceed by examining the **Cluster Means** to understand the variation within clusters and assess the interpretability of each model.
+
+After reviewing the **Cluster Means** for both 3 and 5 clusters, clear differences emerge. **Cluster 3** exhibits significant variation across most variables, indicating that a simpler 3-cluster model may offer better interpretability. In contrast, while **Cluster 5** also shows variation, it introduces additional complexity, which may hinder the clarity of the solution. Based on these observations, a 3-cluster solution appears to be more practical and interpretable.
+
+![](clustermean.png)
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+To ensure that this solution is robust, we conduct a **Gap Analysis** to confirm the cluster validity and further evaluate the chosen model.
+
+A **Gap Analysis** was conducted to validate the cluster solutions. While the **First Peak** and **Global Peak** initially suggested a 2-cluster solution, the **K-Means clustering** with 3 clusters was favored for its clarity and ease of interpretation.
+
+![](GAP.png)
+
+By examining the **Gap Analysis cluster means**, we found that the clusters are well-defined, with clear distinctions between them. This supports the decision to proceed with the 3-cluster solution.
+
+![](gap%20mean.png){width="451"}
+
+Examining the GAP Analysis cluster means further supports the notion that the clusters are well-defined, demonstrating adequate discrimination between them.
+
+Moreover, a comparison between the K-means and HPCLUS approaches provides additional insights into the strengths of each method. With this confirmation, we can now delve into the detailed findings and descriptions of each cluster, which will provide a clearer understanding of the consumer segments identified through the analysis.
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+**Findings and Cluster Descriptions**
+
+![](descriptor.png)
+
+#### 
+
+**Cluster 1 (Seasonal Customers):** This cluster is characterized by older individuals, predominantly women, who display a lower preference for beverages compared to other clusters. They tend to be more conservative in trying new drinks and show moderate engagement in online shopping.
+
+**Cluster 2 (Media Enthusiasts):** Members of this cluster are inclined to consume beverages between meals and demonstrate a strong interest in trying new drinks. They are highly responsive to media prompts and exhibit the highest usage of media platforms such as YouTube and Spotify. The demographic distribution is more balanced in terms of age and gender, and this group shows a higher preference for beverages.
+
+**Cluster 3 (Beverage Aficionados):** Individuals in this cluster have the highest propensity for drinking between meals and the greatest enthusiasm for trying new beverages. They are particularly responsive to media advertisements and exhibit a preference for online shopping over in-store purchases. This cluster also shows the highest preference for beverages and ranks second in terms of media engagement.
+
+#### Recommendations
+
+My recommendation is for Dr Pepper to direct their marketing efforts towards Clusters 2 and 3.
+
+-   **Cluster 2** comprises individuals who exhibit a positive attitude towards trying new drinks and demonstrate high online activity, including making purchases online.
+
+-   **Cluster 3** consists of individuals who are environmentally conscious, enthusiastic about trying new beverages, and favor online shopping. They also show a strong preference for drinks.
+
+Targeting these two clusters would allow Dr Pepper to effectively leverage its advertising and marketing strategies, potentially acquiring new customers, particularly in the southern region of the country.
+
+#### **Conclusion**
+
+This market segmentation analysis offers valuable insights for Dr Pepper to refine its marketing strategies by targeting distinct consumer segments. Concentrating on Clusters 2 and 3 enables Dr Pepper to engage with segments that demonstrate a higher propensity for digital media consumption and a willingness to experiment with new beverages. This strategic focus is expected to enhance market presence and foster stronger customer retention.
+
+# SAS CODE:
+
+```{r eval=FALSE}
+libname mylib "P:\";
+filename bigrec "P:\fa15_data.txt"  lrecl = 65576;
+data mytemp;
+infile bigrec;
+input 
+myid 1-7
+
+/*Driver Variables */
+snack_between_meals_aglo  4280
+snack_between_meals_agli  4327                                                  
+snack_between_meals_anya  4374
+snack_between_meals_neit  4421                                                  
+snack_between_meals_dgli  4468                                                  
+snack_between_meals_dglo  4515                                                                                                
+snack_between_meals_anyd  4562                                                  
+try_new_drinks_aglo  4305
+try_new_drinks_agli  4352                                                  
+try_new_drinks_anya  4399
+try_new_drinks_neit  4446                                                  
+try_new_drinks_dgli  4493                                                  
+try_new_drinks_dglo  4540                                                                                                
+try_new_drinks_anyd  4587                                                  
+see_on_tv_go_online_more_aglo  5515
+see_on_tv_go_online_more_agli  5553                                                  
+see_on_tv_go_online_more_anya  5591
+see_on_tv_go_online_more_neit  5629                                                  
+see_on_tv_go_online_more_dgli  5667                                                  
+see_on_tv_go_online_more_dglo  5705                                                                                                
+see_on_tv_go_online_more_anyd  5743   
+buy_online_or_store_aglo  5518
+buy_online_or_store_agli  5556                                                  
+buy_online_or_store_anya  5594
+buy_online_or_store_neit  5632                                                  
+buy_online_or_store_dgli  5670                                                  
+buy_online_or_store_dglo  5708                                                                                                
+buy_online_or_store_anyd  5746  
+
+/*First Abstract - indulgence */
+DRINKING_TO_GET_DRUNK_aglo	4298
+DRINKING_TO_GET_DRUNK_agli	4345
+DRINKING_TO_GET_DRUNK_anya	4392
+DRINKING_TO_GET_DRUNK_neit	4439
+DRINKING_TO_GET_DRUNK_dgli	4486
+DRINKING_TO_GET_DRUNK_dglo	4533
+DRINKING_TO_GET_DRUNK_anyd	4580
+OFTEN_DRINK_ALCOHOLIC_aglo 	4291
+OFTEN_DRINK_ALCOHOLIC_agli 	4338
+OFTEN_DRINK_ALCOHOLIC_anya 	4385
+OFTEN_DRINK_ALCOHOLIC_neit 	4432
+OFTEN_DRINK_ALCOHOLIC_dgli 	4479
+OFTEN_DRINK_ALCOHOLIC_dglo 	4526
+OFTEN_DRINK_ALCOHOLIC_anyd	4573
+FIRST_TRY_NEW_FOOD_aglo	4310
+FIRST_TRY_NEW_FOOD_agli	4357
+FIRST_TRY_NEW_FOOD_anya	4404
+FIRST_TRY_NEW_FOOD_neit	4451
+FIRST_TRY_NEW_FOOD_dgli	4498
+FIRST_TRY_NEW_FOOD_dglo	4545
+FIRST_TRY_NEW_FOOD_anyd	4592
+GUILTY_TO_EAT_SWEETS_aglo 4282
+GUILTY_TO_EAT_SWEETS_agli	4329
+GUILTY_TO_EAT_SWEETS_anya	4376
+GUILTY_TO_EAT_SWEETS_neit	4423
+GUILTY_TO_EAT_SWEETS_dgli	4470
+GUILTY_TO_EAT_SWEETS_dglo	4517
+GUILTY_TO_EAT_SWEETS_anyd	4564
+
+/*SECOND Abstract - Enviromental */
+PEOPLE_DUTY_RECYCLE_aglo	4192
+PEOPLE_DUTY_RECYCLE_agli	4206
+PEOPLE_DUTY_RECYCLE_anya	4220
+PEOPLE_DUTY_RECYCLE_neit	4234
+PEOPLE_DUTY_RECYCLE_dgli	4248
+PEOPLE_DUTY_RECYCLE_dglo	4262
+PEOPLE_DUTY_RECYCLE_anyd	4276
+MAKE_EFFORT_RECYCLE_aglo	4189
+MAKE_EFFORT_RECYCLE_agli	4203
+MAKE_EFFORT_RECYCLE_anya	4217
+MAKE_EFFORT_RECYCLE_neit	4231
+MAKE_EFFORT_RECYCLE_dgli	4245
+MAKE_EFFORT_RECYCLE_dglo	4259
+MAKE_EFFORT_RECYCLE_anyd	4273
+RESPONS_RECYCLD_PRD_aglo	4191
+RESPONS_RECYCLD_PRD_agli	4205
+RESPONS_RECYCLD_PRD_anya	4219
+RESPONS_RECYCLD_PRD_neit	4233
+RESPONS_RECYCLD_PRD_dgli	4247
+RESPONS_RECYCLD_PRD_dglo	4261
+RESPONS_RECYCLD_PRD_anyd	4275
+ENVRNMNT_RESPONSIBLE_aglo	4184
+ENVRNMNT_RESPONSIBLE_agli	4198
+ENVRNMNT_RESPONSIBLE_anya	4212
+ENVRNMNT_RESPONSIBLE_neit	4226
+ENVRNMNT_RESPONSIBLE_dgli	4240
+ENVRNMNT_RESPONSIBLE_dglo	4254
+ENVRNMNT_RESPONSIBLE_anyd	4268
+
+/*Descriptor Variables */ 
+
+/*Target Variable */
+Dr_Pepper 39807
+
+/* Major Competitor */
+Coca_Cola	40127
+Sprite		39830
+
+
+/*Demographics*/
+
+MALE	2383
+FEMALE	2384
+
+NORTHEAST	3075
+MIDWEST	3076
+SOUTH	3077
+WEST	3078
+
+Age_18_24	2401
+Age_25_49	2407
+Age_50	2415
+
+/*Media Variables*/
+
+SPOTIFY	8184
+YOUTUBE	8978
+ESPN	9625
+
+
+
+
+
+
+
+;
+
+/* the above reads in the raw data from the data file -  now create five point scale variables */
+/* now before we create variables lets create formats so we know what each value will mean */
+
+proc format;
+value myscale
+     1 = "disagree a lot"
+     2 = "disagree a little"
+     3 = "neither agree nor disagree"
+     4 = "agree a little"
+     5 = "agree a lot";
+value yesno
+     0 = "no"
+     1 = "yes";
+
+
+
+
+/* do that by creating a new temp sas data set myvars by starting with the temp sas data set mytemp */
+data myvars;
+set mytemp;
+
+/*Driver Variables */
+if snack_between_meals_dglo = 1 then drink_between_meals = 1;                                                  
+if snack_between_meals_dgli = 1 then drink_between_meals = 2;                                             
+if snack_between_meals_neit = 1 then drink_between_meals = 3;                                                  
+if snack_between_meals_agli = 1 then drink_between_meals = 4;                                                  
+if snack_between_meals_aglo = 1 then drink_between_meals = 5;     
+if try_new_drinks_dglo = 1 then like_to_try_new_drinks = 1;                                                 
+if try_new_drinks_dgli = 1 then like_to_try_new_drinks = 2;                                                
+if try_new_drinks_neit = 1 then like_to_try_new_drinks = 3;    
+if try_new_drinks_agli = 1 then like_to_try_new_drinks = 4;                                                 
+if try_new_drinks_aglo = 1 then like_to_try_new_drinks = 5;   
+if see_on_tv_go_online_more_dglo = 1 then when_on_tv_go_online_get_more = 1;                                                 
+if see_on_tv_go_online_more_dgli = 1 then when_on_tv_go_online_get_more = 2;                                                
+if see_on_tv_go_online_more_neit = 1 then when_on_tv_go_online_get_more = 3;    
+if see_on_tv_go_online_more_agli = 1 then when_on_tv_go_online_get_more = 4;                                                 
+if see_on_tv_go_online_more_aglo = 1 then when_on_tv_go_online_get_more = 5;  
+if buy_online_or_store_dglo = 1 then buy_online_or_in_store = 1;                                                 
+if buy_online_or_store_dgli = 1 then buy_online_or_in_store = 2;                                                
+if buy_online_or_store_neit = 1 then buy_online_or_in_store = 3;    
+if buy_online_or_store_agli = 1 then buy_online_or_in_store = 4;                                                 
+if buy_online_or_store_aglo = 1 then buy_online_or_in_store = 5;  
+/*First Abstract - indulgence */
+if DRINKING_TO_GET_DRUNK_dglo = 1   then  DRINKING_GET_DRUNK = 1;
+if DRINKING_TO_GET_DRUNK_dgli = 1	then  DRINKING_GET_DRUNK = 2;
+if DRINKING_TO_GET_DRUNK_neit = 1	then  DRINKING_GET_DRUNK = 3;
+if DRINKING_TO_GET_DRUNK_agli = 1	then  DRINKING_GET_DRUNK = 4;
+if DRINKING_TO_GET_DRUNK_aglo = 1	then  DRINKING_GET_DRUNK = 5;
+if OFTEN_DRINK_ALCOHOLIC_dglo = 1   then  OFTEN_DRINK_ALCOHOL = 1;
+if OFTEN_DRINK_ALCOHOLIC_dgli = 1	then  OFTEN_DRINK_ALCOHOL = 2;
+if OFTEN_DRINK_ALCOHOLIC_neit = 1	then  OFTEN_DRINK_ALCOHOL = 3;
+if OFTEN_DRINK_ALCOHOLIC_agli = 1	then  OFTEN_DRINK_ALCOHOL = 4;
+if OFTEN_DRINK_ALCOHOLIC_aglo = 1	then  OFTEN_DRINK_ALCOHOL = 5;
+if FIRST_TRY_NEW_FOOD_dglo = 1  then  TRY_NEW_FOOD_PRDCT = 1;
+if FIRST_TRY_NEW_FOOD_dgli = 1  then  TRY_NEW_FOOD_PRDCT = 2;
+if FIRST_TRY_NEW_FOOD_neit = 1	then  TRY_NEW_FOOD_PRDCT = 3;
+if FIRST_TRY_NEW_FOOD_agli = 1	then  TRY_NEW_FOOD_PRDCT = 4;
+if FIRST_TRY_NEW_FOOD_aglo = 1	then  TRY_NEW_FOOD_PRDCT = 5;
+if GUILTY_TO_EAT_SWEETS_dglo = 1    then  FEEL_GUILTY_SWEETS = 1;
+if GUILTY_TO_EAT_SWEETS_dgli = 1	then  FEEL_GUILTY_SWEETS = 2;
+if GUILTY_TO_EAT_SWEETS_neit = 1	then  FEEL_GUILTY_SWEETS = 3;
+if GUILTY_TO_EAT_SWEETS_agli = 1	then  FEEL_GUILTY_SWEETS = 4;
+if GUILTY_TO_EAT_SWEETS_aglo = 1	then  FEEL_GUILTY_SWEETS = 5;
+/*SECOND Abstract - Enviromental */
+if PEOPLE_DUTY_RECYCLE_dglo = 1 then PEOPLE_NEED_TO_RECYCLE = 1;                                                 
+if PEOPLE_DUTY_RECYCLE_dgli = 1 then PEOPLE_NEED_TO_RECYCLE = 2;                                                
+if PEOPLE_DUTY_RECYCLE_neit = 1 then PEOPLE_NEED_TO_RECYCLE = 3;    
+if PEOPLE_DUTY_RECYCLE_agli = 1 then PEOPLE_NEED_TO_RECYCLE = 4;                                                 
+if PEOPLE_DUTY_RECYCLE_aglo = 1 then PEOPLE_NEED_TO_RECYCLE = 5; 
+if MAKE_EFFORT_RECYCLE_dglo = 1 then  MAKE_EFFORT_TO_RECYCLE = 1;
+if MAKE_EFFORT_RECYCLE_dgli = 1	then  MAKE_EFFORT_TO_RECYCLE = 2;
+if MAKE_EFFORT_RECYCLE_neit = 1	then  MAKE_EFFORT_TO_RECYCLE = 3;
+if MAKE_EFFORT_RECYCLE_agli = 1	then  MAKE_EFFORT_TO_RECYCLE = 4;
+if MAKE_EFFORT_RECYCLE_aglo = 1	then  MAKE_EFFORT_TO_RECYCLE = 5;
+if RESPONS_RECYCLD_PRD_dglo = 1 then  PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 1;
+if RESPONS_RECYCLD_PRD_dgli = 1	then  PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 2;
+if RESPONS_RECYCLD_PRD_neit = 1	then  PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 3;
+if RESPONS_RECYCLD_PRD_agli = 1	then  PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 4;
+if RESPONS_RECYCLD_PRD_aglo = 1	then  PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 5;
+if ENVRNMNT_RESPONSIBLE_dglo = 1    then  PERSONAL_ENVRNMNT_RESPONSIBLE = 1;
+if ENVRNMNT_RESPONSIBLE_dgli = 1	then  PERSONAL_ENVRNMNT_RESPONSIBLE = 2;
+if ENVRNMNT_RESPONSIBLE_neit = 1	then  PERSONAL_ENVRNMNT_RESPONSIBLE = 3;
+if ENVRNMNT_RESPONSIBLE_agli = 1	then  PERSONAL_ENVRNMNT_RESPONSIBLE = 4;
+if ENVRNMNT_RESPONSIBLE_aglo = 1	then  PERSONAL_ENVRNMNT_RESPONSIBLE = 5;
+
+
+/* now set up binary yes   no variables knowing that missing values get a zero and a 1 gets a 1 */
+
+/*Descriptor Variables*/
+
+/*Target Variable*/
+if Dr_Pepper = .  then Dr_Pepper = 0;
+if Dr_Pepper = 1 then Dr_Pepper = 1;
+/*Competitor*/
+if Coca_Cola = .  then Coca_Cola = 0;
+if Coca_Cola = 1 then Coca_Cola = 1;
+if Sprite = .  then Sprite = 0;
+if Sprite = 1 then Sprite = 1;
+/*Demographic*/
+if MALE	 = .  then Male = 0;
+if MALE	 = 1 then Male = 1;
+if FEMALE = .  then Female = 0;
+if FEMALE = 1 then Female = 1;
+if NORTHEAST = .  then NorthEast = 0;
+if NORTHEAST = 1 then NorthEast = 1;
+if MIDWEST = .  then MidWest = 0;
+if MIDWEST = 1 then MidWest = 1;
+if SOUTH = .  then South = 0;
+if SOUTH = 1 then South = 1;
+if WEST = .  then West = 0;
+if WEST = 1 then West = 1;
+if Age_18_24 = .  then Age_18_24 = 0;
+if Age_18_24 = 1 then Age_18_24 = 1;
+if Age_25_49 = .  then Age_25_49 = 0;
+if Age_25_49 = 1 then Age_25_49 = 1;
+if Age_50 = .  then Age_50 = 0;
+if Age_50 = 1 then Age_50 = 1;
+/*Media*/
+if SPOTIFY = .  then Spotify = 0;
+if SPOTIFY = 1 then Spotify = 1;
+if YOUTUBE	 = .  then YouTube = 0;
+if YOUTUBE	 = 1 then YouTube = 1;
+if ESPN = .  then ESPN = 0;
+if ESPN = 1 then ESPN = 1;
+
+
+
+/* Assign labels to variables */
+
+label drink_between_meals = 'I often drink between meals';
+label like_to_try_new_drinks ='I like to try new drinks';
+label when_on_tv_go_online_get_more = 'When I see on tv I go online and find more';
+label buy_online_or_in_store ='More likely to buy online than in store';
+
+
+label DRINKING_GET_DRUNK = 'The point of drinking is to get drunk';
+label OFTEN_DRINK_ALCOHOL ='Often drink alcoholic beverages at resturants';
+label TRY_NEW_FOOD_PRDCT = 'Im usually first to try new food products';
+label FEEL_GUILTY_SWEETS ='I feel guilty when I eat sweets';
+
+
+label PEOPLE_NEED_TO_RECYCLE = 'People have a duty to recycle';
+label MAKE_EFFORT_TO_RECYCLE ='I make an effort to recycle';
+label PEOPLE_RESPONS_TO_RECYCLD_PRDCTS = 'People have a response to use recycle products';
+label PERSONAL_ENVRNMNT_RESPONSIBLE ='Personal obligation and enviroment responsibility';
+
+
+label Dr_Pepper = 'I prefer DrPepper';
+
+label Coca_Cola ='I prefer CocaCola';
+label Sprite ='I prefer Sprite';
+
+label Male = 'Response by Male';
+label Female ='Response by Female';
+
+label NorthEast = 'Region: NorthEast';
+label MidWest ='Region: Mid-West';
+label South = 'Region: South';
+label West ='Region: West';
+label Age_18_24 = 'Age: 18-24';
+label Age_25_49 ='Age: 25-49';
+label Age_50 = 'Age: 50+';
+
+label Spotify ='Spotify was used during last 7 days';
+label YouTube = 'YouTube was used during last 7 days';
+label ESPN ='ESPN was viewed during last 7 days';
+
+
+
+
+
+
+/* now attach the values for each of the variables using the proc format labels */
+
+format
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store
+
+DRINKING_GET_DRUNK
+OFTEN_DRINK_ALCOHOL
+TRY_NEW_FOOD_PRDCT
+FEEL_GUILTY_SWEETS
+
+PEOPLE_NEED_TO_RECYCLE
+MAKE_EFFORT_TO_RECYCLE
+PEOPLE_RESPONS_TO_RECYCLD_PRDCTS
+PERSONAL_ENVRNMNT_RESPONSIBLE
+myscale.
+
+Dr_Pepper
+Coca_Cola
+Sprite 
+MALE
+FEMALE 
+NORTHEAST
+MIDWEST 
+SOUTH 
+WEST
+Age_18_24
+Age_25_49 
+Age_50
+SPOTIFY
+YOUTUBE
+ESPN
+yesno. 
+
+
+run;
+
+/* now run freqs to check your work */
+proc freq data = myvars;
+tables
+snack_between_meals_dglo                                                  
+snack_between_meals_dgli                                             
+snack_between_meals_neit                                                  
+snack_between_meals_agli                                                  
+snack_between_meals_aglo     
+try_new_drinks_dglo                                                
+try_new_drinks_dgli                                              
+try_new_drinks_neit   
+try_new_drinks_agli                                                
+try_new_drinks_aglo   
+see_on_tv_go_online_more_dglo                                                 
+see_on_tv_go_online_more_dgli                                                
+see_on_tv_go_online_more_neit    
+see_on_tv_go_online_more_agli                                                 
+see_on_tv_go_online_more_aglo  
+buy_online_or_store_dglo                                            
+buy_online_or_store_dgli                                                
+buy_online_or_store_neit    
+buy_online_or_store_agli                                                 
+buy_online_or_store_aglo
+
+DRINKING_TO_GET_DRUNK_aglo	
+DRINKING_TO_GET_DRUNK_agli	
+DRINKING_TO_GET_DRUNK_anya	
+DRINKING_TO_GET_DRUNK_neit	
+DRINKING_TO_GET_DRUNK_dgli	
+DRINKING_TO_GET_DRUNK_dglo	
+DRINKING_TO_GET_DRUNK_anyd	
+OFTEN_DRINK_ALCOHOLIC_aglo 	
+OFTEN_DRINK_ALCOHOLIC_agli 	
+OFTEN_DRINK_ALCOHOLIC_anya 	
+OFTEN_DRINK_ALCOHOLIC_neit 	
+OFTEN_DRINK_ALCOHOLIC_dgli 	
+OFTEN_DRINK_ALCOHOLIC_dglo 	
+OFTEN_DRINK_ALCOHOLIC_anyd	
+FIRST_TRY_NEW_FOOD_aglo	
+FIRST_TRY_NEW_FOOD_agli	
+FIRST_TRY_NEW_FOOD_anya	
+FIRST_TRY_NEW_FOOD_neit	
+FIRST_TRY_NEW_FOOD_dgli	
+FIRST_TRY_NEW_FOOD_dglo	
+FIRST_TRY_NEW_FOOD_anyd	
+GUILTY_TO_EAT_SWEETS_aglo 
+GUILTY_TO_EAT_SWEETS_agli	
+GUILTY_TO_EAT_SWEETS_anya	
+GUILTY_TO_EAT_SWEETS_neit	
+GUILTY_TO_EAT_SWEETS_dgli	
+GUILTY_TO_EAT_SWEETS_dglo	
+GUILTY_TO_EAT_SWEETS_anyd
+
+PEOPLE_DUTY_RECYCLE_dglo                                                 
+PEOPLE_DUTY_RECYCLE_dgli                                              
+PEOPLE_DUTY_RECYCLE_neit  
+PEOPLE_DUTY_RECYCLE_agli                                                 
+PEOPLE_DUTY_RECYCLE_aglo
+MAKE_EFFORT_RECYCLE_dglo
+MAKE_EFFORT_RECYCLE_dgli 
+MAKE_EFFORT_RECYCLE_neit
+MAKE_EFFORT_RECYCLE_agli
+MAKE_EFFORT_RECYCLE_aglo
+RESPONS_RECYCLD_PRD_dglo
+RESPONS_RECYCLD_PRD_dgli
+RESPONS_RECYCLD_PRD_neit
+RESPONS_RECYCLD_PRD_agli
+RESPONS_RECYCLD_PRD_aglo
+ENVRNMNT_RESPONSIBLE_dglo
+ENVRNMNT_RESPONSIBLE_dgli
+ENVRNMNT_RESPONSIBLE_neit
+ENVRNMNT_RESPONSIBLE_agli
+ENVRNMNT_RESPONSIBLE_aglo 
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store
+
+DRINKING_GET_DRUNK
+OFTEN_DRINK_ALCOHOL
+TRY_NEW_FOOD_PRDCT
+FEEL_GUILTY_SWEETS
+
+PEOPLE_NEED_TO_RECYCLE
+MAKE_EFFORT_TO_RECYCLE
+PEOPLE_RESPONS_TO_RECYCLD_PRDCTS
+PERSONAL_ENVRNMNT_RESPONSIBLE
+
+Dr_Pepper
+Coca_Cola
+Sprite
+Male
+Female 
+NorthEast
+MidWest 
+South 
+West 
+Age_18_24 
+Age_25_49 
+Age_50
+Spotify 
+YouTube 
+ESPN;
+
+/* K-MEANS STARTS */
+ 
+PROC FACTOR DATA = myvars 
+MAXITER=100
+METHOD=principal
+MINEIGEN=1
+ROTATE=varimax
+MSA
+SCREE
+SCORE
+PRINT
+NFACTORS=2
+OUT=myscores;
+var
+DRINKING_GET_DRUNK
+OFTEN_DRINK_ALCOHOL
+TRY_NEW_FOOD_PRDCT
+FEEL_GUILTY_SWEETS
+
+PEOPLE_NEED_TO_RECYCLE 
+MAKE_EFFORT_TO_RECYCLE 
+PEOPLE_RESPONS_TO_RECYCLD_PRDCTS 
+PERSONAL_ENVRNMNT_RESPONSIBLE;
+run;
+
+
+DATA myscores1;
+SET myscores;
+RENAME factor1 = IndulgenceFactors;
+RENAME factor2 = GreenAttitudeFactor;
+run;
+
+
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=3 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=4 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=5 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=6 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=7 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=8 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;
+
+PROC FASTCLUS DATA=myscores1 MAXITER=100 MAXCLUSTERS=9 OUT=finalclus;
+VAR
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+RUN;     /* K-MEANS ENDS */
+
+
+
+/* GAP ANALYSIS STARTS */
+
+
+/*proc hpclus data=myscores1 MAXITER=100 maxclusters=6
+noc=abc(b=20 minclusters=2 align=pca criterion=globalpeak);
+		/* score puts CLUSTER variable in dataset and OUT= outputs the data set */
+/*score out=mycluster;
+		/* here are the drivers for the HPCLUS cluster solution */
+/*input 
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store / level=interval;
+run;
+
+
+		/* only the variables listed in the ID statement will be kept in the MYCLUSTER data set*/
+		/* so be sure to put your id variable, drivers and descritpor variables in the ID statement */
+		/* the drivers are earlyadopt socialphone loser ad_receptivity and the descriptors are coca_cola_classic 
+pepsi_classic 
+espn_sports  
+ikea_furniture  
+kfc_chicken  
+nike_trainers  */
+
+
+/*id myid
+
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store
+
+		/*IndulgenceFactors
+DRINKING_GET_DRUNK
+OFTEN_DRINK_ALCOHOL
+TRY_NEW_FOOD_PRDCT
+FEEL_GUILTY_SWEETS
+
+GreenAttitudeFactor
+PEOPLE_NEED_TO_RECYCLE
+MAKE_EFFORT_TO_RECYCLE
+PEOPLE_RESPONS_TO_RECYCLD_PRDCTS
+PERSONAL_ENVRNMNT_RESPONSIBLE*/
+
+/*dr_pepper
+Sprite
+MALE
+FEMALE 
+NORTHEAST
+SOUTH 
+WEST
+Age_18_24
+Age_25_49 
+Age_50
+YOUTUBE
+ESPN;
+run;                                        
+
+proc contents data=mycluster;
+run; 
+proc sort data=mycluster out=mysort;
+by _CLUSTER_ID_ ;
+proc means data=mysort;
+by _CLUSTER_ID_;
+var
+
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store
+
+		/*IndulgenceFactors
+DRINKING_GET_DRUNK
+OFTEN_DRINK_ALCOHOL
+TRY_NEW_FOOD_PRDCT
+FEEL_GUILTY_SWEETS
+
+GreenAttitudeFactor
+PEOPLE_NEED_TO_RECYCLE
+MAKE_EFFORT_TO_RECYCLE
+PEOPLE_RESPONS_TO_RECYCLD_PRDCTS
+PERSONAL_ENVRNMNT_RESPONSIBLE*/
+
+/*Sprite
+MALE
+FEMALE 
+NORTHEAST
+SOUTH 
+WEST
+Age_18_24
+Age_25_49 
+Age_50
+YOUTUBE
+ESPN;
+run;   /* GAP ANALYSIS ENDS */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* I found k=3 as my first local maximum */
+/* so lets run it again and save the cluster file */
+proc fastclus data=myscores1 out=cluster_results maxiter=100 maxclusters=3;
+var 
+
+IndulgenceFactors
+GreenAttitudeFactor
+
+drink_between_meals
+like_to_try_new_drinks
+when_on_tv_go_online_get_more
+buy_online_or_in_store;
+run;                             
+                                   
+/* now we need to sort the data set by cluster to use the BY option in proc means */
+proc sort data=cluster_results  out=cluster_sorted;
+By cluster;
+run;
+
+/* now we can produce means for some descriptor variables */
+proc means data=cluster_sorted;
+By cluster;
+var
+Dr_Pepper
+Coca_Cola
+Sprite
+MALE
+FEMALE 
+NORTHEAST
+SOUTH 
+Age_18_24
+Age_50
+YOUTUBE
+Spotify;
+run;
+
+
+```
+
+# SAS Code Output:
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FREQ Procedure**
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **snack_between_meals_dglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 1919          | 100.00      | 1919          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 23520** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **snack_between_meals_dgli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 2526          | 100.00      | 2526          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22913** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **snack_between_meals_neit**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3409          | 100.00      | 3409          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22030** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **snack_between_meals_agli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 9817          | 100.00      | 9817          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 15622** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **snack_between_meals_aglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6582          | 100.00      | 6582          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18857** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **try_new_drinks_dglo**       | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5504          | 100.00      | 5504          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19935** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **try_new_drinks_dgli**       | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3428          | 100.00      | 3428          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22011** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **try_new_drinks_neit**       | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6830          | 100.00      | 6830          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18609** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **try_new_drinks_agli**       | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5040          | 100.00      | 5040          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20399** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **try_new_drinks_aglo**       | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3259          | 100.00      | 3259          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22180** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **see_on_tv_go_online_more_dglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                   |               |             | Frequency**   | Percent**     |
++==================================:+==============:+============:+==============:+==============:+
+| **1**                             | 4997          | 100.00      | 4997          | 100.00        |
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20442**     |               |             |               |               |
++-----------------------------------+---------------+-------------+---------------+---------------+
+
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **see_on_tv_go_online_more_dgli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                   |               |             | Frequency**   | Percent**     |
++==================================:+==============:+============:+==============:+==============:+
+| **1**                             | 2420          | 100.00      | 2420          | 100.00        |
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 23019**     |               |             |               |               |
++-----------------------------------+---------------+-------------+---------------+---------------+
+
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **see_on_tv_go_online_more_neit** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                   |               |             | Frequency**   | Percent**     |
++==================================:+==============:+============:+==============:+==============:+
+| **1**                             | 6244          | 100.00      | 6244          | 100.00        |
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19195**     |               |             |               |               |
++-----------------------------------+---------------+-------------+---------------+---------------+
+
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **see_on_tv_go_online_more_agli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                   |               |             | Frequency**   | Percent**     |
++==================================:+==============:+============:+==============:+==============:+
+| **1**                             | 6783          | 100.00      | 6783          | 100.00        |
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18656**     |               |             |               |               |
++-----------------------------------+---------------+-------------+---------------+---------------+
+
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **see_on_tv_go_online_more_aglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                   |               |             | Frequency**   | Percent**     |
++==================================:+==============:+============:+==============:+==============:+
+| **1**                             | 3502          | 100.00      | 3502          | 100.00        |
++-----------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21937**     |               |             |               |               |
++-----------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **buy_online_or_store_dglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6591          | 100.00      | 6591          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18848** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **buy_online_or_store_dgli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 4045          | 100.00      | 4045          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21394** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **buy_online_or_store_neit**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6541          | 100.00      | 6541          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18898** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **buy_online_or_store_agli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 4251          | 100.00      | 4251          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21188** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **buy_online_or_store_aglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 2705          | 100.00      | 2705          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22734** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_aglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 1060          | 100.00      | 1060          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24379**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_agli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 1443          | 100.00      | 1443          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 23996**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_anya** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 2503          | 100.00      | 2503          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22936**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_neit** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 4201          | 100.00      | 4201          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21238**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_dgli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 2622          | 100.00      | 2622          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22817**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_dglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 14730         | 100.00      | 14730         | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 10709**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **DRINKING_TO_GET_DRUNK_anyd** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 17352         | 100.00      | 17352         | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 8087**   |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_aglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 2635          | 100.00      | 2635          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22804**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_agli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 3944          | 100.00      | 3944          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21495**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_anya** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 6579          | 100.00      | 6579          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18860**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_neit** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 3844          | 100.00      | 3844          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21595**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_dgli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 2923          | 100.00      | 2923          | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22516**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_dglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 10655         | 100.00      | 10655         | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 14784**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++--------------------------------+---------------+-------------+---------------+---------------+
+| **OFTEN_DRINK_ALCOHOLIC_anyd** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                                |               |             | Frequency**   | Percent**     |
++===============================:+==============:+============:+==============:+==============:+
+| **1**                          | 13578         | 100.00      | 13578         | 100.00        |
++--------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 11861**  |               |             |               |               |
++--------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_aglo**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 1981          | 100.00      | 1981          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 23458** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_agli**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3335          | 100.00      | 3335          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 22104** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_anya**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5316          | 100.00      | 5316          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20123** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_neit**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 8873          | 100.00      | 8873          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 16566** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_dgli**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 4584          | 100.00      | 4584          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20855** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_dglo**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5257          | 100.00      | 5257          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20182** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **FIRST_TRY_NEW_FOOD_anyd**   | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 9841          | 100.00      | 9841          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 15598** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_aglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3990          | 100.00      | 3990          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21449** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_agli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6231          | 100.00      | 6231          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19208** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_anya** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 10221         | 100.00      | 10221         | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 15218** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_neit** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6081          | 100.00      | 6081          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19358** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_dgli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3700          | 100.00      | 3700          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21739** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_dglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3897          | 100.00      | 3897          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21542** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **GUILTY_TO_EAT_SWEETS_anyd** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 7597          | 100.00      | 7597          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 17842** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **PEOPLE_DUTY_RECYCLE_dglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 658           | 100.00      | 658           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24781** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **PEOPLE_DUTY_RECYCLE_dgli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 910           | 100.00      | 910           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24529** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **PEOPLE_DUTY_RECYCLE_neit**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5955          | 100.00      | 5955          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19484** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **PEOPLE_DUTY_RECYCLE_agli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6201          | 100.00      | 6201          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19238** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **PEOPLE_DUTY_RECYCLE_aglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 10597         | 100.00      | 10597         | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 14842** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **MAKE_EFFORT_RECYCLE_dglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 1082          | 100.00      | 1082          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24357** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **MAKE_EFFORT_RECYCLE_dgli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 1195          | 100.00      | 1195          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24244** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **MAKE_EFFORT_RECYCLE_neit**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 3756          | 100.00      | 3756          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 21683** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **MAKE_EFFORT_RECYCLE_agli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 5406          | 100.00      | 5406          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20033** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **MAKE_EFFORT_RECYCLE_aglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 13114         | 100.00      | 13114         | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 12325** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **RESPONS_RECYCLD_PRD_dglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 507           | 100.00      | 507           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24932** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **RESPONS_RECYCLD_PRD_dgli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 791           | 100.00      | 791           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24648** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **RESPONS_RECYCLD_PRD_neit**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6176          | 100.00      | 6176          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 19263** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **RESPONS_RECYCLD_PRD_agli**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 6971          | 100.00      | 6971          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 18468** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **RESPONS_RECYCLD_PRD_aglo**  | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 9884          | 100.00      | 9884          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 15555** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **ENVRNMNT_RESPONSIBLE_dglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 442           | 100.00      | 442           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24997** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **ENVRNMNT_RESPONSIBLE_dgli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 550           | 100.00      | 550           | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 24889** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **ENVRNMNT_RESPONSIBLE_neit** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 4847          | 100.00      | 4847          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 20592** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **ENVRNMNT_RESPONSIBLE_agli** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 8332          | 100.00      | 8332          | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 17107** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
++-------------------------------+---------------+-------------+---------------+---------------+
+| **ENVRNMNT_RESPONSIBLE_aglo** | **Frequency** | **Percent** | **Cumulative\ | **Cumulative\ |
+|                               |               |             | Frequency**   | Percent**     |
++==============================:+==============:+============:+==============:+==============:+
+| **1**                         | 10152         | 100.00      | 10152         | 100.00        |
++-------------------------------+---------------+-------------+---------------+---------------+
+| **Frequency Missing = 15287** |               |             |               |               |
++-------------------------------+---------------+-------------+---------------+---------------+
+
+| **I often drink between meals** |
+|:-------------------------------:|
+|     **drink_between_meals**     |
+|       **disagree a lot**        |
+|      **disagree a little**      |
+| **neither agree nor disagree**  |
+|       **agree a little**        |
+|         **agree a lot**         |
+|  **Frequency Missing = 1186**   |
+
+|  **I like to try new drinks**  |
+|:------------------------------:|
+|   **like_to_try_new_drinks**   |
+|       **disagree a lot**       |
+|     **disagree a little**      |
+| **neither agree nor disagree** |
+|       **agree a little**       |
+|        **agree a lot**         |
+|  **Frequency Missing = 1378**  |
+
+| **When I see on tv I go online and find more** |
+|:----------------------------------------------:|
+|       **when_on_tv_go_online_get_more**        |
+|               **disagree a lot**               |
+|             **disagree a little**              |
+|         **neither agree nor disagree**         |
+|               **agree a little**               |
+|                **agree a lot**                 |
+|          **Frequency Missing = 1493**          |
+
+| **More likely to buy online than in store** |
+|:-------------------------------------------:|
+|         **buy_online_or_in_store**          |
+|             **disagree a lot**              |
+|            **disagree a little**            |
+|       **neither agree nor disagree**        |
+|             **agree a little**              |
+|               **agree a lot**               |
+|        **Frequency Missing = 1306**         |
+
+| **The point of drinking is to get drunk** |
+|:-----------------------------------------:|
+|          **DRINKING_GET_DRUNK**           |
+|            **disagree a lot**             |
+|           **disagree a little**           |
+|      **neither agree nor disagree**       |
+|            **agree a little**             |
+|              **agree a lot**              |
+|       **Frequency Missing = 1383**        |
+
+| **Often drink alcoholic beverages at resturants** |
+|:-------------------------------------------------:|
+|              **OFTEN_DRINK_ALCOHOL**              |
+|                **disagree a lot**                 |
+|               **disagree a little**               |
+|          **neither agree nor disagree**           |
+|                **agree a little**                 |
+|                  **agree a lot**                  |
+|           **Frequency Missing = 1438**            |
+
+| **Im usually first to try new food products** |
+|:---------------------------------------------:|
+|            **TRY_NEW_FOOD_PRDCT**             |
+|              **disagree a lot**               |
+|             **disagree a little**             |
+|        **neither agree nor disagree**         |
+|              **agree a little**               |
+|                **agree a lot**                |
+|         **Frequency Missing = 1409**          |
+
+| **I feel guilty when I eat sweets** |
+|:-----------------------------------:|
+|       **FEEL_GUILTY_SWEETS**        |
+|         **disagree a lot**          |
+|        **disagree a little**        |
+|   **neither agree nor disagree**    |
+|         **agree a little**          |
+|           **agree a lot**           |
+|    **Frequency Missing = 1540**     |
+
+| **People have a duty to recycle** |
+|:---------------------------------:|
+|    **PEOPLE_NEED_TO_RECYCLE**     |
+|        **disagree a lot**         |
+|       **disagree a little**       |
+|  **neither agree nor disagree**   |
+|        **agree a little**         |
+|          **agree a lot**          |
+|   **Frequency Missing = 1118**    |
+
+| **I make an effort to recycle** |
+|:-------------------------------:|
+|   **MAKE_EFFORT_TO_RECYCLE**    |
+|       **disagree a lot**        |
+|      **disagree a little**      |
+| **neither agree nor disagree**  |
+|       **agree a little**        |
+|         **agree a lot**         |
+|   **Frequency Missing = 886**   |
+
+| **People have a response to use recycle products** |
+|:--------------------------------------------------:|
+|        **PEOPLE_RESPONS_TO_RECYCLD_PRDCTS**        |
+|                 **disagree a lot**                 |
+|               **disagree a little**                |
+|           **neither agree nor disagree**           |
+|                 **agree a little**                 |
+|                  **agree a lot**                   |
+|            **Frequency Missing = 1110**            |
+
+| **Personal obligation and enviroment responsibility** |
+|:-----------------------------------------------------:|
+|           **PERSONAL_ENVRNMNT_RESPONSIBLE**           |
+|                  **disagree a lot**                   |
+|                 **disagree a little**                 |
+|            **neither agree nor disagree**             |
+|                  **agree a little**                   |
+|                    **agree a lot**                    |
+|             **Frequency Missing = 1116**              |
+
+| **I prefer DrPepper** |
+|:---------------------:|
+|     **Dr_Pepper**     |
+|        **no**         |
+|        **yes**        |
+
+| **I prefer CocaCola** |
+|:---------------------:|
+|     **Coca_Cola**     |
+|        **no**         |
+|        **yes**        |
+
+| **I prefer Sprite** |
+|:-------------------:|
+|     **Sprite**      |
+|       **no**        |
+|       **yes**       |
+
+| **Response by Male** |
+|:--------------------:|
+|       **MALE**       |
+|        **no**        |
+|       **yes**        |
+
+| **Response by Female** |
+|:----------------------:|
+|       **FEMALE**       |
+|         **no**         |
+|        **yes**         |
+
+| **Region: NorthEast** |
+|:---------------------:|
+|     **NORTHEAST**     |
+|        **no**         |
+|        **yes**        |
+
+| **Region: Mid-West** |
+|:--------------------:|
+|     **MIDWEST**      |
+|        **no**        |
+|       **yes**        |
+
+| **Region: South** |
+|:-----------------:|
+|     **SOUTH**     |
+|      **no**       |
+|      **yes**      |
+
+| **Region: West** |
+|:----------------:|
+|     **WEST**     |
+|      **no**      |
+|     **yes**      |
+
+| **Age: 18-24** |
+|:--------------:|
+| **Age_18_24**  |
+|     **no**     |
+|    **yes**     |
+
+| **Age: 25-49** |
+|:--------------:|
+| **Age_25_49**  |
+|     **no**     |
+|    **yes**     |
+
+| **Age: 50+** |
+|:------------:|
+|  **Age_50**  |
+|    **no**    |
+|   **yes**    |
+
+| **Spotify was used during last 7 days** |
+|:---------------------------------------:|
+|               **SPOTIFY**               |
+|                 **no**                  |
+|                 **yes**                 |
+
+| **YouTube was used during last 7 days** |
+|:---------------------------------------:|
+|               **YOUTUBE**               |
+|                 **no**                  |
+|                 **yes**                 |
+
+| **ESPN was viewed during last 7 days** |
+|:--------------------------------------:|
+|                **ESPN**                |
+|                 **no**                 |
+|                **yes**                 |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FACTOR Procedure**
+
+| **Input Data Type**          | Raw Data |
+|:-----------------------------|---------:|
+| **Number of Records Read**   |    25439 |
+| **Number of Records Used**   |    21942 |
+| **N for Significance Tests** |    21942 |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FACTOR Procedure**
+
+**Initial Factor Method: Principal Components**
+
+| **Partial Correlations Controlling all other Variables** |
+|:--------------------------------------------------------:|
+|                                                          |
+|                  **DRINKING_GET_DRUNK**                  |
+|                 **OFTEN_DRINK_ALCOHOL**                  |
+|                  **TRY_NEW_FOOD_PRDCT**                  |
+|                  **FEEL_GUILTY_SWEETS**                  |
+|                **PEOPLE_NEED_TO_RECYCLE**                |
+|                **MAKE_EFFORT_TO_RECYCLE**                |
+|           **PEOPLE_RESPONS_TO_RECYCLD_PRDCTS**           |
+|            **PERSONAL_ENVRNMNT_RESPONSIBLE**             |
+
+| **Kaiser's Measure of Sampling Adequacy: Overall MSA = 0.78651538** |
+|:-------------------------------------------------------------------:|
+|                       **DRINKING_GET_DRUNK**                        |
+|                             0.68962461                              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FACTOR Procedure**
+
+**Initial Factor Method: Principal Components**
+
+|                                      |
+|:------------------------------------:|
+| **Prior Communality Estimates: ONE** |
+
++-------------------------------------------------+
+| **Eigenvalues of the Correlation Matrix: Total\ |
+| = 8 Average = 1**                               |
++:===============================================:+
+|                                                 |
++-------------------------------------------------+
+| **1**                                           |
++-------------------------------------------------+
+| **2**                                           |
++-------------------------------------------------+
+| **3**                                           |
++-------------------------------------------------+
+| **4**                                           |
++-------------------------------------------------+
+| **5**                                           |
++-------------------------------------------------+
+| **6**                                           |
++-------------------------------------------------+
+| **7**                                           |
++-------------------------------------------------+
+| **8**                                           |
++-------------------------------------------------+
+
+![](Screeplot1.png){width="687"}
+
+|          **Factor Pattern**          |
+|:------------------------------------:|
+|                                      |
+|        **DRINKING_GET_DRUNK**        |
+|       **OFTEN_DRINK_ALCOHOL**        |
+|        **TRY_NEW_FOOD_PRDCT**        |
+|        **FEEL_GUILTY_SWEETS**        |
+|      **PEOPLE_NEED_TO_RECYCLE**      |
+|      **MAKE_EFFORT_TO_RECYCLE**      |
+| **PEOPLE_RESPONS_TO_RECYCLD_PRDCTS** |
+|  **PERSONAL_ENVRNMNT_RESPONSIBLE**   |
+
++-------------------------------+
+| **Variance Explained by Each\ |
+| Factor**                      |
++:=============================:+
+| **Factor1**                   |
++-------------------------------+
+| 2.8634159                     |
++-------------------------------+
+
+| **Final Communality Estimates: Total = 4.187467** |
+|:-------------------------------------------------:|
+|              **DRINKING_GET_DRUNK**               |
+|                    0.37758061                     |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FACTOR Procedure**
+
+**Rotation Method: Varimax**
+
+| **Orthogonal Transformation Matrix** |
+|:------------------------------------:|
+|                                      |
+|                **1**                 |
+|                **2**                 |
+
+|      **Rotated Factor Pattern**      |
+|:------------------------------------:|
+|                                      |
+|        **DRINKING_GET_DRUNK**        |
+|       **OFTEN_DRINK_ALCOHOL**        |
+|        **TRY_NEW_FOOD_PRDCT**        |
+|        **FEEL_GUILTY_SWEETS**        |
+|      **PEOPLE_NEED_TO_RECYCLE**      |
+|      **MAKE_EFFORT_TO_RECYCLE**      |
+| **PEOPLE_RESPONS_TO_RECYCLD_PRDCTS** |
+|  **PERSONAL_ENVRNMNT_RESPONSIBLE**   |
+
++-------------------------------+
+| **Variance Explained by Each\ |
+| Factor**                      |
++:=============================:+
+| **Factor1**                   |
++-------------------------------+
+| 2.8568718                     |
++-------------------------------+
+
+| **Final Communality Estimates: Total = 4.187467** |
+|:-------------------------------------------------:|
+|              **DRINKING_GET_DRUNK**               |
+|                    0.37758061                     |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FACTOR Procedure**
+
+**Rotation Method: Varimax**
+
+|                                                  |
+|:------------------------------------------------:|
+| **Scoring Coefficients Estimated by Regression** |
+
++----------------------------------+
+| **Squared Multiple Correlations\ |
+| of the Variables with Each\      |
+| Factor**                         |
++:================================:+
+| **Factor1**                      |
++----------------------------------+
+| 1.0000000                        |
++----------------------------------+
+
+| **Standardized Scoring Coefficients** |
+|:-------------------------------------:|
+|                                       |
+|        **DRINKING_GET_DRUNK**         |
+|        **OFTEN_DRINK_ALCOHOL**        |
+|        **TRY_NEW_FOOD_PRDCT**         |
+|        **FEEL_GUILTY_SWEETS**         |
+|      **PEOPLE_NEED_TO_RECYCLE**       |
+|      **MAKE_EFFORT_TO_RECYCLE**       |
+| **PEOPLE_RESPONS_TO_RECYCLD_PRDCTS**  |
+|   **PERSONAL_ENVRNMNT_RESPONSIBLE**   |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=3 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+
+| **Minimum Distance Between Initial Seeds =** | 8.408203 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 1.0133 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 5622.32 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.27176 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 39.855 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=4 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+
+| **Minimum Distance Between Initial Seeds =** | 7.360341 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.9619 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 5076.37 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.36802 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 9.710 |
+|:---------------------------------|------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=5 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+
+| **Minimum Distance Between Initial Seeds =** | 7.104607 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+|         **5**         |
+|         **6**         |
+|         **7**         |
+|         **8**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.9051 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+|        **5**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 5104.69 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.42914 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 21.246 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+|              **5**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=6 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+
+| **Minimum Distance Between Initial Seeds =** | 6.589243 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+|         **5**         |
+|         **6**         |
+|         **7**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.8842 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+|        **5**        |
+|        **6**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 4523.63 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.46407 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 11.616 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+|              **5**              |
+|              **6**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=7 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+
+| **Minimum Distance Between Initial Seeds =** | 6.513331 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+|         **5**         |
+|         **6**         |
+|         **7**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.8658 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+|        **5**        |
+|        **6**        |
+|        **7**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 4118.01 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.49418 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 2.269 |
+|:---------------------------------|------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+|              **5**              |
+|              **6**              |
+|              **7**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=8 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+|       **8**       |
+
+| **Minimum Distance Between Initial Seeds =** | 6.213953 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+|         **5**         |
+|         **6**         |
+|         **7**         |
+|         **8**         |
+|         **9**         |
+|        **10**         |
+|        **11**         |
+|        **12**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.8240 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+|        **5**        |
+|        **6**        |
+|        **7**        |
+|        **8**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 4258.66 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.51624 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 34.210 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+|       **8**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+|              **5**              |
+|              **6**              |
+|              **7**              |
+|              **8**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=9 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+|       **8**       |
+|       **9**       |
+
+| **Minimum Distance Between Initial Seeds =** | 5.902531 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+|         **5**         |
+|         **6**         |
+|         **7**         |
+|         **8**         |
+|         **9**         |
+|        **10**         |
+|        **11**         |
+|        **12**         |
+|        **13**         |
+|        **14**         |
+|        **15**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 0.7934 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+|        **4**        |
+|        **5**        |
+|        **6**        |
+|        **7**        |
+|        **8**        |
+|        **9**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 4263.33 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.53490 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 53.675 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+|       **4**       |
+|       **5**       |
+|       **6**       |
+|       **7**       |
+|       **8**       |
+|       **9**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+|              **4**              |
+|              **5**              |
+|              **6**              |
+|              **7**              |
+|              **8**              |
+|              **9**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The FASTCLUS Procedure**
+
+**Replace=FULL Radius=0 Maxclusters=3 Maxiter=100 Converge=0.02**
+
+| **Initial Seeds** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+
+| **Minimum Distance Between Initial Seeds =** | 8.408203 |
+|:---------------------------------------------|---------:|
+
+| **Iteration History** |
+|:---------------------:|
+|     **Iteration**     |
+|         **1**         |
+|         **1**         |
+|         **2**         |
+|         **3**         |
+|         **4**         |
+
+|                                     |
+|:------------------------------------|
+| Convergence criterion is satisfied. |
+
+| **Criterion Based on Final Seeds =** | 1.0133 |
+|:-------------------------------------|-------:|
+
+| **Cluster Summary** |
+|:-------------------:|
+|     **Cluster**     |
+|        **1**        |
+|        **2**        |
+|        **3**        |
+
+|                                                            |
+|:----------------------------------------------------------:|
+| **323 Observation(s) were omitted due to missing values.** |
+
+|   **Statistics for Variables**    |
+|:---------------------------------:|
+|           **Variable**            |
+|       **IndulgenceFactors**       |
+|      **GreenAttitudeFactor**      |
+|      **drink_between_meals**      |
+|    **like_to_try_new_drinks**     |
+| **when_on_tv_go_online_get_more** |
+|    **buy_online_or_in_store**     |
+|           **OVER-ALL**            |
+
+| **Pseudo F Statistic =** | 5622.32 |
+|:-------------------------|--------:|
+
+| **Approximate Expected Over-All R-Squared =** | 0.27176 |
+|:----------------------------------------------|--------:|
+
+| **Cubic Clustering Criterion =** | 39.855 |
+|:---------------------------------|-------:|
+
+|                                                                         |
+|:-----------------------------------------------------------------------:|
+| **WARNING: The two values above are invalid for correlated variables.** |
+
+| **Cluster Means** |
+|:-----------------:|
+|    **Cluster**    |
+|       **1**       |
+|       **2**       |
+|       **3**       |
+
+| **Cluster Standard Deviations** |
+|:-------------------------------:|
+|           **Cluster**           |
+|              **1**              |
+|              **2**              |
+|              **3**              |
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+|                    |
+|:------------------:|
+| **The SAS System** |
+
+**The MEANS Procedure**
+
+**Cluster=.**
+
+| Variable                                | N   | Mean      | Std Dev   | Minimum   | Maximum   |
+|:----------------------------------------|:----|:----------|:----------|:----------|:----------|
+| **Dr_Pepper**                           | 323 | 0.0773994 | 0.2676387 | 0.0000000 | 1.0000000 |
+| **Coca_Cola**                           | 323 | 0.3188854 | 0.4667677 | 0.0000000 | 1.0000000 |
+| **Sprite**                              | 323 | 0.0650155 | 0.2469357 | 0.0000000 | 1.0000000 |
+| **MALE**                                | 323 | 0.4551084 | 0.4987533 | 0.0000000 | 1.0000000 |
+| **FEMALE**                              | 323 | 0.5448916 | 0.4987533 | 0.0000000 | 1.0000000 |
+| **NORTHEAST**                           | 323 | 0.1919505 | 0.3944454 | 0.0000000 | 1.0000000 |
+| **SOUTH**                               | 323 | 0.4520124 | 0.4984641 | 0.0000000 | 1.0000000 |
+| **Age_18_24**                           | 323 | 0.0990712 | 0.2992211 | 0.0000000 | 1.0000000 |
+| **Age_50**                              | 323 | 0.6377709 | 0.4813903 | 0.0000000 | 1.0000000 |
+| **YOUTUBE**                             | 323 | 0.1052632 | 0.3073684 | 0.0000000 | 1.0000000 |
+| **SPOTIFY**                             | 323 | 0.0216718 | 0.1458355 | 0.0000000 | 1.0000000 |
+| **I prefer DrPepper**                   | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer CocaCola**                   | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer Sprite**                     | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Male**                    | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Female**                  | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: NorthEast**                   | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: South**                       | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 18-24**                          | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 50+**                            | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **YouTube was used during last 7 days** | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Spotify was used during last 7 days** | 323 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+
+**Cluster = 1**
+
+| Variable                                | N    | Mean      | Std Dev   | Minimum   | Maximum   |
+|:----------------------------------------|:-----|:----------|:----------|:----------|:----------|
+| **Dr_Pepper**                           | 7538 | 0.0862298 | 0.2807217 | 0.0000000 | 1.0000000 |
+| **Coca_Cola**                           | 7538 | 0.3357655 | 0.4722887 | 0.0000000 | 1.0000000 |
+| **Sprite**                              | 7538 | 0.0874237 | 0.2824737 | 0.0000000 | 1.0000000 |
+| **MALE**                                | 7538 | 0.4292916 | 0.4950079 | 0.0000000 | 1.0000000 |
+| **FEMALE**                              | 7538 | 0.5707084 | 0.4950079 | 0.0000000 | 1.0000000 |
+| **NORTHEAST**                           | 7538 | 0.1768374 | 0.3815563 | 0.0000000 | 1.0000000 |
+| **SOUTH**                               | 7538 | 0.3857787 | 0.4868110 | 0.0000000 | 1.0000000 |
+| **Age_18_24**                           | 7538 | 0.0416556 | 0.1998142 | 0.0000000 | 1.0000000 |
+| **Age_50**                              | 7538 | 0.7512603 | 0.4323113 | 0.0000000 | 1.0000000 |
+| **YOUTUBE**                             | 7538 | 0.1771027 | 0.3817809 | 0.0000000 | 1.0000000 |
+| **SPOTIFY**                             | 7538 | 0.0222871 | 0.1476254 | 0.0000000 | 1.0000000 |
+| **I prefer DrPepper**                   | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer CocaCola**                   | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer Sprite**                     | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Male**                    | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Female**                  | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: NorthEast**                   | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: South**                       | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 18-24**                          | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 50+**                            | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **YouTube was used during last 7 days** | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Spotify was used during last 7 days** | 7538 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+
+**Cluster = 2**
+
+| Variable                                | N     | Mean      | Std Dev   | Minimum   | Maximum   |
+|:----------------------------------------|:------|:----------|:----------|:----------|:----------|
+| **Dr_Pepper**                           | 10503 | 0.1126345 | 0.3161605 | 0.0000000 | 1.0000000 |
+| **Coca_Cola**                           | 10503 | 0.3767495 | 0.4845943 | 0.0000000 | 1.0000000 |
+| **Sprite**                              | 10503 | 0.1139674 | 0.3177868 | 0.0000000 | 1.0000000 |
+| **MALE**                                | 10503 | 0.4606303 | 0.4984713 | 0.0000000 | 1.0000000 |
+| **FEMALE**                              | 10503 | 0.5393697 | 0.4984713 | 0.0000000 | 1.0000000 |
+| **NORTHEAST**                           | 10503 | 0.1939446 | 0.3954048 | 0.0000000 | 1.0000000 |
+| **SOUTH**                               | 10503 | 0.3812244 | 0.4857106 | 0.0000000 | 1.0000000 |
+| **Age_18_24**                           | 10503 | 0.1168238 | 0.3212255 | 0.0000000 | 1.0000000 |
+| **Age_50**                              | 10503 | 0.4356850 | 0.4958699 | 0.0000000 | 1.0000000 |
+| **YOUTUBE**                             | 10503 | 0.3752261 | 0.4842043 | 0.0000000 | 1.0000000 |
+| **SPOTIFY**                             | 10503 | 0.0910216 | 0.2876535 | 0.0000000 | 1.0000000 |
+| **I prefer DrPepper**                   | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer CocaCola**                   | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer Sprite**                     | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Male**                    | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Female**                  | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: NorthEast**                   | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: South**                       | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 18-24**                          | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 50+**                            | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **YouTube was used during last 7 days** | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Spotify was used during last 7 days** | 10503 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+
+**Cluster 3**
+
+| Variable                                | N    | Mean      | Std Dev   | Minimum   | Maximum   |
+|:----------------------------------------|:-----|:----------|:----------|:----------|:----------|
+| **Dr_Pepper**                           | 7075 | 0.1390813 | 0.3460558 | 0.0000000 | 1.0000000 |
+| **Coca_Cola**                           | 7075 | 0.4171025 | 0.4931150 | 0.0000000 | 1.0000000 |
+| **Sprite**                              | 7075 | 0.1301767 | 0.3365215 | 0.0000000 | 1.0000000 |
+| **MALE**                                | 7075 | 0.4187986 | 0.4933971 | 0.0000000 | 1.0000000 |
+| **FEMALE**                              | 7075 | 0.5812014 | 0.4933971 | 0.0000000 | 1.0000000 |
+| **NORTHEAST**                           | 7075 | 0.1831802 | 0.3868415 | 0.0000000 | 1.0000000 |
+| **SOUTH**                               | 7075 | 0.3817668 | 0.4858542 | 0.0000000 | 1.0000000 |
+| **Age_18_24**                           | 7075 | 0.1139223 | 0.3177393 | 0.0000000 | 1.0000000 |
+| **Age_50**                              | 7075 | 0.4705300 | 0.4991660 | 0.0000000 | 1.0000000 |
+| **YOUTUBE**                             | 7075 | 0.3188693 | 0.4660712 | 0.0000000 | 1.0000000 |
+| **SPOTIFY**                             | 7075 | 0.0809894 | 0.2728381 | 0.0000000 | 1.0000000 |
+| **I prefer DrPepper**                   | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer CocaCola**                   | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **I prefer Sprite**                     | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Male**                    | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Response by Female**                  | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: NorthEast**                   | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Region: South**                       | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 18-24**                          | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Age: 50+**                            | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **YouTube was used during last 7 days** | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |
+| **Spotify was used during last 7 days** | 7075 | 0.0000000 | 0.0000000 | 0.0000000 | 1.0000000 |

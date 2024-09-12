@@ -22,6 +22,14 @@ website:
             file: data-exercise/data-exercise.qmd
           - text: "CDC Data Exercise"
             file: cdcdata-exercise/cdcdata-exercise.qmd
+          - text: "Time Series"
+            file: time-series/practicum1.qmd
+          - text: "Market Segmentation: Dr Pepper"
+            file: market-segmentation/market-segmentation.qmd
+          - text: "Predictive Modeling"
+            file: predictive-modeling/predictive-modeling.qmd
+            
+            
     right:
       - icon: github 
         href: https://github.com/Jramirez1995/Joaquin_Ramriez_Portfolio_II.git       

@@ -1,0 +1,2381 @@
+---
+title: "Predictive Modeling"
+author: "Joaquin Ramirez"
+---
+
+Below is an overview of the key concepts I learned, focusing on predictive modeling techniques and analytics tools with a practical approach using R programming. The topics I explored include:
+
+-   **Data Preprocessing**: Techniques for cleaning and transforming raw data to make it suitable for analysis, including handling missing values and normalizing data.
+
+-   **Overfitting and Model Tuning**: Understanding the risk of overfitting and employing strategies to optimize model performance through hyperparameter tuning, cross-validation, and regularization methods.
+
+-   **Supervised Methods**:
+
+    -   **Linear Regression**: Analyzing relationships between dependent and independent variables using linear models.
+
+    -   **Nonlinear Regression**: Addressing more complex relationships between variables with nonlinear models.
+
+    -   **Classification**: Applying algorithms to classify data into categories, using techniques such as logistic regression, decision trees, and ensemble methods.
+
+-   **Unsupervised Methods**:
+
+    -   **Clustering**: Grouping data into clusters to identify patterns and similarities, utilizing methods such as k-means and hierarchical clustering.
+
+    -   **Principal Component Analysis (PCA)**: Reducing the dimensionality of data to simplify models while preserving essential variability.
+
+    -   **Outlier Detection**: Identifying and managing outliers to improve model accuracy and robustness.
+
+-   **Advanced Techniques**:
+
+    -   **Support Vector Machines (SVM)**: Leveraging SVM for both classification and regression tasks to find optimal decision boundaries and manage high-dimensional data.
+
+    -   **Tree-Based Models**: Implementing models such as decision trees, Random Forests, and Gradient Boosting to handle complex data structures and improve predictive accuracy.
+
+Through this comprehensive approach, I gained the ability to choose, implement, and interpret predictive models for a variety of applications. I also developed the skills to create detailed and insightful data analysis reports, effectively communicating findings and supporting decision-making processes.
+
+# [Student Dataset Case Study]{style="color:blue;"}
+
+R offers a wide range of functions for data preprocessing, calculation, manipulation, and graphical display, and can be easily extended with new functions through downloadable packages from the Comprehensive R Archive Network (CRAN).
+
+As an example, the studentdata dataset from the LearnBayes package is used, containing 657 observations across 11 variables:
+
+**Student** student number **Height** height in inches **Gender** gender **Shoes** number of pairs of shoes owned **Number** number chosen between 1 and 10 **Dvds** name of movie dvds owned **ToSleep** time the person went to sleep the previous night (hours past midnight) **WakeUp** time the person woke up the next morning **Haircut** cost of last haircut including tip **Job** number of hours working on a job per week **Drink** usual drink at suppertime among milk, water, and pop
+
+Install LearnBayes package in R/Rstudio and then access studentdata
+
+```{r}
+#Install the LearnBayes package
+#Keep in mind that R is case-sensitive
+
+#install.packages('LearnBayes')
+
+#You just need to install once and then you can directly use
+#so long as you access the LearnBayes package
+library(LearnBayes)
+
+#Access studentdata from the LearnBayes package
+data(studentdata)
+attach(studentdata)
+
+#show part of data
+head(studentdata)
+
+
+```
+
+After accessing the studentdata, we can now use R to answer the following questions:
+
+1.  The variable Dvds in the student dataset contains the number of movie DVDs owned by students in the class.
+
+<!-- -->
+
+a)  Construct a histogram of this variable using the hist command in R.
+
+```{r}
+#?hist
+# Construct a histogram of the Dvds variable
+hist(Dvds,main = "DVDs Owned", xlab = "Number of DVDs", col = "red")
+
+
+```
+
+b)  Summarize this variable using the summary command in R.
+
+```{r}
+summary(Dvds)
+```
+
+c)  Use the table command in R to construct a frequency table of the individual values of Dvds that were observed. If one constructs a barplot of these tabled values using the command barplot(table(Dvds),col='red') one will see that particular response values are very popular. Is there any explanation for these popular values for the number of DVDs owned?
+
+```{r}
+table = table(Dvds)
+
+print(table)
+
+barplot(table,col='red', main = "DVDs Owned", xlab = "Number of DVDs")
+
+
+
+```
+
+Based on the limited information provided, we can assume there are many reasons for the number of DVDs owned. Some of these reasons include, but are not limited to: sales of DVDs, the release of new or classic DVDs, are students collecting DVDs and DVDs received as gifts. In order to dive deeper into the analysis, it would be crucial to know the name of the movies. This information could provide important details about the reasons why certain DVDs are appearing more often.
+
+2.  The variable Height contains the height (in inches) of each student in the class.
+
+<!-- -->
+
+a)  Construct parallel boxplots of the heights using the Gender variable. Hint: boxplot(Height\~Gender)
+
+```{r}
+
+boxplot(Height~Gender, main = "Height by Gender", ylab = "Height (inches)")
+  
+```
+
+b)  If one assigns the boxplot output to a variable output=boxplot(Height\~Gender) then output is a list that contains statistics used in constructing the boxplots. Print output to see the statistics that are stored.
+
+```{r}
+
+output=boxplot(Height~Gender, main = "Height by Gender", ylab = "Height (inches)")
+print(output)
+  
+```
+
+c)  On average, how much taller are male students than female students? 3
+
+```{r}
+average = tapply(Height, Gender, mean, na.rm = TRUE)
+print(average)
+
+```
+
+```{r}
+avg_female_height = 64.75701 
+avg_male_height = 70.50767 
+
+c =  avg_male_height - avg_female_height
+print(c)
+
+```
+
+Male: 70.50767 Female: 64.75701
+
+On average males students are 5.75066 inches taller than female students.
+
+3.  The variables ToSleep and WakeUp contain, respectively, the time to bed and wake-up time for each student the previous evening. (The data are recorded as hours past midnight, so a value of −2 indicates 10 p.m.)
+
+<!-- -->
+
+a)  Construct a scatterplot of ToSleep and WakeUp.
+
+```{r}
+plot(ToSleep, WakeUp, main = "Scatterplot: ToSleep and WakeUp", xlab = "Sleep-Time", ylab = "Wake-up Time")
+
+```
+
+b)  Find a least-squares fit to these data using the lm command and then place the least-squares fit on the scatterplot using the abline command.
+
+```{r}
+plot(ToSleep, WakeUp, main = "Scatterplot: ToSleep and WakeUp", xlab = "Sleep-Time", ylab = "Wake-up Time")
+fit = lm(WakeUp~ToSleep)
+summary(fit)
+abline(fit, col='blue', lwd=2)
+
+```
+
+# [Analysis of Glass Identification Data: Exploratory Data Analysis and Model Development]{style="color:blue;"}
+
+```{r}
+#install.packages('mlbench')
+#install.packages('ggplot2')
+#install.packages('GGally')
+#install.packages('corrplot')
+#install.packages('gridExtra')
+#install.packages('kernlab')
+library(kernlab) 
+library(mlbench)
+library(ggplot2)
+library(GGally)
+library(corrplot)
+library(gridExtra)
+library(AppliedPredictiveModeling)
+library(caret)
+```
+
+The UC Irvine Machine Learning Repository contains a data set related to glass identification. The data consists of 214 glass samples labeled as one of seven class categories. There are nine predictors, including the refractive index and percentages of eight elements: Na, Mg, Al, Si, K, Ca, Ba, and Fe.
+
+The data can be accessed via
+
+```{r}
+data(Glass)
+str(Glass)
+```
+
+**a) Utilize suitable visualizations (employ any types of data visualization you deem appropriate) to explore the predictor variables, aiming to understand their distributions and relationships among them.**
+
+**Boxplots:**
+
+```{r}
+data(Glass)
+Glass$Type <- as.factor(Glass$Type)
+
+boxplots <- lapply(names(Glass)[1:9], function(var) {ggplot(Glass, aes_string(x = "Type", y = var)) + 
+    geom_boxplot() + 
+    ggtitle(paste("Boxplot of", var)) + 
+    theme_minimal() +
+    theme_dark()})
+
+boxplots_combined <- do.call(grid.arrange, c(boxplots, ncol = 3))
+```
+
+**Histograms:**
+
+```{r}
+histograms <- lapply(names(Glass)[1:9], function(var) {ggplot(Glass, aes_string(x = var)) + 
+    geom_histogram(bins = 30) + 
+    ggtitle(paste("Histogram of", var)) + 
+    theme_minimal() +
+    theme_classic()})
+
+
+histogram_combined <- do.call(grid.arrange, c(histograms, ncol = 3))
+```
+
+I utilized both Histograms and Boxplots, you can definitely see a lot of outliers in the plots displayed. Na and Al, seem to be normally distributed but all other seem to be either skewed to the left or to the right.
+
+**b) Do there appear to be any outliers in the data? Are any predictors skewed? Show all the work!**
+
+-   Function to create boxplots for each predictor:
+
+```{r}
+
+create_boxplot <- function(data, var) {
+  ggplot(data, aes_string(y = var)) + 
+    geom_boxplot() + 
+    ggtitle(paste("Boxplot of", var)) + 
+    theme_minimal() +
+    theme_classic()}
+
+
+boxplots <- lapply(names(Glass)[1:9], function(var) create_boxplot(Glass, var))
+do.call(grid.arrange, c(boxplots, ncol = 3))
+```
+
+Predictors Outliers from Boxplots:
+
+-   RI (Refractive Index): Significant outliers exist
+
+-   Na (Sodium): Fewer outliers exist, with some extreme values
+
+-   Mg (Magnesium): No outliers
+
+-   Al (Aluminum): Significant Outliers exist, with extreme values
+
+-   Si (Silicon): Significant outliers exist, with extreme values
+
+-   K (Potassium): Outliers exist, fewer extreme values
+
+-   Ca (Calcium): Significant outliers are existing.
+
+-   Ba (Barium): Significant outliers observed, with many extreme value
+
+-   Fe (Iron): Outliers observed with few extreme values
+
+-   Function to create histograms for each predictor
+
+```{r}
+create_histogram <- function(data, var) {
+  ggplot(data, aes_string(x = var)) + 
+    geom_histogram(bins = 30) + 
+    ggtitle(paste("Histogram of", var)) + 
+    theme_minimal() +
+    theme_classic()}
+
+
+histograms <- lapply(names(Glass)[1:9], function(var) create_histogram(Glass, var))
+histo <- do.call(grid.arrange, c(histograms, ncol = 3))
+```
+
+Predictors Skewness from Histogram:
+
+-   RI (Refractive Index): Right - Postive skewed
+-   Na (Sodium): Right - Postive skewed
+-   Mg (Magnesium):Left - Negative skewed
+-   Al (Aluminum): Symmetrical, balanced
+-   Si (Silicon): Left - Negatively skewed
+-   K (Potassium): Left - Negative skewed
+-   Ca (Calcium): Symmetrical, balanced
+-   Ba (Barium): Non symmetrical
+-   Fe (Iron): Non symmetrical
+
+**Conclusion (Predictors):**
+
+We can determine from the observations (Boxplot and Histograms), all but one showed outliers with extreme values. Most of these predictors where either skewed to the left (negative) or to the right (positive). All this to say that we need to consider the outliers and the distribution charactertics going forward.
+
+c)  Are there any relevant transformations of one or more predictors that might improve the classification model? Show all the work!
+
+```{r}
+Glass_transformed <- Glass
+Glass_transformed[] <- lapply(Glass_transformed, function(x) if (is.numeric(x)) log(x + 1) else x)
+names(Glass_transformed)[names(Glass_transformed) != "Type"] <- paste0("log_", names(Glass_transformed)[names(Glass_transformed) != "Type"])
+
+Glass_sqrt_transformed <- Glass
+Glass_sqrt_transformed[] <- lapply(Glass_sqrt_transformed, function(x) if (is.numeric(x)) sqrt(x) else x)
+names(Glass_sqrt_transformed)[names(Glass_sqrt_transformed) != "Type"] <- paste0("sqrt_", names(Glass_sqrt_transformed)[names(Glass_sqrt_transformed) != "Type"])
+
+Glass_all_transformed <- cbind(Glass_transformed, Glass_sqrt_transformed[,-which(names(Glass_sqrt_transformed) == "Type")])
+
+log_histograms <- lapply(names(Glass_transformed)[1:9], function(var) {
+  ggplot(Glass_transformed, aes_string(x = var)) + 
+    geom_histogram(bins = 30) + 
+    ggtitle(paste("Histogram of", var)) + 
+    theme_minimal() +
+    theme_classic()})
+
+sqrt_histograms <- lapply(names(Glass_sqrt_transformed)[1:9], function(var) {
+  ggplot(Glass_sqrt_transformed, aes_string(x = var)) + 
+    geom_histogram(bins = 30) + 
+    ggtitle(paste("Histogram of", var)) + 
+    theme_minimal() +
+    theme_classic()})
+
+histogram_combined <- do.call(grid.arrange, c(histograms, ncol = 3))
+log_histogram_combined <- do.call(grid.arrange, c(log_histograms, ncol = 3))
+sqrt_histogram_combined <- do.call(grid.arrange, c(sqrt_histograms, ncol = 3))
+```
+
+```{r}
+
+set.seed(123)
+trainIndex <- createDataPartition(Glass$Type, p = 0.8, list = FALSE)
+GlassTrain <- Glass_all_transformed[trainIndex, ]
+GlassTest <- Glass_all_transformed[-trainIndex, ]
+
+model_transformed <- train(Type ~ ., data = GlassTrain, method = 'rpart')
+
+
+pred_transformed <- predict(model_transformed, newdata = GlassTest)
+
+
+cm_transformed <- confusionMatrix(pred_transformed, GlassTest$Type)
+
+cat("Transformed Model Performance:\n")
+print(cm_transformed)
+```
+
+After I applied the transformation and achieved accuracy of 57.5%, and the Kappa is 0.371. We can say there is a level of agreement between the variables. Now looking at the classes that were observed we can see that class 1 and 2 are strong in their classification while the rest need improvement. Maybe if we refine our focus on the variblae we observe we can improve out accurancy.
+
+d)  Fit SVM model (You may refer to Chapter 4 material for details) using the following R codes: (This code will be discussed in detail in the following chapters)
+
+```{r}
+set.seed(231) 
+sigDist <- sigest(Type~ ., data = Glass, frac = 1)
+sigDist 
+```
+
+```{r}
+svmTuneGrid <- data.frame(sigma = as.vector(sigDist)[1], C = 2^(-2:10)) 
+svmTuneGrid 
+
+```
+
+```{r}
+
+set.seed(231)
+
+sigDist <- sigest(Type ~ ., data = Glass, frac = 1)
+
+svmTuneGrid <- data.frame(sigma = as.vector(sigDist)[1], C = 2^(-2:10))
+
+svmModel <- ksvm(Type ~ ., data = Glass, type = "C-svc", kernel = "rbfdot", kpar = list(sigma = as.vector(sigDist)[1]), C = 2^(-2:10))
+
+print(svmModel)
+
+```
+
+```{r train-svm-model}
+set.seed(1056)
+# Fit SVM model using 10-fold cross-validation
+svmFit <- train(Type ~ .,
+                data = Glass, method = "svmRadial",
+                preProcess = c("center", "scale"),
+                tuneGrid = svmTuneGrid,
+                trControl = trainControl(method = "repeatedcv", repeats = 5))
+
+
+plot(svmFit, scales = list(x = list(log = 2)))
+
+```
+
+# [Predicting Meat Moisture Content Using Infrared Spectroscopy: Model Comparison and Evaluation]{style="color:blue;"}
+
+Infrared (IR) spectroscopy technology is used to determine the chemical makeup of a substance. The theory of IR spectroscopy holds that unique molecular structures absorb IR frequencies differently. In practice a spectrometer fires a series of IR frequencies into a sample material, and the device measures the absorbance of the sample at each individual frequency. This series of measurements creates a spectrum profile which can then be used to determine the chemical makeup of the sample material.
+
+A Tecator Infratec Food and Feed Analyzer instrument was used to analyze 215 samples of meat across 100 frequencies. A sample of these frequency profiles is displayed in Fig. 6.20. In addition to an IR profile, analytical chemistry determined the percent content of water, fat, and protein for each sample. If we can establish a predictive relationship between IR spectrum and fat content, then food scientists could predict a sample's fat content with IR instead of using analytical chemistry. This would provide costs savings, since analytical chemistry is a more expensive, time-consuming process
+
+**a) Start R and use these commands to load the data:**
+
+```{r}
+library(caret)
+data(tecator)
+
+# use ?tecator to see more details
+?tecator
+
+# Check the structure of the data
+str(absorp)
+str(endpoints)
+```
+
+The matrix absorp contains the 100 absorbance values for the 215 samples, while matrix endpoints contain the percent of moisture, fat, and protein in columns 1--3, respectively. To be more specific
+
+```{r}
+# Assign the percent content to variables
+moisture <- endpoints[,1]
+fat <- endpoints[,2]
+protein <- endpoints[,3]
+```
+
+```{r}
+summary(moisture)
+#print(moisture)
+```
+
+```{r}
+summary(fat)
+#print(fat)
+```
+
+```{r}
+summary(protein)
+#print(protein)
+```
+
+```{r}
+# Check for missing values
+sum(is.na(absorp))
+sum(is.na(moisture))
+sum(is.na(fat))
+sum(is.na(protein))
+```
+
+**b) In this example the predictors are the measurements at the individual frequencies. Because the frequencies lie in a systematic order (850--1,050nm), the predictors have a high degree of correlation. Hence, the data lie in a smaller dimension than the total number of predictors (215). Use PCA to determine the effective dimension of these data. What is the effective dimension?**
+
+```{r}
+#  PCA on the absorp data
+pca_model <- prcomp(absorp, center = TRUE, scale. = TRUE)
+
+# Summary of PCA 
+summary(pca_model)
+
+
+```
+
+```{r}
+# Scree plot to visualize the variance explained by each component
+screeplot(pca_model, type = "lines", main = "PCA Model")
+```
+
+Based on both the PCA results above, first the pca summary output, and then screeplot visualization, tells me how much of the total variance is explained as PC are added. The following observations come from the output above:
+
+-   PC1 explains 98.63% of the total variance.
+
+-   PC2: 0.97% proportion variance, and 99.60% cumulative proportion.
+
+-   PC3: 0.279% proportion variance, and 99.875% cumulative proportion.
+
+-   PC4: 0.114% proportion variance, and 99.99% cumulative proportion.
+
+Decision:
+
+As shown in the screeplot and the summary, PC1 explains a very high percentage (98.63%), majority of the variability is captured here. The rest of the pc's explain additional variance, but they're unlikely to provide meaningful information.
+
+**c) Split the data into a training and a test set the response of the percentage of moisture, pre-process the data, and build at least three models described in this chapter (i.e., ordinary least squares, PCR, PLS, Ridge, and ENET). For those models with tuning parameters, what are the optimal values of the tuning parameter(s)?**
+
+```{r}
+set.seed(123) 
+trainIndex <- createDataPartition(moisture, p = 0.7, list = FALSE)
+trainData <- absorp[trainIndex, ]
+testData <- absorp[-trainIndex, ]
+trainMoisture <- moisture[trainIndex]
+testMoisture <- moisture[-trainIndex]
+
+
+trainData <- as.data.frame(trainData)
+testData <- as.data.frame(testData)
+colnames(trainData) <- paste0("V", 1:ncol(trainData))
+colnames(testData) <- paste0("V", 1:ncol(testData))
+
+
+preProcValues <- preProcess(trainData, method = c("center", "scale", "pca"))
+trainTransformed <- predict(preProcValues, trainData)
+testTransformed <- predict(preProcValues, testData)
+```
+
+```{r}
+set.seed(123)
+ols_model <- train(trainTransformed, trainMoisture, method = "lm")
+ols_model
+```
+
+```{r}
+set.seed(123)
+pcr_model <- train(trainTransformed, trainMoisture, method = "pcr", trControl = trainControl(method = "cv"))
+pcr_model
+```
+
+```{r}
+set.seed(123)
+pls_model <- train(trainTransformed, trainMoisture, method = "pls", trControl = trainControl(method = "cv"))
+pls_model
+```
+
+```{r}
+set.seed(123)
+ridge_model <- train(trainTransformed, trainMoisture, method = "ridge", trControl = trainControl(method = "cv"))
+ridge_model
+```
+
+```{r}
+set.seed(123)
+glmnet <- train(trainTransformed, trainMoisture, method = "glmnet", trControl = trainControl(method = "cv"))
+glmnet
+```
+
+Summary:
+
+**OLS:**
+
+-   RMSE: 8.521083\
+-   Rsquared: 0.3199381\
+-   MAE: 6.646874
+-   Tuning parameter held constant at a value of TRUE. (No tuning parameter)
+
+**PCR:**
+
+-   RMSE: 8.929481\
+-   Rsquared: 0.2947719\
+-   MAE: 7.356878\
+-   Tuning parameter held constant at a value of 1.
+
+**PLS:**
+
+-   RMSE: 8.918747\
+-   Rsquared: 0.2967856\
+-   MAE: 7.34553\
+-   Tuning parameter held constant at a value of 1.
+
+**Ridge Regression:**
+
+-   RMSE: 8.536797\
+-   Rsquared: 0.3904599\
+-   MAE: 6.774300\
+-   Tuning parameter the final value used for the model was lambda = 0.1.
+
+**Glmnet:**
+
+-   RMSE: 8.541750\
+-   Rsquared: 0.3903215\
+-   MAE: 6.783427
+-   Tuning parameters alpha = 0.1 and lambda = 0.1016872
+
+Based on the lowest RMSE, OLS and Ridge Regression are the better models. They also they have a high rquared explaining a higher variance proportion.
+
+**d) Which model has the best predictive ability? Is any model significantly better or worse than the others?**
+
+The models are ordered from best to worst in terms of RMSE (predictive performance), based on the results provided above:
+
+**1) OLS:**
+
+-   RMSE: 8.521083\
+-   Rsquared: 0.3199381\
+-   MAE: 6.646874
+-   Tuning parameter held constant at a value of TRUE. (No tuning parameter)
+
+**2) Ridge Regression:**
+
+-   RMSE: 8.536797\
+-   Rsquared: 0.3904599\
+-   MAE: 6.774300\
+-   Tuning parameter the final value used for the model was lambda = 0.1.
+
+**3) Glmnet:**
+
+-   RMSE: 8.541750\
+-   Rsquared: 0.3903215\
+-   MAE: 6.783427
+-   Tuning parameters alpha = 0.1 and lambda = 0.1016872
+
+**4) PLS:**
+
+-   RMSE: 8.918747\
+-   Rsquared: 0.2967856\
+-   MAE: 7.34553\
+-   Tuning parameter held constant at a value of 1.
+
+**5) PCR:**
+
+-   RMSE: 8.929481\
+-   Rsquared: 0.2947719\
+-   MAE: 7.356878\
+-   Tuning parameter held constant at a value of 1.
+
+The models are ordered first by the lowest RMSE and then highest R-squared to determine their performance. Based on the criteria of lowest RMSE, the OLS model is the best, this tells me that the OLS model has the lowest prediction error. However, you can also get away with using the Ridge model because it has the second lowest RMSE, and highest rsquared, indicating minimal error and a large proportion of the variance is explained by this model.
+
+**e) Explain which model you would use for predicting the percentage of moisture of a sample.**
+
+The model I would use to predict the percentage of moisture in a sample would be the one with the lowest RMSE because it has the lowest predictive error and a model with a high rsquared which explains variance proportion. In the outputs above, the model that best fits this is the Ridge model.
+
+# [Comparative Performance of Machine Learning Models on Friedman's Benchmark Data: Analyzing kNN, MARS, Neural Networks, and SVM]{style="color:blue;"}
+
+7.2. Friedman (1991) introduced several benchmark data sets create by simulation. One of these simulations used the following nonlinear equation to create data:
+
+y = 10 sin(πx1x2) + 20(x3 − 0.5)2 + 10x4 + 5x5 + N(0, σ2)
+
+where the x values are random variables uniformly distributed between \[0, 1\] (there are also 5 other non-informative variables also created in the simulation). The package mlbench contains a function called mlbench.friedman1 that simulates these data:
+
+Note: For this exercise, you need to consider at least three of the following models: kNN, MARS, Neural Network, and Support vector machines with a specified kernel.
+
+```{r}
+#install.packages("caret")
+# Loading libraries
+library(mlbench)
+library(caret)
+library(earth)
+library(e1071)
+library(nnet)
+```
+
+```{r}
+set.seed(200)
+
+# Generate training data
+trainingData <- mlbench.friedman1(200, sd = 1)
+trainingData$x <- data.frame(trainingData$x) # We convert the 'x' data from a matrix to a data frame. One reason is that this will give the columns names.
+
+
+featurePlot(trainingData$x, trainingData$y) # Visualize the data using featurePlot
+
+# Generate Test Data
+testData <- mlbench.friedman1(5000, sd = 1) # This creates a list with a vector 'y' and a matrix of predictors 'x'. Also simulate a large test set to estimate the true error rate with good precision
+testData$x <- data.frame(testData$x)
+```
+
+Scatterplot Observations:
+
+-   X1-X5: show a positive trend.
+-   X6-X10: show no specific trend, no correlation
+
+# [Tuning several models: kNN, MARS, Neural Network, and SVM.]{style="color:blue;"}
+
+```{r}
+# Train k-Nearest Neighbors (kNN) model
+knnModel <- train(x = trainingData$x,
+                  y = trainingData$y,
+                  method = "knn",
+                  preProc = c("center", "scale"),
+                  tuneLength = 10)
+print(knnModel)
+
+# Predict and evaluate kNN model
+knnPred <- predict(knnModel, newdata = testData$x)
+knnResults <- postResample(pred = knnPred, obs = testData$y)  # The function 'postResample' can be used to get the test set perforamnce values
+cat("\n\n")
+print(knnResults)
+```
+
+```{r}
+# Multivariate Adaptive Regression Splines (MARS)
+marsModel <- train(x = trainingData$x,
+                   y = trainingData$y,
+                   method = "earth",
+                   preProc = c("center", "scale"),
+                   tuneLength = 10)
+print(marsModel)
+
+marsPred <- predict(marsModel, newdata = testData$x)
+marsResults <- postResample(pred = marsPred, obs = testData$y)
+cat("\n\n")
+print(marsResults)
+```
+
+```{r}
+# Neural Network
+nnetModel <- train(x = trainingData$x,
+                   y = trainingData$y,
+                   method = "nnet",
+                   preProc = c("center", "scale"),
+                   tuneLength = 5,
+                   trace = FALSE,
+                   maxit = 500,
+                   linout = TRUE) # linout = TRUE for regression
+print(nnetModel)
+
+nnetPred <- predict(nnetModel, newdata = testData$x)
+nnetResults <- postResample(pred = nnetPred, obs = testData$y)
+cat("\n\n")
+print(nnetResults)
+```
+
+```{r}
+# SVM
+svmModel <- train(x = trainingData$x,
+                  y = trainingData$y,
+                  method = "svmRadial",
+                  preProc = c("center", "scale"),
+                  tuneLength = 10)
+print(svmModel)
+
+svmPred <- predict(svmModel, newdata = testData$x)
+svmResults <- postResample(pred = svmPred, obs = testData$y)
+cat("\n\n")
+print(svmResults)
+```
+
+**Which models appear to give the best performance? Does MARS select the informative predictors (those named X1--X5)?**
+
+Performance Summary:
+
+MARS:
+
+-   Optimal nprune: 10
+-   RMSE: 1.776575
+-   R-squared: 0.872700
+-   MAE: 1.358367
+
+SVM:
+
+-   Optimal C: 16
+-   Optimal sigma: 0.068874
+-   RMSE: 2.0889248
+-   R-squared: 0.8232974
+-   MAE: 1.5874122
+
+Neural Network:
+
+-   Optimal size: 1
+-   Optimal decay: 0.1
+-   RMSE: 2.6493162
+-   R-squared: 0.7177209
+-   MAE: 2.0295251
+
+kNN:
+
+-   Optimal k: 19
+-   RMSE: 3.2286834
+-   R-squared: 0.6871735
+-   MAE: 2.5939727
+
+I have order the models from best performance to least, based on the following metric, low RMSE, high rsquared, and low MAE. In conclusion the MARS model outperforms the other models, it displays lowest RMSE, highest rsquared, lowest MAE. Now, the SVM model is also a strong contender following after the MARS model, it performs well. The Nueral Network performs alright it does have much higher RMSE than the previous two, lower rsquared and higher MAE, while the kNN model unperformed.
+
+```{r}
+# Variable Importance for MARS Model
+cat("Variable for MARS Model:\n")
+print(varImp(marsModel))
+```
+
+In regards to the variables that are most informative they are as follows:
+
+-   X1: 100%
+-   X4: 83%
+-   X2: 64%
+-   X5: 40%
+-   X3: 28%
+
+# [Evaluating Predictor Importance in Simulated Data: A Comparative Study of Random Forest, Conditional Inference Trees, Boosted Trees, and Cubist Models]{style="color:blue;"}
+
+**8.1. Recreate the simulated data from Exercise 4:**
+
+```{r}
+library(mlbench)
+set.seed(200)
+
+simulated <- mlbench.friedman1(200, sd = 1)
+simulated <- cbind(simulated$x, simulated$y)
+simulated <- as.data.frame(simulated)
+colnames(simulated)[ncol(simulated)] <- "y"
+```
+
+**(a) Fit a random forest model to all of the predictors, then estimate the variable importance scores:**
+
+```{r}
+library(randomForest)
+library(caret)
+
+# Fit the random forest model
+random_forest <- randomForest(y ~ ., data = simulated, importance = TRUE, ntree = 1000)
+
+# Estimate variable importance
+random_forest_var <- varImp(random_forest, scale = FALSE)
+print(random_forest_var)
+```
+
+-   Positive Scores: V1, V2, V4, and V5 have positive scores. These are categorized as important predictors.
+
+-   Negative Scores: V6, V7, V8, V9, and V10 have negative scores. These are categorized as counterproductive predictions.
+
+-   V1 has the highest score (8.732) it is the most influential predictor in the model.
+
+**Did the random forest model significantly use the uninformative predictors (V6 -- V10)?**
+
+-   No, the variables of importance score for these predictors are either low or negative. As stated above these predictors are categorized as counterproductive, so the models performance is driven by the important predictors.
+
+**(b) Now add an additional predictor that is highly correlated with one of the informative predictors. For example:**
+
+```{r}
+simulated$duplicate1 <- simulated$V1 + rnorm(200) * .1
+cor(simulated$duplicate1, simulated$V1)
+```
+
+duplicate1 = 0.9460206
+
+```{r}
+set.seed(200)  
+simulated$duplicate2 <- simulated$V2 + rnorm(200) * 0.1
+cor(simulated$duplicate2, simulated$V2)
+```
+
+duplicate2 = 0.9506982
+
+**Fit another random forest model to these data. Did the importance score for V1 change? What happens when you add another predictor that is also highly correlated with V1?**
+
+```{r}
+library(randomForest)
+library(caret)
+
+set.seed(200)
+model_of_duplicates <- randomForest(y ~ ., data = simulated, importance = TRUE, ntree = 1000)
+Imp_duplicates <- varImp(model_of_duplicates, scale = FALSE)
+print(Imp_duplicates)
+```
+
+-   After adding another predictor V1 decreased to 5.60.
+-   V1 and V2, ad V4 have the highest scores.
+-   Duplicate1, has a score of 4.24.
+-   Duplicate2, had a score of 2.45.
+-   V4 has the highest score (7.28) it is the most influential predictor in the model.
+
+As we add more predictors that are highly correlated, it ends up balancing the distribution of the predictor and shifting the level of importance for the model.
+
+**(c) Use the cforest function in the party package to fit a random forest model using conditional inference trees. The party package function varimp can calculate predictor importance. The conditional argument of that function toggles between the traditional importance measure and the modified version. Do these importances show the same pattern as the traditional random forest model?**
+
+```{r}
+library(party)
+
+set.seed(200)  
+cforest_model <- cforest(y ~ ., data = simulated, controls = cforest_unbiased(ntree = 1000))
+cforest_conditional <- varimp(cforest_model, conditional = TRUE)
+print(cforest_conditional)
+```
+
+```{r}
+set.seed(200)  
+cforest_traditional <- varimp(cforest_model, conditional = FALSE)
+print(cforest_traditional)
+```
+
+|            | Traditional  | Conditional  |
+|------------|--------------|--------------|
+| V1         | 4.446790682  | 1.889829629  |
+| V2         | 5.209317057  | 3.264726775  |
+| V3         | 0.011349761  | 0.004320600  |
+| V4         | 7.518264422  | 5.551127933  |
+| V5         | 1.440050685  | 0.914778235  |
+| V6         | -0.007794484 | 0.007554850  |
+| V7         | 0.032232290  | 0.014874927  |
+| V8         | -0.017239934 | -0.008556608 |
+| V9         | 0.012003443  | 0.005090607  |
+| V10        | -0.007523583 | -0.003604917 |
+| duplicate1 | 4.992002245  | 2.074263861  |
+| duplicate2 | 1.845200350  | 0.555345761  |
+
+In summary, while the general pattern of importance is similar, where V4 has the highest score followed by V2. Additionally, V6 through V10 remain unimportant. The conditional model has a more balance dispenserment while the traditional highlights more the importance of some variables.
+
+**(d) Repeat this process with different tree models, such as boosted trees and Cubist. Does the same pattern occur?**
+
+1.  Boosted Trees
+
+```{r}
+library(gbm)
+
+set.seed(200)
+gbm_model <- gbm(y ~ ., data = simulated, distribution = "gaussian", n.trees = 1000, interaction.depth = 3)
+summary(gbm_model)
+```
+
+In short the Boosted Model, still considers the level of importance from V6-V10 to be unimportant. The most important variable here is V4 which matches the previous models, followed by V2 and V1. This seem to be in alignment with the other approaches where the level of importance lies within either V4, V1 or V2.
+
+2.  Cubist Model
+
+```{r}
+library(Cubist)
+library(caret)
+
+set.seed(200)
+cubist_model <- train(y ~ ., data = simulated, method = "cubist", trControl = trainControl(method = "cv"))
+cubist_varimp <- varImp(cubist_model, scale = FALSE)
+print(cubist_varimp)
+summary(cubist_varimp)
+```
+
+As for the Cubist Model, you have some similarities, where V7-V10 remain unimportant and gives a slightly higher score to V6. However, in comparison to the other scores, V2 has the highest score followed by V1 then V4. This also aligns with the other methods where the level of importance is given to the op three variables either V1, V2, or V4.
+
+Overall the pattern remains almost unchanged you have the order of importance shift between variables, but most of the attention lies within V1, V2, V4. The counterproductive variables are pretty much the same besides in the last model, where it give V6 a higher score, but the pattern remains unchanges for the most part.
+
+# \[Exploring Predictive Modeling and Data Analysis: An Investigation into Housing Data, Soybean Disease Prediction, Oil Classification, and Statistical Concepts\]
+
+```{r}
+library(MASS)
+
+```
+
+This exercise involves the Boston housing data set.
+
+**a) To begin, load in the Boston data set. Since the Boston data set is part of the MASS library, you need to install the MASS package into R/Rstudio and then access the package as follows:**
+
+```{r}
+#Boston
+
+?Boston #Read about the data set using 
+```
+
+**How many rows are in this Boston data set? How many columns? What do the rows and columns represent?**
+
+```{r}
+data("Boston")
+```
+
+Based on the information provided we have the following:
+
+Rows:506-observations in the dataset for the Boston area.
+
+Columns: 14-variables, each column represents different variables. They are as followed:
+
+-   **crim:** per capita crime rate by town.
+-   **zn:** proportion of residential land zoned for lots over 25,000 sq. ft.
+-   **indus:** proportion of non-retail business acres per town.
+-   **chas:** Charles River dummy variable (1 if tract bounds river; 0 otherwise).
+-   **nox:** nitrogen oxides concentration (parts per 10 million).
+-   **rm:** average number of rooms per dwelling.
+-   **age:** proportion of owner-occupied units built prior to 1940.
+-   **dis:** weighted mean of distances to five Boston employment centers.
+-   **rad:** index of accessibility to radial highways.
+-   **tax:** full-value property tax rate per \$10,000.
+-   **ptratio:** pupil-teacher ratio by town.
+-   **black:** 1000(Bk - 0.63)\^2 where Bk is the proportion of blacks by town.
+-   **lstat:** percentage of lower status of the population.
+-   **medv:** median value of owner-occupied homes in \$1000s.
+
+**b) Make some pairwise scatterplots of the predictors (columns) in this data set. Describe your findings.**
+
+```{r}
+pairs(Boston, pch = 20, cex = 1, labels = colnames(Boston))
+
+```
+
+OR
+
+```{r}
+predictors <- colnames(Boston)
+
+par(mfrow = c(3, 3)) 
+
+for (i in 1:length(predictors)) 
+  {for (j in (i+1):length(predictors))
+    {predictor_x <- predictors[i]
+    predictor_y <- predictors[j]
+    
+    if (!is.na(predictor_x) && !is.na(predictor_y)) 
+    
+      {plot(Boston[[predictor_x]], Boston[[predictor_y]],
+           xlab = predictor_x, ylab = predictor_y,
+           main = paste("Scatterplot:", predictor_x, "and", predictor_y))
+      
+      
+      abline(lm(Boston[[predictor_y]] ~ Boston[[predictor_x]]), col = "red")}}}
+```
+
+I have provided two displays. The first combines all pairwise plots in a single view, the second organizes them for a better visualization. After reviewing the pairwise plots, I observed both positive and negative correlations, as well as some no-correlation, and some outliers. Below are a few observations, and as I proceed with the homework I will call out other observations:
+
+-   rad and zn: Negative correlation. Areas in Boston with more accessible radial highways have less residential zoning.
+-   age and lstat: Positive correlation. Older homes have higher proportions of lower status population.
+-   nox and tax: Positive correlation. Higher nitrogen oxides concentration levels are found in areas with higher property taxes.
+-   chas: No significant correlation. Most of the variables associated (chas) - proximity to the Charles River are not significantly.
+-   indus and tax: Positive correlation. Industrialized areas tend to have higher property taxes.
+-   crim and medv: Negative correlation. Higher crime rates are found in areas with median home values.
+
+**c) Are any of the predictors associated with per capita crime rate? If so, explain the relationship.**
+
+```{r}
+par(mfrow = c(2, 2)) 
+
+# Repeating the same as in 'b'
+for (i in 1:length(predictors)) 
+  {for (j in (i+1):length(predictors))
+    {predictor_x <- predictors[i]
+    predictor_y <- predictors[j]
+    
+    if (!is.na(predictor_x) && !is.na(predictor_y)) 
+      
+      {if (predictor_x == "crim" || predictor_y == "crim")   # Checking for crim as a predictor
+       
+        # Repeating the same as in 'b'
+        {plot(Boston[[predictor_x]], Boston[[predictor_y]],
+             xlab = predictor_x, ylab = predictor_y,
+             main = paste("Scatterplot:", predictor_x, "and", predictor_y))
+        
+        if (predictor_x == "crim") 
+          {abline(lm(Boston[[predictor_y]] ~ Boston[[predictor_x]]), col = "red")}}}}}
+
+```
+
+Yes, there are predictors associated with the per capita crime rate. The following observation where made from the plots above, I also used the linear regression line to help me.
+
+Negative correlation: - crim and zn: There's a slight negative correlation. - crim and dis: There's a negative correlation. - crim and black: There's a negative correlation. - crim and medv: There's a negative correlation. - crim and indus: There's a positive correlation.
+
+Positive correlation: - crim and nox: There's a positive correlation.\
+- crim and rm: There's a slight negative correlation. - crim and age: There's a positive correlation.\
+- crim and rad: There's a positive correlation.\
+- crim and tax: There's a positive correlation.\
+- crim and ptratio: There's a slight positive correlation. - crim and lstat: There's a positive correlation.
+
+No correlation: - crim and chas: There's no clear correlation.
+
+In conclusion the plots suggest that areas with higher nitrogen oxide/pollution, industrial areas, older homes, accessibility to radial highways, taxes, and lower status of population are likely to have higher crime rates. On the other hand, areas with more residential land zoning, larger homes, greater distance to five employment centers, and black population tend to have lower crime rates.
+
+**d) Do any of the census tracts of Boston appear to have particularly high crime rates? Tax rates? Comment on the range of each predictor.**
+
+```{r}
+hist(Boston$crim, main = "Histogram: crim", xlab = "Per Capita Crime Rate", col = "blue")
+
+hist(Boston$tax, main = "Histogram: tax", xlab = "Tax Rate", col = "red")
+
+
+# census tracts with high crime rates and tax rates
+high_crime = quantile(Boston$crim, 0.95)  
+high_tax = quantile(Boston$tax, 0.95)  
+
+high_crime_tracts = Boston[Boston$crim > high_crime, ]
+high_tax_tracts = Boston[Boston$tax > high_tax, ]
+
+rangecrim = range(Boston$crim, na.rm = TRUE)
+rangetax = range(Boston$tax, na.rm = TRUE)
+
+```
+
+According to the output there exist census tracts with high crime rates and tax rates, especially in the top 5%. The per capita crime rate ranges from 0.00632 to 88.97620, and the property tax rate range from 187 to 711. This just tells me that there are significant variability for both predictors.
+
+```{r}
+# range of each predictor
+predictor_ranges <- apply(Boston, 2, range)
+predictor_ranges
+```
+
+According to the output there exist census tracts with high crime rates and tax rates, especially in the top 5%. The per capita crime rate ranges from 0.00632 to 88.97620, and the property tax rate range from 187 to 711. This just tells me that there are significant variability for both predictors. In addition to the census tract associated with high crime rates and tax rates, we can also note the rest of the predictors.
+
+-   Zn-proportion of residential land zoned rate range: 0 to 100
+-   indus-proportion of non-retail business acres per town rate range: 0.46 to 27.74
+-   chas-Charles River rate range: 0 to 1
+-   nox-nitrogen oxides concentration rate range: 0.385 to 0.871 (parts per 10 million)
+-   rm-average number of rooms rate range: 3.561 to 8.780
+-   age-older home rate range: 2.9 to 100
+-   dis-distances to employment centres rate range: 1.1296 to 12.1265
+-   rad-accessibility to radial highways: 1 to 24
+-   ptratio-pupil-teacher ratio by town rate range: 12.6 to 22
+-   black-proportion of black population: 0.32 to 396.90
+-   lstat-lower status of the population rate range: 1.73 to 37.97
+-   medv-median value of owner-occupied rate range: 5 to 50
+
+Just reiterating what was previously stated, these predictors demonstrate that there is significant variability.
+
+**e) How many of the census tracts in this data set bound the Charles river?**
+
+```{r}
+tracts_chas = sum(Boston$chas == 1)
+tracts_chas
+```
+
+Since, the predictor chas - Charles River, 1 is if tract bounds river. They're 35 census tracts.
+
+**(f) What is the median pupil-teacher ratio among the towns in this data set?**
+
+```{r}
+median_ptratio = median(Boston$ptratio)
+median_ptratio
+```
+
+The median pupil-teacher ratio by town is 19.05.
+
+# [Soybean case study]{style="color:blue;"}
+
+The soybean data can also be found at the UC Irvine Machine Learning Repository. Data were collected to predict disease in 683 soybeans. The 35 predictors are mostly categorical and include information on the environmental conditions (e.g., temperature, precipitation) and plant conditions (e.g., left spots, mold growth). The outcome labels consist of 19 distinct classes.
+
+```{r}
+library(VIM)    
+library(mice)   
+library(mlbench) 
+data(Soybean) 
+?Soybean
+```
+
+**a) Investigate the frequency distributions for the categorical predictors. Are any of the distributions degenerate in the ways discussed earlier in this chapter?**
+
+```{r}
+str(Soybean)
+```
+
+```{r}
+summary(Soybean)
+```
+
+```{r}
+degenerate_predictors = sapply(Soybean, function(x) 
+  {if (is.factor(x)) 
+    {length(unique(x)) == 1}
+   else {FALSE}})
+
+degenerate_predictors
+
+```
+
+According to the result, the Soybean dataset has no predictors that are degenerate.
+
+**b) Roughly 18 % of the data are missing. Are there particular predictors that are more likely to be missing? Is the pattern of missing data related to the classes?**
+
+```{r}
+aggr_plot <- aggr(Soybean, col=c('blue', 'red'), numbers=TRUE, sortVars=TRUE, 
+                  labels=names(Soybean), cex.axis=.85, gap=3, 
+                  ylab=c("Missing data","Pattern"))
+
+
+```
+
+The highest proportion of missing data are as follows:
+
+Hail - 17.7% Server - 17.7% Seed.tmt - 17.7% Germ - 16.4% lodging - 17.7% There are other in the 15% range, and in the 14%, and so on.
+
+Most of the variables seem to be missing data, you have some variables that are not missing (class, and leaves). After looking at the visualization, the missing data does not have a relationship to classes.
+
+**c) Develop a strategy for handling missing data, either by eliminating predictors or imputation.**
+
+```{r}
+missing_na <- colSums(is.na(Soybean))
+
+# Identify predictors with more than 99 missing values
+predictors_removed <- names(missing_na[missing_na > 99])
+
+# Create a new dataset, now without the predictors  that have more than 99 missing values
+Soybean_new <- Soybean[, !(names(Soybean) %in% predictors_removed)]
+
+# Summary of the cleaned dataset
+summary(Soybean_new)
+```
+
+Explanation: Initially during part a, when I ran this model, I noticed variables that higher amounts of missing data. I decided to remove predictors that had more than 100 missing values and removing them accordingly. This way I can remove any variables that exceeds a specific number of missing values. Finally I create a new dataset that can be used for future analysis.
+
+Brodnjak-Vonina et al. (2005) develop a methodology for food laboratories to determine the type of oil from a sample. In their procedure, they used a gas chromatograph (an instrument that separates chemicals in a sample) to measure seven different fatty acids in an oil. These measurements would then be used to predict the type of oil in food samples. To create their model, they used 96 samples2 of seven types of oils.
+
+These data can be found in the caret package using data(oil). The oil types are contained in a factor variable called oilType. The types are pumpkin (coded as A), sunflower (B), peanut (C), olive (D), soybean (E), rapeseed (F) and corn (G). In R,
+
+```{r}
+#install.packages("caret")
+library(caret)
+data(oil)
+```
+
+```{r}
+str(oilType)
+
+cat("\n\n")
+
+table(oilType)
+```
+
+**a) Use the sample function in base R to create a completely random sample of 60 oils. How closely do the frequencies of the random sample match the original samples? Repeat this procedure several times of understand the variation in the sampling process.**
+
+```{r}
+
+set.seed(123)
+
+random_sample <- sample(oilType, 60, replace = FALSE)
+
+# Comparing frequencies for the random sample to the original data
+random <- table(random_sample)
+original <- table(oilType)
+
+print("Original Frequencies:")
+print(original)
+
+cat("\n\n")
+
+print("Random Sample Frequencies:")
+print(random)
+```
+
+-   The random sample has the same frequencies for: C and G.
+-   The random sample has lower frequencies for: A,B, D, E and F.
+
+**b) Use the caret package function createDataPartition to create a stratified random sample. How does this compare to completely random samples?**
+
+```{r}
+
+# Following same process as "a"
+set.seed(123)
+
+# creating stratified random sample
+stratified_sample <- createDataPartition(y = oilType, p = 0.1, list = FALSE)
+stratified_data <- oilType[stratified_sample]  
+
+stratified_data_df <- as.data.frame(stratified_data)
+
+
+table_stratified <- table(stratified_data_df)
+
+cat("Original Frequencies:\n")
+print(random)
+
+# Print some space
+cat("\n\n")
+
+# Print stratified sample frequencies
+cat("Stratified Sample Frequencies:\n")
+print(table_stratified)
+
+```
+
+The values in the statified sample are much lower than the random sample. This is in part due to the stratified refined method, while the random sample looks at all variables within the dataset at random.
+
+**c) With such a small samples size, what are the options for determining performance of the model? Should a test set be used?**
+
+Methods such as K-fold, along with the train-test split method, could be an option for determining performance of the refined model.
+
+**d) One method for understanding the uncertainty of a test set is to use a confidence interval. To obtain a confidence interval for the overall accuracy, the based R function binom.test can be used. It requires the user to input the number of samples and the number correctly classified to calculate the interval. For example, suppose a test set sample of 20 oil samples was set aside and 76 were used for model training. For this test set size and a model that is about 80 % accurate (16 out of 20 correct), the confidence interval would be computed using**
+
+```{r}
+binomial_result1 = binom.test(16, 20)
+print(binomial_result1)
+```
+
+In this case, the width of the 95% confidence interval is 37.9 %, and accuracy 80%.
+
+**Try different samples sizes and accuracy rates to understand the trade-off between the uncertainty in the results, the model performance, and the test set size.**
+
+```{r}
+binom_result2 <- binom.test(41, 50)
+
+print(binom_result2)
+```
+
+In this case, the width of the 95% confidence interval is 22.9% and accuracy 82%
+
+```{r}
+binom_result3 <- binom.test(90, 100)
+
+print(binom_result3)
+```
+
+In this case, the width of the 95% confidence interval is 12.7%, and accuracy 90%
+
+In conclusion, I noticed that as the sample size increases it reduces the confidence level. However, as the accuracy rate increases it tends to reduce the interval width.
+
+Briefly discuss what is the bias-variance tradeoff in statistics and predictive modeling.
+
+The bias-variance tradeoff is when we chose lower bias which increases variance or lower variance increases bias. The objective is to find a good balance meaning that both bias and variance are at minimal.
+
+# [Predicting Fat Content in Meat Using IR Spectroscopy and Machine Learning: A Comparative Study of Predictive Models]{style="color:blue;"}
+
+Infrared (IR) spectroscopy technology is used to determine the chemical makeup of a substance. The theory of IR spectroscopy holds that unique molecular structures absorb IR frequencies differently. In practice a spectrometer fires a series of IR frequencies into a sample material, and the device measures the absorbance of the sample at each individual frequency. This series of measurements creates a spectrum profile which can then be used to determine the chemical makeup of the sample material.
+
+A Tecator Infratec Food and Feed Analyzer instrument was used to analyze 215 samples of meat across 100 frequencies. A sample of these frequency profiles is displayed in Fig. 6.20. In addition to an IR profile, analytical chemistry determined the percent content of water, fat, and protein for each sample. If we can establish a predictive relationship between IR spectrum and fat content, then food scientists could predict a sample's fat content with IR instead of using analytical chemistry. This would provide costs savings, since analytical chemistry is a more expensive, time-consuming process.
+
+**a) Start R and use these commands to load the data:**
+
+```{r}
+library(caret)
+library(e1071)
+library(nnet)
+library(earth)
+library(kernlab)
+library(pls)
+library(kknn)
+data(tecator)
+?tecator 
+str(absorp)
+```
+
+```{r}
+str(endpoints)
+```
+
+**The matrix absorp contains the 100 absorbance values for the 215 samples, while matrix endpoints contain the percent of moisture, fat, and protein in columns 1--3, respectively. To be more specific**
+
+```{r}
+moisture = endpoints[,1]
+fat = endpoints[,2]
+protein = endpoints[,3]
+```
+
+**b) Split the data into a training and a test set the response of the percentage of protein, pre-process the data as appropriate.**
+
+```{r}
+set.seed(123)
+index <- createDataPartition(protein, p = 0.7, list = FALSE)
+train_data <- data.frame(absorp[index, ], protein = protein[index])
+test_data <- data.frame(absorp[-index, ], protein = protein[-index])
+```
+
+```{r}
+combined_data <- rbind(train_data, test_data)
+preProcess <- preProcess(combined_data[, -ncol(combined_data)], method = "pca", pcaComp = 20)
+combined_pca <- predict(preProcess, combined_data[, -ncol(combined_data)])
+```
+
+```{r}
+n_train <- nrow(train_data)
+train_pca <- cbind(combined_pca[1:n_train, ], protein = train_data$protein)
+test_pca <- cbind(combined_pca[(n_train + 1):nrow(combined_data), ], protein = test_data$protein)
+```
+
+**c) Build at least three models described Chapter 6: ordinary least squares, PCR, PLS, Ridge, and ENET. For those models with tuning parameters, what are the optimal values of the tuning parameter(s)?**
+
+**Ordinary Least Squares (OLS):**
+
+```{r}
+set.seed(123)
+ols_model <- train(protein ~ ., data = train_pca, method = "lm")
+ols_model
+```
+
+[**OLS - Linear Regression:**]{.underline}
+
+-   RMSE: 0.7268192
+
+-   R-squared: 0.9450398
+
+-   MAE: 0.5549019
+
+**Principal Component Regression (PCR):**
+
+```{r}
+set.seed(123)
+pcr_model <- train(protein ~ ., data = train_data, method = "pcr", trControl = trainControl(method = "cv"))
+pcr_model
+```
+
+[**Principal Component Regression (PCR):**]{.underline}
+
+-   ncomp: 3
+
+-   RMSE: 2.316586
+
+-   R-squared: 0.4545058
+
+-   MAE: 1.848556
+
+**Partial Least Squares (PLS):**
+
+```{r}
+set.seed(123)
+pls_model <- train(protein ~ ., data = train_data, method = "pls", trControl = trainControl(method = "cv"))
+pls_model
+```
+
+[**Partial Least Squares (PLS):**]{.underline}
+
+-   ncomp: 3
+
+-   RMSE: 1.743833
+
+-   R-squared: 0.6963113
+
+-   MAE: 1.291007
+
+**d) Build nonlinear models in Chapter 7: SVM, neural network, MARS, and KNN models. Since neural networks are especially sensitive to highly correlated predictors, does pre-processing using PCA help the model? For those models with tuning parameters, what are the optimal values of the tuning parameter(s)?**
+
+**Support Vector Machine (SVM)**
+
+```{r}
+set.seed(123)
+svm_model <- train(protein ~ ., data = train_data, method = "svmRadial", trControl = trainControl(method = "cv"), tuneLength = 10)
+svm_model
+```
+
+[**SVM:**]{.underline}
+
+-   C: 32
+
+-   sigma: 0.05200074
+
+-   RMSE: 1.676734
+
+-   R-squared: 0.7178974
+
+-   MAE: 1.272854
+
+**Neural Network (NN):**
+
+```{r}
+set.seed(123)
+nn_model <- train(protein ~ ., data = train_pca, method = "nnet", trControl = trainControl(method = "cv"), tuneLength = 10, trace = FALSE)
+nn_model
+```
+
+[**Neural Network:**]{.underline}
+
+-   size: 1
+
+-   decay: 0
+
+-   RMSE: 16.94374
+
+-   R-squared: NA
+
+-   MAE: 16.66501
+
+**Multivariate Adaptive Regression Splines (MARS):**
+
+```{r}
+set.seed(123)
+mars_model <- train(protein ~ ., data = train_data, method = "earth", trControl = trainControl(method = "cv"))
+mars_model
+```
+
+[**MARS:**]{.underline}
+
+-   nprune: 15
+
+-   degree: 1
+
+-   RMSE: 1.212796
+
+-   R-squared: 0.8517258
+
+-   MAE: 0.9221938
+
+**k-Nearest Neighbors (kNN):**
+
+```{r}
+set.seed(123)
+knn_model <- train(protein ~ ., data = train_data, method = "knn", trControl = trainControl(method = "cv"), tuneLength = 10)
+knn_model
+```
+
+[**kNN:**]{.underline}
+
+-   k: 5
+
+-   RMSE: 2.300655
+
+-   squared: 0.4780876
+
+-   MAE: 1.909033
+
+**e) Which model from parts c) and d) has the best predictive ability? Is any model significantly better or worse than the others?**
+
+| Model                                | RMSE      | Rsquared  | MAE       | Rank |
+|--------------------------------------|-----------|-----------|-----------|------|
+| OLS - Linear Regression              | 0.7268192 | 0.9450398 | 0.5549019 | 1    |
+| Principal Component Regression (PCR) | 2.316586  | 0.4545058 | 1.848556  | 6    |
+| Partial Least Squares (PLS)          | 1.743833  | 0.6963113 | 1.291007  | 4    |
+| SVM                                  | 1.676734  | 0.7178974 | 1.272854  | 3    |
+| Neural Network                       | 16.94374  | NA        | 16.66501  | 7    |
+| MARS                                 | 1.212796  | 0.8517258 | 0.9221938 | 2    |
+| kNN                                  | 2.300655  | 0.478087  | 1.909033  | 5    |
+
+In conclusion, I have ranked the models according to the criteria of lowest RMSE, and lowest MAE, and high rsquared. The OLS - Linear Regression outperforms all other models, followed by the MARS. The Nueral Network model performs the worst out of all the other models as it has the highest RMSE and the rsquared is not available.
+
+**Developing a model to predict permeability (see Sect. 1.4 of the textbook) could save significant resources for a pharmaceutical company, while at the same time more rapidly identifying molecules that have a sufficient permeability to become a drug:**
+
+**a) Start R and use these commands to load the data:**
+
+```{r}
+library(AppliedPredictiveModeling) 
+data(permeability)
+str(fingerprints)
+str(permeability)
+```
+
+The matrix fingerprints contains the 1,107 binary molecular predictors for the 165 compounds, while permeability contains permeability response:
+
+**b) The fingerprint predictors indicate the presence or absence of substructures of a molecule and are often sparse meaning that relatively few of the molecules contain each substructure. Filter out the predictors that have low frequencies using the nearZeroVar function from the caret package. How many predictors are left for modeling?**
+
+```{r}
+nzv <- nearZeroVar(fingerprints, saveMetrics = TRUE)
+filtered_fingerprints <- fingerprints[, !nzv$nzv]
+predictors_left <- ncol(filtered_fingerprints)
+predictors_left
+
+```
+
+There are 388 predictors left.
+
+**c) Split the data into a training and a test set, pre-process the data, and tune a PLS model. How many latent variables are optimal and what is the corresponding resampled estimate of R2?**
+
+```{r}
+set.seed(123)
+index <- createDataPartition(permeability, p = 0.7, list = FALSE)
+train_data <- filtered_fingerprints[index, ]
+train_permeability <- permeability[index]
+test_data <- filtered_fingerprints[-index, ]
+test_permeability <- permeability[-index]
+
+# Preprocess the data (center and scale)
+preProcValues <- preProcess(train_data, method = c("center", "scale"))
+train_data_transformed <- predict(preProcValues, train_data)
+test_data_transformed <- predict(preProcValues, test_data)
+```
+
+**PLS**
+
+```{r}
+set.seed(123)
+pls2_model <- train(train_data_transformed, train_permeability, method = "pls", trControl = trainControl(method = "cv"), tuneLength = 10)
+pls2_model
+```
+
+```{r}
+resampled_r2 <- max(pls2_model$results$Rsquared)
+resampled_r2
+```
+
+[**PLS Model:**]{.underline}
+
+-   ncomp: 2
+
+-   RMSE: 12.30920
+
+-   Rsquared: 0.4595424
+
+-   MAE: 8.621998
+
+-   resampled R2: 0.4713902
+
+There are 2 optimal latent variables and the resampled estimate rsquared is 0.4713902.
+
+**d) Predict the response for the test set. What is the test set estimate of R2?**
+
+```{r}
+pls2_pred <- predict(pls2_model, test_data_transformed)
+pls2_r2 <- cor(pls2_pred, test_permeability)^2
+pls2_r2
+```
+
+The test set of rsquared is 0.3819407.
+
+**e) Try building other models discussed in this chapter. Do any have better predictive performance?**
+
+**Support Vector Machine (SVM)**
+
+```{r}
+set.seed(123)
+svm2_model <- train(train_data, train_permeability, method = "svmRadial", trControl = trainControl(method = "cv"), tuneLength = 10)
+svm2_model
+
+svm2_pred <- predict(svm2_model, test_data)
+svm2_r2 <- cor(svm2_pred, test_permeability)^2
+cat("\n\n")
+svm2_r2
+```
+
+[**Support Vector Machine (SVM):**]{.underline}
+
+-   sigma: 0.003241275
+-   C: 1
+-   RMSE: 11.71028
+-   rsquared: 0.5103354
+-   MAE: 7.664866
+
+The Test Set of rsquared: 0.4394321
+
+**Ridge Regression**
+
+```{r}
+set.seed(123)
+ridge2_model <- train(train_data, train_permeability, method = "ridge", trControl = trainControl(method = "cv"), tuneLength = 10)
+ridge2_model
+
+
+ridge2_pred <- predict(ridge2_model, test_data)
+ridge2_r2 <- cor(ridge2_pred, test_permeability)^2
+cat("\n\n")
+ridge2_r2
+```
+
+[**Ridge Rigression:**]{.underline}
+
+-   lambda = 0.1
+-   RMSE: 14.70937
+-   rsquared: 0.37493137
+-   MAE: 10.76181
+
+The Test Set of rsquared: 0.5311375
+
+**Lasso Regression**
+
+```{r}
+set.seed(123)
+lasso2_model <- train(train_data, train_permeability, method = "lasso", trControl = trainControl(method = "cv"), tuneLength = 10)
+lasso2_model
+
+lasso2_pred <- predict(lasso2_model, test_data)
+lasso2_r2 <- cor(lasso2_pred, test_permeability)^2
+cat("\n\n")
+lasso2_r2
+```
+
+[**Lasso Regression:**]{.underline}
+
+-   fraction: 0.1
+-   RMSE: 12.76949
+-   rsquared: 0.4681541
+-   MAE: 9.532476
+
+The Test Set of rsquared: 0.4573928
+
+**Table Summary:**
+
+| Model            | RMSE     | Rsquared  | MAE      | Test_set_rsquared |
+|------------------|----------|-----------|----------|-------------------|
+| PLS Model        | 12.30920 | 0.4595424 | 8.621998 | 0.3819407         |
+| SVM              | 11.71028 | 0.5103354 | 7.664866 | 0.4394321         |
+| Ridge Rigression | 14.70937 | 0.3749313 | 10.76181 | 0.5311375         |
+| Lasso Regression | 12.76949 | 0.4681541 | 9.532476 | 0.4573928         |
+
+**f) Would you recommend any of your models to replace the permeability laboratory experiment?**
+
+According to the table above, SVM has the lowest RMSE, and MAE, this model has less of a possibility to give us an error. However, the Ridge Regression model has the highest rquared, which simply means that this model can explain the highest variance out of the other models. Now, my recommendation, would be to use the SVM model for this laboratory experiment, the reason is because it has the lowest RMSE and MAE, and a decent amount of variance can be explained by this model.
+
+Return to the permeability problem outlined in Problem 2. Train several nonlinear regression models and evaluate the resampling and test set performance.
+
+**Support Vector Machines (SVM)**
+
+```{r}
+set.seed(123)
+svm3_model <- train(train_data_transformed, train_permeability, method = "svmRadial",
+                    trControl = trainControl(method = "cv", number = 10),
+                    tuneLength = 10)
+
+svm3_pred <- predict(svm3_model, newdata = test_data_transformed)
+svm3_result <- postResample(svm3_pred, test_permeability)
+svm3_result
+```
+
+**Neural Network**
+
+```{r}
+set.seed(123)
+nn3_model <- train(train_data_transformed, train_permeability, method = "nnet",
+                  trControl = trainControl(method = "cv", number = 10),
+                  tuneLength = 10, trace = FALSE, linout = TRUE)
+
+nn3_pred <- predict(nn3_model, newdata = test_data_transformed)
+nn3_result <- postResample(nn3_pred, test_permeability)
+nn3_result
+```
+
+**MARS**
+
+```{r}
+set.seed(123)
+mars3_model <- train(train_data_transformed, train_permeability, method = "earth",
+                    trControl = trainControl(method = "cv", number = 10),
+                    tuneLength = 10)
+
+mars3_pred <- predict(mars3_model, newdata = test_data_transformed)
+mars3_result <- postResample(mars3_pred, test_permeability)
+mars3_result
+```
+
+**k-Nearest Neighbors (kNN)**
+
+```{r}
+set.seed(123)
+knn3_model <- train(train_data_transformed, train_permeability, method = "kknn",
+                   trControl = trainControl(method = "cv", number = 10),
+                   tuneLength = 10)
+
+knn3_pred <- predict(knn3_model, newdata = test_data_transformed)
+knn3_result <- postResample(knn3_pred, test_permeability)
+knn3_result
+```
+
+**a) Which nonlinear regression model that we learned in Chapter 7 gives the optimal resampling and test set performance?**
+
+| NONLINEAR      | RMSE       | Rsquared  | MAE       |
+|----------------|------------|-----------|-----------|
+| SVM            | 10.5483639 | 0.4394321 | 7.1154118 |
+| Neural Network | 12.731659  | 0.197259  | 9.597258  |
+| MARS           | 11.8764033 | 0.3239788 | 7.5933958 |
+| kNN            | 10.5121448 | 0.4547602 | 6.9931969 |
+
+The kNN Model gives the optimal resampling and test set performance, because it has the lowest RMSE and the highest R-squared compared to the others.
+
+**b) Do any of the nonlinear models outperform the optimal linear model you previously developed in Problem 2? If so, what might this tell you about the underlying relationship between the predictors and the response?**
+
+| NONLINEAR      | RMSE       | Rsquared  | MAE       |
+|----------------|------------|-----------|-----------|
+| SVM            | 10.5483639 | 0.4394321 | 7.1154118 |
+| Neural Network | 12.731659  | 0.197259  | 9.597258  |
+| MARS           | 11.8764033 | 0.3239788 | 7.5933958 |
+| kNN            | 10.5121448 | 0.4547602 | 6.9931969 |
+
+| Other Models Ran in Q2 | RMSE     | Rsquared  | MAE      | Test_set_rsquared |
+|------------------------|----------|-----------|----------|-------------------|
+| PLS Model              | 12.30920 | 0.4595424 | 8.621998 | 0.3819407         |
+| Ridge Rigression       | 14.70937 | 0.3749313 | 10.76181 | 0.5311375         |
+| Lasso Regression       | 12.76949 | 0.4681541 | 9.532476 | 0.4573928         |
+| SVM                    | 11.71028 | 0.5103354 | 7.664866 | 0.4394321         |
+
+Yes, the best model so far is the kNN model, which seems to outperform all the other models, this model has the lowest RMSE and MAE, and its rsquared value is not the lowest. This highlights the relationship between predictors and the response variables are nonlinear.
+
+**c) Would you recommend any of the models you have developed to replace the permeability laboratory experiment?**
+
+Based on the results, I recommend using the kNN model. This model demonstrates the lowest RMSE and MAE, indicating it has the smallest error and provides the most accurate predictions. Additionally, it has one of the higher R-squared values, suggesting it effectively explains the variability in the data.
+
+# [Analyzing and Predicting Oil Types and Customer Churn Using Machine Learning Techniques]{style="color:blue;"}
+
+```{r}
+# Load necessary libraries
+library(caret)
+library(tidyverse)
+library(e1071) 
+library(randomForest) 
+library(nnet) 
+library(modeldata)
+library(ggplot2)
+library(dplyr)
+library(corrplot)
+library(GGally)
+library(rsample)
+library(recipes)
+library(rpart)
+library(ranger)
+library(nnet)
+library(caret)
+library(yardstick)
+library(yardstick)
+library(tidyverse)
+library(caret)
+library(randomForest)
+library(xgboost)
+
+```
+
+In Homework 1, Problem 3, we described a data set which contained 96 oil samples each from one of seven types of oils (pumpkin, sunflower, peanut, olive, soybean, rapeseed, and corn). Gas chromatography was performed on each sample and the percentage of each type of 7 fatty acids was determined. We would like to use these data to build a model that predicts the type of oil based on a sample's fatty acid percentages. These data can be found in the caret package using data(oil). The oil types are contained in a factor variable called oilType. The types are pumpkin (coded as A), sunflower (B), peanut (C), olive (D), soybean (E), rapeseed (F) and corn (G). In R
+
+```{r}
+# Load the data
+?oil
+data(oil)
+```
+
+```{r}
+str(oilType)
+```
+
+```{r}
+table(oilType)
+```
+
+a)  Given the classification imbalance in oil Type, describe how you would create a training and testing set.
+
+```{r}
+# Convert the fatty acid compositions into a data frame
+oil_data <- as.data.frame(fattyAcids)
+oil_data$oilType <- oilType
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Split the data using stratified sampling
+train_index <- createDataPartition(oil_data$oilType, p = 0.7, list = FALSE)
+train_data <- oil_data[train_index, ]
+test_data <- oil_data[-train_index, ]
+
+# Pre-process the data: Centering and Scaling
+preProcValues <- preProcess(train_data[,-ncol(train_data)], method = c("center", "scale"))
+train_data[,-ncol(train_data)] <- predict(preProcValues, train_data[,-ncol(train_data)])
+test_data[,-ncol(test_data)] <- predict(preProcValues, test_data[,-ncol(test_data)])
+
+# Control for cross-validation
+ctrl <- trainControl(method = "cv", number = 10, classProbs = TRUE, summaryFunction = multiClassSummary)
+
+# Check for missing values in the dataset
+colSums(is.na(train_data))
+```
+
+```{r}
+# Remove rows with missing values
+train_data_clean <- na.omit(train_data)
+
+# Impute missing values using the median
+preProcess_missing <- preProcess(train_data, method = 'medianImpute')
+train_data_clean <- predict(preProcess_missing, train_data)
+```
+
+b)  Which classification statistic would you choose to optimize for this problem and why?
+
+-   **I would choose the F1 score in cases where the classes are imbalanced. The objective is to achieve a balance between precision and recall.**
+
+c)  Split the data into a training and a testing set, pre-process the data, and build models and tune them via resampling described in Chapter 12. Clearly list the models under consideration and the corresponding tuning parameters of the models.
+
+[**k-Nearest Neighbors (k-NN):**]{.underline}
+
+```{r}
+# k-Nearest Neighbors (k-NN)
+set.seed(123)
+knn_model <- train(oilType ~ ., data = train_data_clean, method = "knn", trControl = ctrl, tuneLength = 10)
+knn_model
+```
+
+[**k-NN**]{.underline}
+
+-   k = 5
+-   Log Loss: 0.5583384
+-   AUC: 0.9919921
+-   prAUC: 0.01388889
+-   Accuracy: 0.9375000
+-   Kappa: 0.9195499
+-   Mean Specificity: 0.9879592
+-   Mean_Detection_Rate: 0.1339286
+
+[**Logistic Regression:**]{.underline}
+
+```{r}
+# Multinomial Logistic Regression
+set.seed(123)
+log_reg_model <- train(oilType ~ ., data = train_data_clean, method = "multinom", trControl = ctrl)
+log_reg_model
+
+```
+
+**Logistic Regression**
+
+-   decay: 0.1
+-   logLoss: 0.1882385
+-   AUC: 0.9972222
+-   prAUC: 0.2473611
+-   Accuracy: 0.9513889
+-   Kappa: 0.9387330
+-   Mean_Specificity: 0.9920918
+-   Mean_Detection_Rate: 0.1359127
+
+[**Random Forest:**]{.underline}
+
+```{r}
+# Random Forest
+set.seed(123)
+rf_grid <- expand.grid(mtry = seq(1, ncol(train_data) - 1, length.out = 6))
+rf_model <- train(oilType ~ ., data = train_data, method = "rf", trControl = ctrl, tuneGrid = rf_grid)
+rf_model
+```
+
+**Random Forest:**
+
+-   mtry = 2.2
+-   LogLoss: 0.1537911
+-   AUC: 1
+-   prAUC: 0.2188889
+-   Accuracy: 0.9750
+-   Kappa: 0.9679487
+-   Mean_Specificity: 0.9959184
+-   Mean_Detection_Rate: 0.1392857
+
+[**Summary:**]{.underline}
+
+| Model                   | Tuning Parameter | Accuracy | Kappa     | AUC    | prAUC  |
+|-------------------------|------------------|----------|-----------|--------|--------|
+| **k-NN**                | k = 5            | 0.9375   | 0.9195499 | 0.9920 | 0.0139 |
+| **Logistic Regression** | decay = 0.1      | 0.9514   | 0.9387330 | 0.9972 | 0.2474 |
+| **Random Forest**       | mtry = 2.2       | 0.9750   | 0.9679487 | 1.0000 | 0.2189 |
+
+**Conclusion: Out of all the models the Random Forest performs the best with the highest accuracy, Kappa, and AUC score. Then followed by the Logistic Regression model, and the model that performed the worst is the k-NN model. Altogether these models performed well, but the Random Forest out performs the rest of the models.**
+
+d)  Of the models presented in this chapter, which performs best on these data? Which oil type does the model most accurately predict? Least accurately predict?
+
+```{r}
+# Generate predictions for each model
+knn_pred <- predict(knn_model, test_data)
+log_reg_pred <- predict(log_reg_model, test_data)
+rf_pred <- predict(rf_model, test_data)
+
+# Create confusion matrices
+knn_cm <- confusionMatrix(knn_pred, test_data$oilType)
+log_reg_cm <- confusionMatrix(log_reg_pred, test_data$oilType)
+rf_cm <- confusionMatrix(rf_pred, test_data$oilType)
+
+```
+
+```{r}
+# Print confusion matrices
+print(knn_cm)
+```
+
+**kNN:**
+
+-   Accuracy: 0.9615
+-   Kappa: 0.9467
+-   Class A, B, D, E, and F are good.
+-   Class C, and G have no predictions
+
+```{r}
+print(log_reg_cm)
+```
+
+**Logistic Regression:**
+
+-   Accuracy: 0.9615
+-   Kappa: 0.9467
+-   Class A, B, D, E, and F are predicted well
+-   Class C and G have the worst outcome.
+
+```{r}
+print(rf_cm)
+```
+
+**Random Forest:**
+
+-   Accuracy: 1
+-   Kappa: 1
+-   Class A, B, D, E, and F are predicted well
+-   Class C and G have no predictions.
+
+```{r}
+# Compute F1 Scores
+f1_score <- function(conf_matrix) {
+  precision <- conf_matrix$byClass[, "Precision"]
+  recall <- conf_matrix$byClass[, "Recall"]
+  f1 <- 2 * (precision * recall) / (precision + recall)
+  f1[is.na(f1)] <- 0 # Handle cases where precision or recall is zero
+  return(f1)}
+
+# Calculate F1 Scores for each model
+knn_f1 <- f1_score(knn_cm)
+log_reg_f1 <- f1_score(log_reg_cm)
+rf_f1 <- f1_score(rf_cm)
+
+# Summary Table
+summary_table <- data.frame(
+  Model = c("k-NN", "Logistic Regression", "Random Forest"),
+  Accuracy = c(knn_cm$overall['Accuracy'], log_reg_cm$overall['Accuracy'], rf_cm$overall['Accuracy']),
+  Kappa = c(knn_cm$overall['Kappa'], log_reg_cm$overall['Kappa'], rf_cm$overall['Kappa']),
+  F1_Score = c(mean(knn_f1), mean(log_reg_f1), mean(rf_f1)))
+
+print(summary_table)
+```
+
+**Best Predictive Model: Random Forest:**
+
+-   Accuracy: 1
+-   Kappa: 1
+-   F1 score: 0.7142857
+
+**Summary:** Although the SVM and k-NN are identical in the confusion matrices, we would need further testing for these models. However, as previously stated the Random Forest proves to be the best performing almost perfectly. In terms of class, Class A (pumpkin) predicted the most accurate, wile the least accurate classes are Class C (peanut) and G (corn).
+
+Use the fatty acid data from Problem 1 above.
+
+a)  Use the same data splitting approach (if any) and pre-processing steps that you did Problem 1. Using the same classification statistic as before, build models described in Chapter 13: Nonlinear Classification Models for these data. Which model has the best predictive ability? How does this optimal model's performance compare to the best linear model's performance?
+
+```{r}
+# Set up cross-validation control
+ctrl <- trainControl(method = "cv", number = 10)
+
+# Define a grid of hyperparameters
+tune_grid <- expand.grid(sigma = c(0.01, 0.05, 0.1, 0.2), 
+                         C = c(0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128))
+```
+
+[**Support Vector Machines (SVM):**]{.underline}
+
+```{r}
+# Train SVM model
+svm_model <- train(oilType ~ ., data = train_data, method = "svmRadial",
+                   trControl = ctrl, tuneGrid = tune_grid)
+
+# Generate predictions for SVM model
+svm_pred <- predict(svm_model, test_data)
+
+# Create confusion matrix and calculate F1 Score
+svm_cm <- confusionMatrix(svm_pred, test_data$oilType)
+
+svm_f1 <- f_meas(svm_cm$table, truth = "reference", estimate = "prediction", event_level = "second")
+
+# Print results
+print(svm_cm)
+```
+
+```{r}
+print(svm_f1)
+```
+
+**svm:**
+
+-   Kappa: 0.9467
+
+-   Accuracy: 0.9615
+
+-   Classes E and F performed the best, followed by D then A and B.
+
+-   Classes D and G continue to perform bad.
+
+-   F1 score: 0.9771429
+
+[**GBM Model:**]{.underline}
+
+```{r}
+# Train GBM model
+gbm_model <- train(oilType ~ ., data = train_data, method = "gbm",
+                   trControl = ctrl, verbose = FALSE)
+
+# Generate predictions for GBM model
+gbm_pred <- predict(gbm_model, test_data)
+
+# Create confusion matrix and calculate F1 Score
+gbm_cm <- confusionMatrix(gbm_pred, test_data$oilType)
+gbm_f1 <- f_meas(gbm_cm$table, truth = "reference", estimate = "prediction", event_level = "second")
+
+# Print results
+print(gbm_cm)
+```
+
+```{r}
+print(gbm_f1)
+```
+
+**GBM**:
+
+-   Kappa: 1
+
+-   Accuracy: 1
+
+-   Classes A, B, D, E and F in this order, predicted well.
+
+-   Classes D and G continue to perform bad
+
+-   F1 score: 1
+
+**Neural Network (NN):**
+
+```{r}
+# Train Neural Network model
+nn_model <- train(oilType ~ ., data = train_data, method = "nnet",
+                  trControl = ctrl, tuneLength = 3, linout = TRUE, trace = FALSE)
+
+# Generate predictions for Neural Network model
+nn_pred <- predict(nn_model, test_data)
+
+# Create confusion matrix and calculate F1 Score
+nn_cm <- confusionMatrix(nn_pred, test_data$oilType)
+nn_f1 <- f_meas(nn_cm$table, truth = "reference", estimate = "prediction", event_level = "second")
+
+# Print results
+print(nn_cm)
+```
+
+```{r}
+print(nn_f1)
+```
+
+**Neural Network:**
+
+-   Accuracy : 0.9615
+
+-   Kappa : 0.9453
+
+-   F1 score: 0.9246377
+
+| Matrices Models    | Accuracy | Kappa  | F1 Score  |
+|--------------------|----------|--------|-----------|
+| **SVM**            | 0.9615   | 0.9615 | 0.9771429 |
+| **GBM**            | 1        | 1      | 1         |
+| **Neural Network** | 0.9615   | 0.9453 | 0.9314286 |
+
+**Conclusion: The GBM performed the best here performing exceptionally well with perfect scores in accuracy, Kappa and F1 score. This model accurately predict all classes except for peanut and corn which had no predictions. Comparing the GBM and the linear model from question 1 (Random Forest), these two models accurately class A, B, D, E, F and also failed to predict Class C and G. However, in terms of metrics the GBM model offers a higher F1 score indicating it can better distinguish true positive and avoids false negative, making this model more reliable.**
+
+b)  Would you infer that the data have nonlinear separation boundaries based on this comparison?
+
+-   **Given that the GBM, and Random Forest models, are both performing exceptionally well, indicates these models are best suited to handle non-linear data sets. Thus, confirming that the data does have nonlinear separation boundaries**
+
+c)  Which oil type does the optimal model most accurately predict? Least accurately predict?
+
+-   **The GBM model accurately predicted the Class (A, B, D, E, F) the best while not accurately predicting Class (C) the peanut and Class (G) corn oil type.**
+
+The "churn" data set was developed to predict telecom customer churn based on information about their account. The data files state that the data are "artificial based on claims similar to real world." The data consist of 19 predictors related to the customer account, such as the number of customer service calls, the area code, and the number of minutes. The outcome is whether the customer churned:
+
+a)  Start R and use these commands to load the data
+
+```{r}
+data(mlc_churn) 
+str(mlc_churn)
+?mlc_churn
+```
+
+```{r}
+colnames(mlc_churn)
+```
+
+b)  Explore the data by visualizing the relationship between the predictors and the outcome. Are there important features of the predictor data themselves, such as between-predictor correlations or degenerate distributions? Can functions of more than one predictor be used to model the data more effectively?
+
+```{r}
+# Density plot of account length
+ggplot(mlc_churn, aes(x = account_length, fill = churn)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Density: Account Length by Churn Status", x = "Account Length", y = "Density")
+```
+
+-   **Density Plot: Although there is some overlap between churn and nonchurn customers, their are some difference. It looks like the churned customer is skewed left, while the nonchurn customer are skewed right.**
+
+```{r}
+# Boxplot of total day minutes by churn
+ggplot(mlc_churn, aes(x = churn, y = total_day_minutes, fill = churn)) +
+  geom_boxplot() +
+  labs(title = "Total Day Minutes by Churn Status", x = "Churn", y = "Total Day Minutes")
+```
+
+Boxplot: Churned customers have slightly higher total day minutes compared to nonchurned customers. Nonchurn customers show to have outliers, and at first glance both churn and nonchurn look to be normally distributed, but after carefully evaluating the nonchurn, we can determine its normal distributed, while churned is negatively distributed, only confirming the Density graph.
+
+```{r}
+ggplot(mlc_churn, aes(x = total_day_minutes, y = total_night_minutes, color = churn)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Scatter Plot of Total Day vs. Total Night Minutes", x = "Total Day Minutes", y = "Total Night Minutes")
+```
+
+-   **Scatter Plot: There is a slight positive correlation and a linear relationship between day minutes and night minutes.**
+
+```{r}
+# Calculate the correlation matrix
+numeric_vars <- mlc_churn %>% select_if(is.numeric)
+cor_matrix <- cor(numeric_vars, use = "pairwise.complete.obs")
+
+# Convert correlation matrix to long format
+cor_long <- cor_matrix %>%
+  as.data.frame() %>%
+  rownames_to_column(var = "Var1") %>%
+  pivot_longer(-Var1, names_to = "Var2", values_to = "value")
+
+# Plot the heatmap
+ggplot(cor_long, aes(Var1, Var2, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1)) +
+  labs(title = "Correlation Heatmap of Numeric Variables", x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+**Correlation Heat Map:**
+
+-   **Positive correlation: day minutes and day charge**
+-   **Positive correlation: eve minutes and eve charge**
+-   **Positive correlation: night minutes and night charge**
+-   **Positive correlation: intl minutes and intl charge**
+
+Conclusion: The visualizations suggest, that creating interaction based on relationships of predictors could create more effective models. For instance, aggregating totals across different times, or between account_length and total_day_minutes, would capture more patterns. Ultimately improving the predictive performance of the model.
+
+c)  Split the data into a training and a testing set, pre-process the data if appropriate.
+
+```{r}
+# Split the data
+set.seed(123)
+split <- initial_split(mlc_churn, prop = 0.7)
+train_data <- training(split)
+test_data <- testing(split)
+
+# Preprocess the data
+recipe <- recipe(churn ~ ., data = train_data) %>%
+  step_normalize(all_numeric()) %>%
+  step_dummy(all_nominal(), -all_outcomes()) %>%
+  prep(training = train_data, retain = TRUE)
+
+train_prepped <- bake(recipe, new_data = train_data)
+test_prepped <- bake(recipe, new_data = test_data)
+```
+
+d)  Try building other models discussed in this chapter. Do any have better predictive performance?
+
+```{r}
+# Check column names in the preprocessed data
+#colnames(train_prepped)
+```
+
+```{r}
+#colnames(test_prepped)
+```
+
+```{r}
+# Decision Tree Model
+tree_model <- rpart(churn ~ ., data = train_prepped, method = "class")
+
+# Predict on test data
+tree_preds <- predict(tree_model, newdata = test_prepped, type = "class")
+
+# Evaluate performance
+test_churn <- factor(test_data$churn, levels = levels(tree_preds))
+tree_metrics <- confusionMatrix(tree_preds, test_churn)
+print(tree_metrics)
+```
+
+**Decision Tree Model:**
+
+-   Accuracy: 0.9427
+
+-   Kappa : 0.7353
+
+-   Mcnemar's Test P-Value : 9.818e-06
+
+-   Balanced Accuracy : 0.83616
+
+```{r}
+# Random Forest Model
+rf_model <- ranger(churn ~ ., data = train_prepped, classification = TRUE)
+
+# Predict on test data
+rf_preds <- predict(rf_model, data = test_prepped)$predictions
+
+# Evaluate performance
+rf_metrics <- confusionMatrix(factor(rf_preds, levels = levels(test_data$churn)), test_churn)
+print(rf_metrics)
+```
+
+Random Forest Model:
+
+-   Accuracy : 0.962
+-   Kappa : 0.8128
+-   Mcnemar's Test P-Value : \< 2.2e-16
+-   Balanced Accuracy : 0.8698
+
+```{r}
+# SVM Model
+svm_model <- svm(churn ~ ., data = train_prepped, kernel = "linear")
+
+# Predict on test data
+svm_preds <- predict(svm_model, newdata = test_prepped)
+
+# Evaluate performance
+svm_metrics <- confusionMatrix(factor(svm_preds, levels = levels(test_data$churn)), test_churn)
+print(svm_metrics)
+```
+
+SVM Model:
+
+-   Accuracy: 0.8627
+
+-   Kappa : 0
+
+-   Mcnemar's Test P-Value : \< 2e-16
+
+-   Balanced Accuracy : 0.5000
+
+**Conclusion: The Random Forest performs the best with the highest accuracy and Kappa, and balance accuracy. Additionally, the Decision Tree performs well but not like the Random Forest model, and the svm model performed the worst failing to detect any churned customers.**
+
+Use the fatty acid data from Homework 1 Problem 3 above.
+
+a)  Use the same data splitting approach (if any) and pre-processing steps that you did in Homework 1 Problem 3.
+
+```{r}
+# Re-load the data if needed
+data(oil)
+oil_data <- as.data.frame(fattyAcids)
+oil_data$oilType <- oilType
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Split the data using stratified sampling
+train_index <- createDataPartition(oil_data$oilType, p = 0.7, list = FALSE)
+train_data <- oil_data[train_index, ]
+test_data <- oil_data[-train_index, ]
+
+# Pre-process the data: Centering and Scaling
+preProcValues <- preProcess(train_data[,-ncol(train_data)], method = c("center", "scale"))
+train_data[,-ncol(train_data)] <- predict(preProcValues, train_data[,-ncol(train_data)])
+test_data[,-ncol(test_data)] <- predict(preProcValues, test_data[,-ncol(test_data)])
+```
+
+b)  Fit a few basic trees to the training set.
+
+[**Decision tree model:**]{.underline}
+
+```{r}
+# Fit tree model
+set.seed(123)
+tree_model <- train(oilType ~ ., data = train_data, method = "rpart",
+                    trControl = trainControl(method = "cv", number = 10))
+
+# Predict on the test set
+test_predictions <- predict(tree_model, newdata = test_data)
+
+# Confusion matrix
+conf_matrix <- confusionMatrix(test_predictions, test_data$oilType)
+print(conf_matrix)
+```
+
+**decision tree model:**
+
+-   Accuracy : 0.7692
+
+-   Kappa : 0.6816
+
+-   P-Value: 0.000358
+
+c)  Does bagging improve the performance of the trees? What about boosting?
+
+**Bagging:**
+
+```{r}
+# Fit a bagged decision tree model
+set.seed(123)
+bagged_tree_model <- train(oilType ~ ., data = train_data, method = "treebag",
+                           trControl = trainControl(method = "cv", number = 10))
+
+# Predict on the test set
+bagged_predictions <- predict(bagged_tree_model, newdata = test_data)
+
+# Confusion matrix
+bagged_conf_matrix <- confusionMatrix(bagged_predictions, test_data$oilType)
+print(bagged_conf_matrix)
+```
+
+**Bagging (decision tree mode):**
+
+-   Accuracy : 0.9615
+
+-   Kappa : 0.9472
+
+-   P-Value: 7.058e-09
+
+**Boosting**:
+
+```{r}
+# Fit a boosted decision tree model
+set.seed(123)
+boosted_tree_model <- train(oilType ~ ., data = train_data, method = "gbm",
+                            trControl = trainControl(method = "cv", number = 10),
+                            verbose = FALSE)
+
+# Predict on the test set
+boosted_predictions <- predict(boosted_tree_model, newdata = test_data)
+
+# Confusion matrix
+boosted_conf_matrix <- confusionMatrix(boosted_predictions, test_data$oilType)
+print(boosted_conf_matrix)
+
+```
+
+**Boosting (decision tree mode):**
+
+-   Accuracy : 1
+
+-   Kappa : 1
+
+-   P-Value: 1.936e-10
+
+**In conclusion, both bagging and boosting, enchance the decision tree from the basic tree model, you can observe that the predicting class levels have drastically improve. The accuracy and Kappa have also improved from the basic decision tree to bagging and then to boosting which resulted in accuracy of 100% and Kappa of 100%. The specific classes accuracy have also increase with Class A being the best and Class C and G being the worst..**
+
+Side note: All classes (A,B,D,E,F) had an accuracy of 100%.
+
+d)  Which model has better performance, and what are the corresponding tuning parameters?
+
+-   **The Boosted decision tree performs the best resulting in perfect accuracy and Kappa.**
+
+| Model                     | Accuracy | Kappa  | No Information Rate | P-Value   |
+|---------------------------|----------|--------|---------------------|-----------|
+| **Decision Tree**         | 0.7692   | 0.6816 | 0.4231              | 0.000358  |
+| **Bagged Decision Tree**  | 0.9615   | 0.9472 | 0.4231              | 7.058e-09 |
+| **Boosted Decision Tree** | 1.0000   | 1.0000 | 0.4231              | 1.936e-10 |
+
+-   
+
+-   **Now for the corresponding tuning parameter, they are as follows**:
+
+```{r}
+# Print the best tuning parameters
+boosted_tree_model$bestTune
+```
+
+| Parameter             | Value |
+|-----------------------|-------|
+| **n.trees**           | 50    |
+| **interaction.depth** | 1     |
+| **shrinkage**         | 0.1   |
+| **n.minobsinnode**    | 10    |
