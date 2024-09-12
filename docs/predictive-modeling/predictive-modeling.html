@@ -208,9 +208,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Below is an overview of the key concepts I learned, focusing on predictive modeling techniques and analytics tools with a practical approach using R programming. The topics I explored include data preprocessing, overfitting, model tuning, and both supervised methods (such as linear and nonlinear regression, classification) and unsupervised methods (like clustering, PCA, and outlier detection). Additionally, I delved into advanced techniques such as support vector machines and tree-based models. Through this, I gained the ability to choose, implement, and interpret predictive models for a variety of applications and developed the skills to create comprehensive data analysis reports.</p>
+<p>Below is an overview of the key concepts I learned, focusing on predictive modeling techniques and analytics tools with a practical approach using R programming. The topics I explored include:</p>
+<ul>
+<li><p><strong>Data Preprocessing</strong>: Techniques for cleaning and transforming raw data to make it suitable for analysis, including handling missing values and normalizing data.</p></li>
+<li><p><strong>Overfitting and Model Tuning</strong>: Understanding the risk of overfitting and employing strategies to optimize model performance through hyperparameter tuning, cross-validation, and regularization methods.</p></li>
+<li><p><strong>Supervised Methods</strong>:</p>
+<ul>
+<li><p><strong>Linear Regression</strong>: Analyzing relationships between dependent and independent variables using linear models.</p></li>
+<li><p><strong>Nonlinear Regression</strong>: Addressing more complex relationships between variables with nonlinear models.</p></li>
+<li><p><strong>Classification</strong>: Applying algorithms to classify data into categories, using techniques such as logistic regression, decision trees, and ensemble methods.</p></li>
+</ul></li>
+<li><p><strong>Unsupervised Methods</strong>:</p>
+<ul>
+<li><p><strong>Clustering</strong>: Grouping data into clusters to identify patterns and similarities, utilizing methods such as k-means and hierarchical clustering.</p></li>
+<li><p><strong>Principal Component Analysis (PCA)</strong>: Reducing the dimensionality of data to simplify models while preserving essential variability.</p></li>
+<li><p><strong>Outlier Detection</strong>: Identifying and managing outliers to improve model accuracy and robustness.</p></li>
+</ul></li>
+<li><p><strong>Advanced Techniques</strong>:</p>
+<ul>
+<li><p><strong>Support Vector Machines (SVM)</strong>: Leveraging SVM for both classification and regression tasks to find optimal decision boundaries and manage high-dimensional data.</p></li>
+<li><p><strong>Tree-Based Models</strong>: Implementing models such as decision trees, Random Forests, and Gradient Boosting to handle complex data structures and improve predictive accuracy.</p></li>
+</ul></li>
+</ul>
+<p>Through this comprehensive approach, I gained the ability to choose, implement, and interpret predictive models for a variety of applications. I also developed the skills to create detailed and insightful data analysis reports, effectively communicating findings and supporting decision-making processes.</p>
 <section id="student-dataset-case-study" class="level1">
-<h1>Student Dataset Case Study</h1>
+<h1><span style="color:blue;">Student Dataset Case Study</span></h1>
 <p>R offers a wide range of functions for data preprocessing, calculation, manipulation, and graphical display, and can be easily extended with new functions through downloadable packages from the Comprehensive R Archive Network (CRAN).</p>
 <p>As an example, the studentdata dataset from the LearnBayes package is used, containing 657 observations across 11 variables:</p>
 <p><strong>Student</strong> student number <strong>Height</strong> height in inches <strong>Gender</strong> gender <strong>Shoes</strong> number of pairs of shoes owned <strong>Number</strong> number chosen between 1 and 10 <strong>Dvds</strong> name of movie dvds owned <strong>ToSleep</strong> time the person went to sleep the previous night (hours past midnight) <strong>WakeUp</strong> time the person woke up the next morning <strong>Haircut</strong> cost of last haircut including tip <strong>Job</strong> number of hours working on a job per week <strong>Drink</strong> usual drink at suppertime among milk, water, and pop</p>
@@ -245,6 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>The variable Dvds in the student dataset contains the number of movie DVDs owned by students in the class.</li>
 </ol>
+<!-- -->
 <ol type="a">
 <li>Construct a histogram of this variable using the hist command in R.</li>
 </ol>
@@ -295,6 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol start="2" type="1">
 <li>The variable Height contains the height (in inches) of each student in the class.</li>
 </ol>
+<!-- -->
 <ol type="a">
 <li>Construct parallel boxplots of the heights using the Gender variable. Hint: boxplot(Height~Gender)</li>
 </ol>
@@ -366,6 +390,7 @@ $names
 <ol start="3" type="1">
 <li>The variables ToSleep and WakeUp contain, respectively, the time to bed and wake-up time for each student the previous evening. (The data are recorded as hours past midnight, so a value of −2 indicates 10 p.m.)</li>
 </ol>
+<!-- -->
 <ol type="a">
 <li>Construct a scatterplot of ToSleep and WakeUp.</li>
 </ol>
@@ -410,7 +435,7 @@ F-statistic: 139.5 on 1 and 651 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </section>
 <section id="analysis-of-glass-identification-data-exploratory-data-analysis-and-model-development" class="level1">
-<h1>Analysis of Glass Identification Data: Exploratory Data Analysis and Model Development</h1>
+<h1><span style="color:blue;">Analysis of Glass Identification Data: Exploratory Data Analysis and Model Development</span></h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('mlbench')</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('ggplot2')</span></span>
@@ -523,7 +548,7 @@ Attaching package: 'ggplot2'</code></pre>
 </div>
 </div>
 <p>I utilized both Histograms and Boxplots, you can definitely see a lot of outliers in the plots displayed. Na and Al, seem to be normally distributed but all other seem to be either skewed to the left or to the right.</p>
-<p><strong>b) Do there appear to be any outliers in the data? Are any predictors skewed? Show all the work! </strong></p>
+<p><strong>b) Do there appear to be any outliers in the data? Are any predictors skewed? Show all the work!</strong></p>
 <ul>
 <li>Function to create boxplots for each predictor:</li>
 </ul>
@@ -767,7 +792,7 @@ Training error : 0.439252 </code></pre>
 </div>
 </section>
 <section id="predicting-meat-moisture-content-using-infrared-spectroscopy-model-comparison-and-evaluation" class="level1">
-<h1>Predicting Meat Moisture Content Using Infrared Spectroscopy: Model Comparison and Evaluation</h1>
+<h1><span style="color:blue;">Predicting Meat Moisture Content Using Infrared Spectroscopy: Model Comparison and Evaluation</span></h1>
 <p>Infrared (IR) spectroscopy technology is used to determine the chemical makeup of a substance. The theory of IR spectroscopy holds that unique molecular structures absorb IR frequencies differently. In practice a spectrometer fires a series of IR frequencies into a sample material, and the device measures the absorbance of the sample at each individual frequency. This series of measurements creates a spectrum profile which can then be used to determine the chemical makeup of the sample material.</p>
 <p>A Tecator Infratec Food and Feed Analyzer instrument was used to analyze 215 samples of meat across 100 frequencies. A sample of these frequency profiles is displayed in Fig. 6.20. In addition to an IR profile, analytical chemistry determined the percent content of water, fat, and protein for each sample. If we can establish a predictive relationship between IR spectrum and fat content, then food scientists could predict a sample’s fat content with IR instead of using analytical chemistry. This would provide costs savings, since analytical chemistry is a more expensive, time-consuming process</p>
 <p><strong>a) Start R and use these commands to load the data:</strong></p>
@@ -1189,7 +1214,7 @@ The final values used for the model were alpha = 0.1 and lambda = 1.016872.</cod
 <p>The model I would use to predict the percentage of moisture in a sample would be the one with the lowest RMSE because it has the lowest predictive error and a model with a high rsquared which explains variance proportion. In the outputs above, the model that best fits this is the Ridge model.</p>
 </section>
 <section id="comparative-performance-of-machine-learning-models-on-friedmans-benchmark-data-analyzing-knn-mars-neural-networks-and-svm" class="level1">
-<h1>Comparative Performance of Machine Learning Models on Friedman’s Benchmark Data: Analyzing kNN, MARS, Neural Networks, and SVM</h1>
+<h1><span style="color:blue;">Comparative Performance of Machine Learning Models on Friedman’s Benchmark Data: Analyzing kNN, MARS, Neural Networks, and SVM</span></h1>
 <p>7.2. Friedman (1991) introduced several benchmark data sets create by simulation. One of these simulations used the following nonlinear equation to create data:</p>
 <p>y = 10 sin(πx1x2) + 20(x3 − 0.5)2 + 10x4 + 5x5 + N(0, σ2)</p>
 <p>where the x values are random variables uniformly distributed between [0, 1] (there are also 5 other non-informative variables also created in the simulation). The package mlbench contains a function called mlbench.friedman1 that simulates these data:</p>
@@ -1244,7 +1269,7 @@ The final values used for the model were alpha = 0.1 and lambda = 1.016872.</cod
 </ul>
 </section>
 <section id="tuning-several-models-knn-mars-neural-network-and-svm." class="level1">
-<h1>Tuning several models: kNN, MARS, Neural Network, and SVM.</h1>
+<h1><span style="color:blue;">Tuning several models: kNN, MARS, Neural Network, and SVM.</span></h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train k-Nearest Neighbors (kNN) model</span></span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>knnModel <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> trainingData<span class="sc">$</span>x,</span>
@@ -1500,7 +1525,7 @@ X6    0.00</code></pre>
 </ul>
 </section>
 <section id="evaluating-predictor-importance-in-simulated-data-a-comparative-study-of-random-forest-conditional-inference-trees-boosted-trees-and-cubist-models" class="level1">
-<h1>Evaluating Predictor Importance in Simulated Data: A Comparative Study of Random Forest, Conditional Inference Trees, Boosted Trees, and Cubist Models</h1>
+<h1><span style="color:blue;">Evaluating Predictor Importance in Simulated Data: A Comparative Study of Random Forest, Conditional Inference Trees, Boosted Trees, and Cubist Models</span></h1>
 <p><strong>8.1. Recreate the simulated data from Exercise 4:</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlbench)</span>
@@ -1845,7 +1870,7 @@ calledFrom 1      -none-     character</code></pre>
 <p>Overall the pattern remains almost unchanged you have the order of importance shift between variables, but most of the attention lies within V1, V2, V4. The counterproductive variables are pretty much the same besides in the last model, where it give V6 a higher score, but the pattern remains unchanges for the most part.</p>
 </section>
 <section id="exploring-predictive-modeling-and-data-analysis-an-investigation-into-housing-data-soybean-disease-prediction-oil-classification-and-statistical-concepts" class="level1">
-<h1>Exploring Predictive Modeling and Data Analysis: An Investigation into Housing Data, Soybean Disease Prediction, Oil Classification, and Statistical Concepts</h1>
+<h1>[Exploring Predictive Modeling and Data Analysis: An Investigation into Housing Data, Soybean Disease Prediction, Oil Classification, and Statistical Concepts]</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1879,7 +1904,7 @@ calledFrom 1      -none-     character</code></pre>
 <li><strong>lstat:</strong> percentage of lower status of the population.</li>
 <li><strong>medv:</strong> median value of owner-occupied homes in $1000s.</li>
 </ul>
-<p><strong>b) Make some pairwise scatterplots of the predictors (columns) in this data set. Describe your findings. </strong></p>
+<p><strong>b) Make some pairwise scatterplots of the predictors (columns) in this data set. Describe your findings.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb184"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(Boston, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">cex =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="fu">colnames</span>(Boston))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1948,7 +1973,7 @@ calledFrom 1      -none-     character</code></pre>
 <li>indus and tax: Positive correlation. Industrialized areas tend to have higher property taxes.</li>
 <li>crim and medv: Negative correlation. Higher crime rates are found in areas with median home values.</li>
 </ul>
-<p><strong>c) Are any of the predictors associated with per capita crime rate? If so, explain the relationship. </strong></p>
+<p><strong>c) Are any of the predictors associated with per capita crime rate? If so, explain the relationship.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)) </span>
 <span id="cb186-2"><a href="#cb186-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1991,7 +2016,7 @@ calledFrom 1      -none-     character</code></pre>
 - crim and ptratio: There’s a slight positive correlation. - crim and lstat: There’s a positive correlation.</p>
 <p>No correlation: - crim and chas: There’s no clear correlation.</p>
 <p>In conclusion the plots suggest that areas with higher nitrogen oxide/pollution, industrial areas, older homes, accessibility to radial highways, taxes, and lower status of population are likely to have higher crime rates. On the other hand, areas with more residential land zoning, larger homes, greater distance to five employment centers, and black population tend to have lower crime rates.</p>
-<p><strong>d) Do any of the census tracts of Boston appear to have particularly high crime rates? Tax rates? Comment on the range of each predictor. </strong></p>
+<p><strong>d) Do any of the census tracts of Boston appear to have particularly high crime rates? Tax rates? Comment on the range of each predictor.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Boston<span class="sc">$</span>crim, <span class="at">main =</span> <span class="st">"Histogram: crim"</span>, <span class="at">xlab =</span> <span class="st">"Per Capita Crime Rate"</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2041,7 +2066,7 @@ calledFrom 1      -none-     character</code></pre>
 <li>medv-median value of owner-occupied rate range: 5 to 50</li>
 </ul>
 <p>Just reiterating what was previously stated, these predictors demonstrate that there is significant variability.</p>
-<p><strong>e) How many of the census tracts in this data set bound the Charles river? </strong></p>
+<p><strong>e) How many of the census tracts in this data set bound the Charles river?</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a>tracts_chas <span class="ot">=</span> <span class="fu">sum</span>(Boston<span class="sc">$</span>chas <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb192-2"><a href="#cb192-2" aria-hidden="true" tabindex="-1"></a>tracts_chas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2061,7 +2086,7 @@ calledFrom 1      -none-     character</code></pre>
 <p>The median pupil-teacher ratio by town is 19.05.</p>
 </section>
 <section id="soybean-case-study" class="level1">
-<h1>Soybean case study</h1>
+<h1><span style="color:blue;">Soybean case study</span></h1>
 <p>The soybean data can also be found at the UC Irvine Machine Learning Repository. Data were collected to predict disease in 683 soybeans. The 35 predictors are mostly categorical and include information on the environmental conditions (e.g., temperature, precipitation) and plant conditions (e.g., left spots, mold growth). The outcome labels consist of 19 distinct classes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb196"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VIM)    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2365,7 +2390,7 @@ Attaching package: 'mice'</code></pre>
 37 26  3  7 11 10  2 </code></pre>
 </div>
 </div>
-<p><strong>a) Use the sample function in base R to create a completely random sample of 60 oils. How closely do the frequencies of the random sample match the original samples? Repeat this procedure several times of understand the variation in the sampling process. </strong></p>
+<p><strong>a) Use the sample function in base R to create a completely random sample of 60 oils. How closely do the frequencies of the random sample match the original samples? Repeat this procedure several times of understand the variation in the sampling process.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb226-2"><a href="#cb226-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2401,7 +2426,7 @@ Attaching package: 'mice'</code></pre>
 <li>The random sample has the same frequencies for: C and G.</li>
 <li>The random sample has lower frequencies for: A,B, D, E and F.</li>
 </ul>
-<p><strong>b) Use the caret package function createDataPartition to create a stratified random sample. How does this compare to completely random samples? </strong></p>
+<p><strong>b) Use the caret package function createDataPartition to create a stratified random sample. How does this compare to completely random samples?</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb235"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb235-1"><a href="#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Following same process as "a"</span></span>
 <span id="cb235-2"><a href="#cb235-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
@@ -2440,7 +2465,7 @@ A B C D E F G
 </div>
 </div>
 <p>The values in the statified sample are much lower than the random sample. This is in part due to the stratified refined method, while the random sample looks at all variables within the dataset at random.</p>
-<p><strong>c) With such a small samples size, what are the options for determining performance of the model? Should a test set be used? </strong></p>
+<p><strong>c) With such a small samples size, what are the options for determining performance of the model? Should a test set be used?</strong></p>
 <p>Methods such as K-fold, along with the train-test split method, could be an option for determining performance of the refined model.</p>
 <p><strong>d) One method for understanding the uncertainty of a test set is to use a confidence interval. To obtain a confidence interval for the overall accuracy, the based R function binom.test can be used. It requires the user to input the number of samples and the number correctly classified to calculate the interval. For example, suppose a test set sample of 20 oil samples was set aside and 76 were used for model training. For this test set size and a model that is about 80 % accurate (16 out of 20 correct), the confidence interval would be computed using</strong></p>
 <div class="cell">
@@ -2505,7 +2530,7 @@ probability of success
 <p>The bias-variance tradeoff is when we chose lower bias which increases variance or lower variance increases bias. The objective is to find a good balance meaning that both bias and variance are at minimal.</p>
 </section>
 <section id="predicting-fat-content-in-meat-using-ir-spectroscopy-and-machine-learning-a-comparative-study-of-predictive-models" class="level1">
-<h1>Predicting Fat Content in Meat Using IR Spectroscopy and Machine Learning: A Comparative Study of Predictive Models</h1>
+<h1><span style="color:blue;">Predicting Fat Content in Meat Using IR Spectroscopy and Machine Learning: A Comparative Study of Predictive Models</span></h1>
 <p>Infrared (IR) spectroscopy technology is used to determine the chemical makeup of a substance. The theory of IR spectroscopy holds that unique molecular structures absorb IR frequencies differently. In practice a spectrometer fires a series of IR frequencies into a sample material, and the device measures the absorbance of the sample at each individual frequency. This series of measurements creates a spectrum profile which can then be used to determine the chemical makeup of the sample material.</p>
 <p>A Tecator Infratec Food and Feed Analyzer instrument was used to analyze 215 samples of meat across 100 frequencies. A sample of these frequency profiles is displayed in Fig. 6.20. In addition to an IR profile, analytical chemistry determined the percent content of water, fat, and protein for each sample. If we can establish a predictive relationship between IR spectrum and fat content, then food scientists could predict a sample’s fat content with IR instead of using analytical chemistry. This would provide costs savings, since analytical chemistry is a more expensive, time-consuming process.</p>
 <p><strong>a) Start R and use these commands to load the data:</strong></p>
@@ -2934,11 +2959,11 @@ The final value used for the model was k = 5.</code></pre>
 <p><strong>e) Which model from parts c) and d) has the best predictive ability? Is any model significantly better or worse than the others?</strong></p>
 <table class="table">
 <colgroup>
-<col style="width: 34%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 38%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -6214,7 +6239,7 @@ The final value used for the model was fraction = 0.1.</code></pre>
 <p>Based on the results, I recommend using the kNN model. This model demonstrates the lowest RMSE and MAE, indicating it has the smallest error and provides the most accurate predictions. Additionally, it has one of the higher R-squared values, suggesting it effectively explains the variability in the data.</p>
 </section>
 <section id="analyzing-and-predicting-oil-types-and-customer-churn-using-machine-learning-techniques" class="level1">
-<h1>Analyzing and Predicting Oil Types and Customer Churn Using Machine Learning Techniques</h1>
+<h1><span style="color:blue;">Analyzing and Predicting Oil Types and Customer Churn Using Machine Learning Techniques</span></h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1231"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1231-1"><a href="#cb1231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
 <span id="cb1231-2"><a href="#cb1231-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
@@ -6897,12 +6922,12 @@ The final value used for the model was mtry = 2.2.</code></pre>
 <p><u><strong>Summary:</strong></u></p>
 <table class="table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -8021,11 +8046,11 @@ Balanced Accuracy          NA</code></pre>
 </ul>
 <table class="table">
 <colgroup>
-<col style="width: 35%">
-<col style="width: 12%">
-<col style="width: 10%">
 <col style="width: 27%">
-<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 20%">
+<col style="width: 17%">
 </colgroup>
 <thead>
 <tr class="header">

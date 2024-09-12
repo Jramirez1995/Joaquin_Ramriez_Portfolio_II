@@ -335,7 +335,7 @@ The following objects are masked from 'package:stats':
 ✖ yardstick::spec()    masks readr::spec()
 ✖ purrr::splice()      masks rlang::splice()
 ✖ recipes::step()      masks stats::step()
-• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsample)  <span class="co"># For data splitting</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)    <span class="co"># For model training</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -767,10 +767,8 @@ dbl  (2): season, no_of_episodes
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>There were issues with some computations   A: x1
-There were issues with some computations   A: x2   B: x1
 → C | warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
-There were issues with some computations   A: x2   B: x1
-There were issues with some computations   A: x5   B: x5   C: x2
+There were issues with some computations   A: x1
 There were issues with some computations   A: x5   B: x5   C: x2</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>rf_fit <span class="ot">&lt;-</span> rf_workflow <span class="sc">%&gt;%</span></span>
@@ -780,7 +778,7 @@ There were issues with some computations   A: x5   B: x5   C: x2</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>→ A | warning: ! There are new levels in a factor: `NA`.
-There were issues with some computations   A: x9
+There were issues with some computations   A: x3
 There were issues with some computations   A: x10</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>svm_fit <span class="ot">&lt;-</span> svm_workflow <span class="sc">%&gt;%</span></span>
@@ -788,7 +786,6 @@ There were issues with some computations   A: x10</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>→ A | warning: ! There are new levels in a factor: `NA`.
 There were issues with some computations   A: x2
-There were issues with some computations   A: x10
 There were issues with some computations   A: x10</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Collect and print metrics</span></span>

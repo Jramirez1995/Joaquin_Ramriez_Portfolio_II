@@ -1453,7 +1453,7 @@ knn_model
 **e) Which model from parts c) and d) has the best predictive ability? Is any model significantly better or worse than the others?**
 
 | Model                                | RMSE      | Rsquared  | MAE       | Rank |
-|--------------------------------------|-----------|-----------|-----------|------|
+|---------------------------|-----------|-----------|-----------|-----------|
 | OLS - Linear Regression              | 0.7268192 | 0.9450398 | 0.5549019 | 1    |
 | Principal Component Regression (PCR) | 2.316586  | 0.4545058 | 1.848556  | 6    |
 | Partial Least Squares (PLS)          | 1.743833  | 0.6963113 | 1.291007  | 4    |
@@ -1864,7 +1864,7 @@ rf_model
 [**Summary:**]{.underline}
 
 | Model                   | Tuning Parameter | Accuracy | Kappa     | AUC    | prAUC  |
-|-------------------------|------------------|----------|-----------|--------|--------|
+|----------------|------------|------------|------------|------------|------------|
 | **k-NN**                | k = 5            | 0.9375   | 0.9195499 | 0.9920 | 0.0139 |
 | **Logistic Regression** | decay = 0.1      | 0.9514   | 0.9387330 | 0.9972 | 0.2474 |
 | **Random Forest**       | mtry = 2.2       | 0.9750   | 0.9679487 | 1.0000 | 0.2189 |
@@ -2359,7 +2359,7 @@ d)  Which model has better performance, and what are the corresponding tuning pa
 -   **The Boosted decision tree performs the best resulting in perfect accuracy and Kappa.**
 
 | Model                     | Accuracy | Kappa  | No Information Rate | P-Value   |
-|---------------------------|----------|--------|---------------------|-----------|
+|--------------------|-------------|-------------|---------------|-------------|
 | **Decision Tree**         | 0.7692   | 0.6816 | 0.4231              | 0.000358  |
 | **Bagged Decision Tree**  | 0.9615   | 0.9472 | 0.4231              | 7.058e-09 |
 | **Boosted Decision Tree** | 1.0000   | 1.0000 | 0.4231              | 1.936e-10 |
